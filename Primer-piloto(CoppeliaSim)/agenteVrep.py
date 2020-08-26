@@ -35,7 +35,7 @@ class Environment():
         self.t1=time.time()
         
         
-        self.returnCode,baseHandle=sim.simxLoadModel(self.clientID,'/home/daniel/Documents/Tesis/Mapas Vrep/Robot.ttm',1,sim.simx_opmode_blocking )
+        self.returnCode,baseHandle=sim.simxLoadModel(self.clientID,'C:/Users/dani-/Documents/Tesis/Mapas Vrep/Robot.ttm',1,sim.simx_opmode_blocking )
         #retrieve pioneer handle
         self.errorCode,self.robotHandle=sim.simxGetObjectHandle(self.clientID,'Pioneer_p3dx',sim.simx_opmode_oneshot_wait)
         self.returnCode,self.position=sim.simxGetObjectPosition(self.clientID,self.robotHandle,-1,sim.simx_opmode_streaming)
