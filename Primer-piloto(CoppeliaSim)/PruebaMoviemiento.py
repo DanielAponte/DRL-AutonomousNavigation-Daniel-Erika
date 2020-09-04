@@ -26,8 +26,9 @@ class Environment():
         self.errorCode,self.robotHandle=sim.simxGetObjectHandle(self.clientID,'Pioneer_p3dx',sim.simx_opmode_oneshot_wait)
         self.returnCode,self.position=sim.simxGetObjectPosition(self.clientID,self.robotHandle,-1,sim.simx_opmode_streaming)
         #retrieve motor  handles
-        self.errorCode,self.leftmotorHandle=sim.simxGetObjectHandle(self.clientID,'Pioneer_p3dx_leftMotor',sim.simx_opmode_oneshot_wait)
+        
         self.errorCode,self.rightmotorHandle=sim.simxGetObjectHandle(self.clientID,'Pioneer_p3dx_rightMotor',sim.simx_opmode_oneshot_wait)
+        self.errorCode,self.leftmotorHandle=sim.simxGetObjectHandle(self.clientID,'Pioneer_p3dx_leftMotor',sim.simx_opmode_oneshot_wait)
     
         #retrieve camera handles
         self.errorCode,self.cameraHandle=sim.simxGetObjectHandle(self.clientID,'Pioneer_camera',sim.simx_opmode_oneshot_wait)
@@ -42,7 +43,6 @@ class Environment():
         err,angle=sim.simxGetObjectOrientation(self.clientID,self.robotHandle,-1,sim.simx_opmode_buffer)
         init_g=self.convert_pos_angle(angle[2]*180/np.pi)
         
-        print("initial gamma ",init_g)
         if sentido == 'd':
             self.errorCode = sim.simxSetJointTargetVelocity(self.clientID,self.leftmotorHandle,0.4,sim.simx_opmode_oneshot)
             self.errorCode = sim.simxSetJointTargetVelocity(self.clientID,self.rightmotorHandle,-0.4,sim.simx_opmode_oneshot)
@@ -52,13 +52,13 @@ class Environment():
         err,angle=sim.simxGetObjectOrientation(self.clientID,self.robotHandle,-1,sim.simx_opmode_buffer)           
         g=self.convert_pos_angle(angle[2]*180/np.pi)
         
-        while abs(abs(init_g)-abs(g)) < 90:
+        while abs(abs(init_g)-abs(g)) < 90 or abs(abs(init_g)-abs(g)) > 271:
             err,angle=sim.simxGetObjectOrientation(self.clientID,self.robotHandle,-1,sim.simx_opmode_buffer)           
             g=self.convert_pos_angle(angle[2]*180/np.pi)
-            print(g)
             time.sleep(0.01)
-        self.errorCode = sim.simxSetJointTargetVelocity(self.clientID,self.leftmotorHandle,0,sim.simx_opmode_oneshot)
         self.errorCode = sim.simxSetJointTargetVelocity(self.clientID,self.rightmotorHandle,0,sim.simx_opmode_oneshot)
+        self.errorCode = sim.simxSetJointTargetVelocity(self.clientID,self.leftmotorHandle,0,sim.simx_opmode_oneshot)
+        
         print("initial gamma ",init_g)
         print("final gamma ",g)
         
@@ -67,17 +67,35 @@ class Environment():
             return angle +360
         else:
             return angle
-    def mover_robot(self, tecla):
+        
+    def move_f_b(self,time_ms, orientation): 
+        if orientation=='f':
+            self.errorCode = sim.simxSetJointTargetVelocity(self.clientID,self.leftmotorHandle,3,sim.simx_opmode_oneshot)
+            self.errorCode = sim.simxSetJointTargetVelocity(self.clientID,self.rightmotorHandle,3,sim.simx_opmode_oneshot)
+        elif orientation == 'b':
+            self.errorCode = sim.simxSetJointTargetVelocity(self.clientID,self.leftmotorHandle,-3,sim.simx_opmode_oneshot)
+            self.errorCode = sim.simxSetJointTargetVelocity(self.clientID,self.rightmotorHandle,-3,sim.simx_opmode_oneshot)
+        
+        time.sleep(time_ms/1000)
+        self.errorCode = sim.simxSetJointTargetVelocity(self.clientID,self.rightmotorHandle,0,sim.simx_opmode_oneshot)
+        self.errorCode = sim.simxSetJointTargetVelocity(self.clientID,self.leftmotorHandle,0,sim.simx_opmode_oneshot)
+        
+        
+        
+    def mover_robot(self, tecla, time_ms):
         
         if tecla== 'w':
-            self.errorCode = sim.simxSetJointTargetVelocity(self.clientID,self.leftmotorHandle,self.actions[action][0],sim.simx_opmode_oneshot)
-            self.errorCode = sim.simxSetJointTargetVelocity(self.clientID,self.rightmotorHandle,self.actions[action][1],sim.simx_opmode_oneshot)
+            self.move_f_b(time_ms,'f')
         elif tecla== 'a':
-            None
+            self.girar('i')
+            self.move_f_b(time_ms,'f')
+            
         elif tecla== 's':
-            None
+            self.move_f_b(time_ms,'b')
         elif tecla== 'd':
-            None
+            self.girar('d')
+            self.move_f_b(time_ms,'f')
+            
         else:
             None
         
