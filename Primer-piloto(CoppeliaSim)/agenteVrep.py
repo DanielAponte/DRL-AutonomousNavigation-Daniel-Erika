@@ -105,8 +105,10 @@ class Environment():
                 Reward_VI=0
 
         print(Reward_VI)
-
+        self.position_Score()
         img = self.get_screen_buffer()
+        LR= -0.05
+        return Reward_VI+self.TD+LR
 
 
     def get_screen_buffer(self):
@@ -202,35 +204,35 @@ class Environment():
         if self.position[0]>-7.5 and self.position[1]>-7.5 and self.position[0]<-6 and self.position[1]<-6:
             self.TD=0
         elif self.position[0]>-7.5 and self.position[1]>-6 and self.position[0]<-6 and self.position[1]<-4.5:
-            self.TD=0.03
+            self.TD=0.025
         elif self.position[0]>-7.5 and self.position[1]>-4.5 and self.position[0]<-6 and self.position[1]<-3:
-            self.TD=0.12
+            self.TD=0.1
         elif self.position[0]>-7.5 and self.position[1]>-3 and self.position[0]<-6 and self.position[1]<-1.5:
-            self.TD=0.15
+            self.TD=0.125
         elif self.position[0]>-6 and self.position[1]>-7.5 and self.position[0]<-4.5 and self.position[1]<-6:
-            self.TD=0.09
+            self.TD=0.075
         elif self.position[0]>-6 and self.position[1]>-6 and self.position[0]<-4.5 and self.position[1]<-4.5:
-            self.TD=0.06
+            self.TD=0.05
         elif self.position[0]>-6 and self.position[1]>-4.5 and self.position[0]<-4.5 and self.position[1]<-3:
-            self.TD=0.09
+            self.TD=0.075
         elif self.position[0]>-6 and self.position[1]>-3 and self.position[0]<-4.5 and self.position[1]<-1.5:
-            self.TD=0.18
-        elif self.position[0]>-4.5 and self.position[1]>-7.5 and self.position[0]<-3 and self.position[1]<-6:
-            self.TD=0.12
-        elif self.position[0]>-4.5 and self.position[1]>-6 and self.position[0]<-3 and self.position[1]<-4.5:
-            self.TD=0.21
-        elif self.position[0]>-4.5 and self.position[1]>-4.5 and self.position[0]<-3 and self.position[1]<-3:
-            self.TD=0.24
-        elif self.position[0]>-4.5 and self.position[1]>-3 and self.position[0]<-3 and self.position[1]<-1.5:
-            self.TD=0.27
-        elif self.position[0]>-3 and self.position[1]>-7.5 and self.position[0]<-1.5 and self.position[1]<-6:
             self.TD=0.15
+        elif self.position[0]>-4.5 and self.position[1]>-7.5 and self.position[0]<-3 and self.position[1]<-6:
+            self.TD=0.1
+        elif self.position[0]>-4.5 and self.position[1]>-6 and self.position[0]<-3 and self.position[1]<-4.5:
+            self.TD=0.175
+        elif self.position[0]>-4.5 and self.position[1]>-4.5 and self.position[0]<-3 and self.position[1]<-3:
+            self.TD=0.2
+        elif self.position[0]>-4.5 and self.position[1]>-3 and self.position[0]<-3 and self.position[1]<-1.5:
+            self.TD=0.225
+        elif self.position[0]>-3 and self.position[1]>-7.5 and self.position[0]<-1.5 and self.position[1]<-6:
+            self.TD=0.125
         elif self.position[0]>-3 and self.position[1]>-6 and self.position[0]<-1.5 and self.position[1]<-4.5:
-            self.TD=0.18
+            self.TD=0.15
         elif self.position[0]>-3 and self.position[1]>-4.5 and self.position[0]<-1.5 and self.position[1]<-3:
-            self.TD=0.21
+            self.TD=0.175
         elif self.position[0]>-3 and self.position[1]>-3 and self.position[0]<-1.5 and self.position[1]<-1.5:
-            self.TD=0.3
+            self.TD=0.25
             
         
 
