@@ -104,7 +104,7 @@ class Environment():
             else:
                 Reward_VI=0
 
-        print(Reward_VI)
+        print(Reward_VI,self.TD)
         self.position_Score()
         img = self.get_screen_buffer()
         LR= -0.05
@@ -117,6 +117,7 @@ class Environment():
         in_data=np.array(image,dtype=np.uint8)
         in_data.resize([self.resolution[0],self.resolution[1]])
         plt.imshow(in_data,origin='lower')
+        
         return in_data
 
 
@@ -128,18 +129,32 @@ class Environment():
         if is_done:
             t2=time.time()
             self.EpTime=t2-self.t1
-        img=np.transpose(img)
+        # img=np.transpose(img)
 
         return img,reward,is_done
 
     def numactions(self):
         return len(self.actions)
     def reset(self):
-        self.new_episode()
-        state = self.game.get_state()
-        img = state.screen_buffer
-        img=np.transpose(img)
-        img= image_preprocessing.convert(img,(80,80))
+        self.returnCode=sim.simxRemoveModel(self.clientID,self.robotHandle,sim.simx_opmode_blocking )
+        self.returnCode,baseHandle=sim.simxLoadModel(self.clientID,'C:/Users/dani-/Documents/Tesis/Mapas Vrep/Robot.ttm',1,sim.simx_opmode_blocking )
+        #retrieve pioneer handle
+        self.errorCode,self.robotHandle=sim.simxGetObjectHandle(self.clientID,'Pioneer_p3dx',sim.simx_opmode_oneshot_wait)
+        self.returnCode,self.position=sim.simxGetObjectPosition(self.clientID,self.robotHandle,sim.sim_handle_parent,sim.simx_opmode_streaming)
+        #retrieve motor  handles
+        self.errorCode,self.leftmotorHandle=sim.simxGetObjectHandle(self.clientID,'Pioneer_p3dx_leftMotor',sim.simx_opmode_oneshot_wait)
+        self.errorCode,self.rightmotorHandle=sim.simxGetObjectHandle(self.clientID,'Pioneer_p3dx_rightMotor',sim.simx_opmode_oneshot_wait)
+
+        self.errorCode,angle=sim.simxGetObjectOrientation(self.clientID,self.robotHandle,-1,sim.simx_opmode_streaming)
+
+        #retrieve camera handles
+        self.errorCode,self.cameraHandle=sim.simxGetObjectHandle(self.clientID,'Pioneer_camera',sim.simx_opmode_oneshot_wait)
+        self.returnCode,self.resolution, self.image=sim.simxGetVisionSensorImage( self.clientID,self.cameraHandle,1,sim.simx_opmode_streaming)
+        
+        time.sleep(0.1)
+        img = self.get_screen_buffer()
+        # img=np.transpose(img)
+        # img= image_preprocessing.convert(img,(80,80))
         return img
 
     def is_episode_finished(self):
