@@ -13,6 +13,7 @@ import math
 import matplotlib as mpl   #used for image plotting
 import pandas as pd
 import matplotlib.pyplot as plt
+import os
 
 
 
@@ -34,8 +35,11 @@ class Environment():
         self.EpTime= 0
         self.t1=time.time()
         self.TD=0
-
-        self.returnCode,baseHandle=sim.simxLoadModel(self.clientID,'C:/Users/dani-/Documents/Tesis/Mapas Vrep/Robot.ttm',1,sim.simx_opmode_blocking )
+        currDir=__file__
+        [currDir,er]=currDir.split('Primer-piloto(CoppeliaSim)')
+        ModelPath=currDir+"Mapas Vrep\Robot.ttm"
+        ModelPath=ModelPath.replace("\\","/")
+        self.returnCode,baseHandle=sim.simxLoadModel(self.clientID,ModelPath,1,sim.simx_opmode_blocking )
         #retrieve pioneer handle
         self.errorCode,self.robotHandle=sim.simxGetObjectHandle(self.clientID,'Pioneer_p3dx',sim.simx_opmode_oneshot_wait)
         self.returnCode,self.position=sim.simxGetObjectPosition(self.clientID,self.robotHandle,sim.sim_handle_parent,sim.simx_opmode_streaming)
