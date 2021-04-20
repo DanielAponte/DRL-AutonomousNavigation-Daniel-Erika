@@ -75,8 +75,8 @@ class Environment():
         forward = 'w'
         left = 'a'
         right = 'd'
-        backward = 's'
-        self.actions = [forward, left, right, backward]
+        #backward = 's'
+        self.actions = [forward, left, right]
         self.numsteps = 0
 
     def determine_nearest_Arrow(self,pos_R):
@@ -95,7 +95,7 @@ class Environment():
         self.returnCode,self.position=sim.simxGetObjectPosition(self.clientID,self.robotHandle,sim.sim_handle_parent,sim.simx_opmode_buffer)
         key_val=self.determine_nearest_Arrow(self.position).split('_')[1]
         Reward_VI=0
-        self.move_robot(self.actions[action],2200)
+        self.move_robot(self.actions[action],1800)
         if key_val[0] == 'L':
             if action == 1:
                 Reward_VI=1
@@ -118,7 +118,7 @@ class Environment():
         self.returnCode,self.resolution, image=sim.simxGetVisionSensorImage( self.clientID,self.cameraHandle,1,sim.simx_opmode_buffer)
         in_data=np.array(image,dtype=np.uint8)
         in_data.resize([self.resolution[0],self.resolution[1]])
-        plt.imshow(in_data,origin='lower')
+        in_data = in_data[::-1]
         
         return in_data
 
@@ -191,8 +191,6 @@ class Environment():
             g=self.convert_pos_angle(angle[2]*180/np.pi)
             time.sleep(0.01)
 
-            # print("actual ",g)
-
         self.errorCode = sim.simxSetJointTargetVelocity(self.clientID,self.rightmotorHandle,0,sim.simx_opmode_oneshot)
         self.errorCode = sim.simxSetJointTargetVelocity(self.clientID,self.leftmotorHandle,0,sim.simx_opmode_oneshot)
 
@@ -251,22 +249,15 @@ class Environment():
             self.TD=0.175
         elif self.position[0]>-3 and self.position[1]>-3 and self.position[0]<-1.5 and self.position[1]<-1.5:
             self.TD=0.25
-            
         
-
     def move_robot(self, move, time_ms):
-
         if move == 'w':
             self.move_f_b(time_ms,'f')
         elif move == 'a':
             self.rotate('i')
-            self.move_f_b(time_ms,'f')
-
         elif move == 's':
             self.move_f_b(time_ms,'b')
         elif  move == 'd':
             self.rotate('d')
-            self.move_f_b(time_ms,'f')
-
         else:
             None

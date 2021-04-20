@@ -13,6 +13,7 @@ from tqdm import tqdm
 import numpy as np
 import random
 
+from PIL import Image
 import agenteVrep
 
 REPLAY_MEMORY_SIZE = 50_000
@@ -49,9 +50,10 @@ class DQNAgent:
         self.target_update_counter = 0
         
     def create_model(self):
+        env.get_screen_buffer()
         model = Sequential()
 
-        model.add(Conv2D(256, (3, 3), input_shape=(10, 10, 3)))  # OBSERVATION_SPACE_VALUES = (10, 10, 3) a 10x10 RGB image.
+        model.add(Conv2D(256, (3, 3), input_shape=(env.resolution[0], env.resolution[1], 3)))  # OBSERVATION_SPACE_VALUES = (10, 10, 3) a 10x10 RGB image.
         model.add(Activation('relu'))
         model.add(MaxPooling2D(pool_size=(2, 2)))
         model.add(Dropout(0.2))
@@ -152,6 +154,7 @@ for episode in tqdm(range(1, EPISODES + 1), ascii=True, unit='episodes'):
 
         print('New action: ', action)
         new_state, reward, done = env.step(action)
+        
 
         # Transform new continous state to new discrete state and count reward
         episode_reward += reward
@@ -159,6 +162,9 @@ for episode in tqdm(range(1, EPISODES + 1), ascii=True, unit='episodes'):
         # Every step we update replay memory and train main network
         agent.update_replay_memory((current_state, action, reward, new_state, done))
         agent.train(done, step)
+
+        im = Image.fromarray(current_state)
+        im.save("../Capturas_Robot/img"+str(step)+".jpeg")
 
         current_state = new_state
         step += 1
