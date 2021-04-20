@@ -21,6 +21,8 @@ class Environment():
         self.clientID=sim.simxStart('127.0.0.1',19999,True,True,5000,5)
         if self.clientID!=-1:
             print ('Connected to remote API server')
+        else:             
+            print ('Connection not successful')
         #self.returnCode,baseHandle=sim.simxLoadModel(self.clientID,'C:/Users/dani-/Documents/Tesis/Mapas Vrep/Robot.ttm',1,sim.simx_opmode_blocking )
         #retrieve pioneer handle
         self.errorCode,self.robotHandle=sim.simxGetObjectHandle(self.clientID,'Pioneer_p3dx',sim.simx_opmode_oneshot_wait)

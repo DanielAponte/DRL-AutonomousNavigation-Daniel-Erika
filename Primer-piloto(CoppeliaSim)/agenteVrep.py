@@ -16,9 +16,6 @@ import matplotlib.pyplot as plt
 import os
 
 
-
-
-
 class Environment():
     def __init__(self):
         sim.simxFinish(-1) # just in case, close all opened connections
@@ -37,21 +34,24 @@ class Environment():
         self.TD=0
         currDir=__file__
         [currDir,er]=currDir.split('Primer-piloto(CoppeliaSim)')
-        ModelPath=currDir+"Mapas Vrep\Robot.ttm"
-        ModelPath=ModelPath.replace("\\","/")
-        self.returnCode,baseHandle=sim.simxLoadModel(self.clientID,ModelPath,1,sim.simx_opmode_blocking )
+        ModelPath=currDir+"Mapas Vrep"
+        self.ModelPath=ModelPath.replace("\\","/")
+        self.returnCode,baseHandle=sim.simxLoadModel(self.clientID,self.ModelPath+"/Robot.ttm",1,sim.simx_opmode_blocking )
+        print ('Line 40 - code: ', self.returnCode, ' :: basehandle: ', baseHandle)
         #retrieve pioneer handle
         self.errorCode,self.robotHandle=sim.simxGetObjectHandle(self.clientID,'Pioneer_p3dx',sim.simx_opmode_oneshot_wait)
         self.returnCode,self.position=sim.simxGetObjectPosition(self.clientID,self.robotHandle,sim.sim_handle_parent,sim.simx_opmode_streaming)
         #retrieve motor  handles
         self.errorCode,self.leftmotorHandle=sim.simxGetObjectHandle(self.clientID,'Pioneer_p3dx_leftMotor',sim.simx_opmode_oneshot_wait)
         self.errorCode,self.rightmotorHandle=sim.simxGetObjectHandle(self.clientID,'Pioneer_p3dx_rightMotor',sim.simx_opmode_oneshot_wait)
-
+        print ('Line 49 - leftMotor: ', self.leftmotorHandle, ' :: rightMotor: ', self.rightmotorHandle, ':: code: ', self.errorCode)
         self.errorCode,angle=sim.simxGetObjectOrientation(self.clientID,self.robotHandle,-1,sim.simx_opmode_streaming)
 
         #retrieve camera handles
         self.errorCode,self.cameraHandle=sim.simxGetObjectHandle(self.clientID,'Pioneer_camera',sim.simx_opmode_oneshot_wait)
+        print ('Line 52 - camera: ', self.cameraHandle, ':: code: ', self.errorCode)
         self.returnCode,self.resolution, self.image=sim.simxGetVisionSensorImage( self.clientID,self.cameraHandle,1,sim.simx_opmode_streaming)
+        print ('Line 54 - resolution: ', self.resolution, ' :: img: ', self.image, ':: code: ', self.returnCode)
         
         #retieve Arrows info
         self.Arrows = {}
@@ -88,7 +88,6 @@ class Environment():
         keys=list(self.Arrows.keys())
         for i in range(len(val)):
             if comp ==val[i]:
-                print(keys[i])
                 return keys[i]
 
     def make_action(self, action):
@@ -108,11 +107,10 @@ class Environment():
             else:
                 Reward_VI=0
 
-        print(Reward_VI,self.TD)
         self.position_Score()
         img = self.get_screen_buffer()
         LR= -0.05
-        return Reward_VI+self.TD+LR
+        return Reward_VI+self.TD+LR, img
 
 
     def get_screen_buffer(self):
@@ -127,7 +125,7 @@ class Environment():
 
     def step(self,action):
 
-        reward = self.make_action(action)
+        reward, img = self.make_action(action)
 
         is_done=self.is_episode_finished()
         if is_done:
@@ -140,8 +138,8 @@ class Environment():
     def numactions(self):
         return len(self.actions)
     def reset(self):
-        self.returnCode=sim.simxRemoveModel(self.clientID,self.robotHandle,sim.simx_opmode_blocking )
-        self.returnCode,baseHandle=sim.simxLoadModel(self.clientID,'C:/Users/dani-/Documents/Tesis/Mapas Vrep/Robot.ttm',1,sim.simx_opmode_blocking )
+        self.returnCode=sim.simxRemoveModel(self.clientID,self.robotHandle,sim.simx_opmode_blocking)
+        self.returnCode,baseHandle=sim.simxLoadModel(self.clientID,self.ModelPath+"/Robot.ttm",1,sim.simx_opmode_blocking )
         #retrieve pioneer handle
         self.errorCode,self.robotHandle=sim.simxGetObjectHandle(self.clientID,'Pioneer_p3dx',sim.simx_opmode_oneshot_wait)
         self.returnCode,self.position=sim.simxGetObjectPosition(self.clientID,self.robotHandle,sim.sim_handle_parent,sim.simx_opmode_streaming)
@@ -167,8 +165,9 @@ class Environment():
         if(self.position[0]>-2.7 and self.position[1]>-2.5 and self.position[0]<-1.9 and self.position[1]<-1.8):
 
             self.returnCode=sim.simxRemoveModel(self.clientID,self.robotHandle,sim.simx_opmode_oneshot_wait)
-            self.returnCode,baseHandle=sim.simxLoadModel(self.clientID,'/home/daniel/Documents/Tesis/Mapas Vrep/Robot-2.ttm',1,sim.simx_opmode_blocking )
+            self.returnCode,baseHandle=sim.simxLoadModel(self.clientID,self.ModelPath+"/Robot-2.ttm",1,sim.simx_opmode_blocking )
             self.errorCode,self.robotHandle=sim.simxGetObjectHandle(self.clientID,'Pioneer_p3dx',sim.simx_opmode_oneshot_wait)
+            print ('Is Done!')
 
             return True
         else:
