@@ -28,7 +28,7 @@ EPSILON_DECAY = 0.99975
 MIN_EPSILON = 0.001
 
 # Environment settings
-EPISODES = 20_000
+EPISODES = 10_000
 
 env = agenteVrep.Environment()
 
@@ -152,7 +152,7 @@ for episode in tqdm(range(1, EPISODES + 1), ascii=True, unit='episodes'):
             # Get random action
             action = np.random.randint(0, env.numactions())
 
-        print('New action: ', action)
+        #print('New action: ', action)
         new_state, reward, done = env.step(action)
         
 

@@ -82,8 +82,6 @@ class Environment():
         self.errorCode = sim.simxSetJointTargetVelocity(self.clientID,self.rightmotorHandle,0,sim.simx_opmode_oneshot)
         self.errorCode = sim.simxSetJointTargetVelocity(self.clientID,self.leftmotorHandle,0,sim.simx_opmode_oneshot)
         
-        
-        
     def mover_robot(self, tecla, time_ms):
         
         if tecla== 'w':

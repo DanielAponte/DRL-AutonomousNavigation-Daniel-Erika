@@ -37,21 +37,21 @@ class Environment():
         ModelPath=currDir+"Mapas Vrep"
         self.ModelPath=ModelPath.replace("\\","/")
         self.returnCode,baseHandle=sim.simxLoadModel(self.clientID,self.ModelPath+"/Robot.ttm",1,sim.simx_opmode_blocking )
-        print ('Line 40 - code: ', self.returnCode, ' :: basehandle: ', baseHandle)
+        #print ('Line 40 - code: ', self.returnCode, ' :: basehandle: ', baseHandle)
         #retrieve pioneer handle
         self.errorCode,self.robotHandle=sim.simxGetObjectHandle(self.clientID,'Pioneer_p3dx',sim.simx_opmode_oneshot_wait)
         self.returnCode,self.position=sim.simxGetObjectPosition(self.clientID,self.robotHandle,sim.sim_handle_parent,sim.simx_opmode_streaming)
         #retrieve motor  handles
         self.errorCode,self.leftmotorHandle=sim.simxGetObjectHandle(self.clientID,'Pioneer_p3dx_leftMotor',sim.simx_opmode_oneshot_wait)
         self.errorCode,self.rightmotorHandle=sim.simxGetObjectHandle(self.clientID,'Pioneer_p3dx_rightMotor',sim.simx_opmode_oneshot_wait)
-        print ('Line 49 - leftMotor: ', self.leftmotorHandle, ' :: rightMotor: ', self.rightmotorHandle, ':: code: ', self.errorCode)
+        #print ('Line 49 - leftMotor: ', self.leftmotorHandle, ' :: rightMotor: ', self.rightmotorHandle, ':: code: ', self.errorCode)
         self.errorCode,angle=sim.simxGetObjectOrientation(self.clientID,self.robotHandle,-1,sim.simx_opmode_streaming)
 
         #retrieve camera handles
         self.errorCode,self.cameraHandle=sim.simxGetObjectHandle(self.clientID,'Pioneer_camera',sim.simx_opmode_oneshot_wait)
-        print ('Line 52 - camera: ', self.cameraHandle, ':: code: ', self.errorCode)
+        #print ('Line 52 - camera: ', self.cameraHandle, ':: code: ', self.errorCode)
         self.returnCode,self.resolution, self.image=sim.simxGetVisionSensorImage( self.clientID,self.cameraHandle,1,sim.simx_opmode_streaming)
-        print ('Line 54 - resolution: ', self.resolution, ' :: img: ', self.image, ':: code: ', self.returnCode)
+        #print ('Line 54 - resolution: ', self.resolution, ' :: img: ', self.image, ':: code: ', self.returnCode)
         
         #retieve Arrows info
         self.Arrows = {}
@@ -70,7 +70,7 @@ class Environment():
             self.errorCode,Arrow_Pos = sim.simxGetObjectPosition(self.clientID,Arrow,-1,sim.simx_opmode_buffer)
             self.Arrows["Arrow_R"+str(i)]=[Arrow,Arrow_Pos,a]
             a+=1
-        print(self.Arrows)
+        #print(self.Arrows)
 
         forward = 'w'
         left = 'a'
@@ -83,7 +83,7 @@ class Environment():
         val=[]
         for i in self.Arrows:
             val.append(abs((self.Arrows[i][1][1]-pos_R[1])/(self.Arrows[i][1][0]-pos_R[0])))
-        print('val: ',val)
+        #print('val: ',val)
         comp= min(val)
         keys=list(self.Arrows.keys())
         for i in range(len(val)):
@@ -160,15 +160,13 @@ class Environment():
         return img
 
     def is_episode_finished(self):
-        self.returnCode,self.position=sim.simxGetObjectPosition(self.clientID,self.robotHandle,-1,sim.simx_opmode_buffer)
-
+        self.returnCode,self.position=sim.simxGetObjectPosition(self.clientID,self.robotHandle,sim.sim_handle_parent,sim.simx_opmode_buffer)
+        
         if(self.position[0]>-2.7 and self.position[1]>-2.5 and self.position[0]<-1.9 and self.position[1]<-1.8):
-
             self.returnCode=sim.simxRemoveModel(self.clientID,self.robotHandle,sim.simx_opmode_oneshot_wait)
             self.returnCode,baseHandle=sim.simxLoadModel(self.clientID,self.ModelPath+"/Robot-2.ttm",1,sim.simx_opmode_blocking )
             self.errorCode,self.robotHandle=sim.simxGetObjectHandle(self.clientID,'Pioneer_p3dx',sim.simx_opmode_oneshot_wait)
             print ('Is Done!')
-
             return True
         else:
             return False
@@ -194,8 +192,8 @@ class Environment():
         self.errorCode = sim.simxSetJointTargetVelocity(self.clientID,self.rightmotorHandle,0,sim.simx_opmode_oneshot)
         self.errorCode = sim.simxSetJointTargetVelocity(self.clientID,self.leftmotorHandle,0,sim.simx_opmode_oneshot)
 
-        print("initial gamma ",init_g)
-        print("final gamma ",g)
+        #print("initial gamma ",init_g)
+        #print("final gamma ",g)
 
     def convert_pos_angle(self,angle):
         if angle < 0:
