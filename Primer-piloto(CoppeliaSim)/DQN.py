@@ -12,7 +12,7 @@ from collections import deque
 from tqdm import tqdm
 import numpy as np
 import random
-
+import time
 from PIL import Image
 import agenteVrep
 
@@ -21,6 +21,9 @@ DISCOUNT = 0.99
 MINIBATCH_SIZE = 64
 MIN_REPLAY_MEMORY_SIZE = 1_000
 UPDATE_TARGET_EVERY = 5
+
+#Number of steps for timeout
+TIMEOUT_COUNT = 70
 
 # Exploration settings
 epsilon = 1  # not a constant, going to be decayed
@@ -142,8 +145,14 @@ for episode in tqdm(range(1, EPISODES + 1), ascii=True, unit='episodes'):
 
     # Reset flag and start iterating until episode ends
     done = False
-    while not done:
-
+    start_t =  time.time()
+    
+    while not done or step < TIMEOUT_COUNT:
+        current_t = time.time()
+        if (current_t - start_t )> 180 :
+            done = True
+            
+        print(current_t - start_t )
         # This part stays mostly the same, the change is to query a model for Q values
         if np.random.random() > epsilon:
             # Get action from Q table
@@ -168,8 +177,13 @@ for episode in tqdm(range(1, EPISODES + 1), ascii=True, unit='episodes'):
 
         current_state = new_state
         step += 1
-
+        
+        print('val: ', epsilon)
+        print('reward ', reward)
     # Decay epsilon
     if epsilon > MIN_EPSILON:
         epsilon *= EPSILON_DECAY
         epsilon = max(MIN_EPSILON, epsilon)
+        
+        
+        
