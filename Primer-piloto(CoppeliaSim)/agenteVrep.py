@@ -63,7 +63,8 @@ class Environment():
             (6.7, 3.8, 90) : 'w;',
             (6.7, 2.4, 90): 'd;',
             (6.7, 2.4, 0) : 'w;',
-            (5.2, 2.4, 0) : 'w;'
+            (5.2, 2.4, 0) : 'w;',
+            (2.4, 2.4, 0) : 'w;'
             }
         
         currDir=os.path.dirname(os.path.abspath("__file__"))
@@ -73,7 +74,7 @@ class Environment():
         self.ModelPath=ModelPath.replace("\\","/")
         self.returnCode,baseHandle=sim.simxLoadModel(self.clientID,self.ModelPath+"/Robot.ttm",1,sim.simx_opmode_blocking )
         pingTime = sim.simxGetPingTime(self.clientID)
-        print(pingTime)
+        print('Ping time: ', pingTime)
         #print ('Line 40 - code: ', self.returnCode, ' :: basehandle: ', baseHandle)
         #retrieve pioneer handle
         self.errorCode,self.robotHandle=sim.simxGetObjectHandle(self.clientID,'Pioneer_p3dx',sim.simx_opmode_oneshot_wait)
@@ -107,7 +108,6 @@ class Environment():
             self.errorCode,Arrow_Pos = sim.simxGetObjectPosition(self.clientID,Arrow,-1,sim.simx_opmode_buffer)
             self.Arrows["Arrow_R"+str(i)]=[Arrow,Arrow_Pos,a]
             a+=1
-        #print(self.Arrows)
 
         forward = 'w'
         left = 'a'
@@ -124,8 +124,7 @@ class Environment():
         err,angle=sim.simxGetObjectOrientation(self.clientID,self.robotHandle,-1,sim.simx_opmode_buffer)
         curr_g=self.convert_pos_angle(angle[2]*180/np.pi)
         self.returnCode,currposition=sim.simxGetObjectPosition(self.clientID,self.robotHandle,sim.sim_handle_parent,sim.simx_opmode_buffer)
-        print(currposition)
-        print(curr_g)
+
 
     def parate(self):
         self.errorCode = sim.simxSetJointTargetVelocity(self.clientID,self.rightmotorHandle,0,sim.simx_opmode_oneshot)
@@ -138,7 +137,6 @@ class Environment():
         val=[]
         for i in self.Arrows:
             val.append(abs((self.Arrows[i][1][1]-pos_R[1])/(self.Arrows[i][1][0]-pos_R[0])))
-        #print('val: ',val)
         comp= min(val)
         keys=list(self.Arrows.keys())
         for i in range(len(val)):
@@ -184,7 +182,7 @@ class Environment():
         allowed_action = self.dict_posible_outcomes[(x,y,theta)].split(';')
         if self.actions[action] in allowed_action:
             Reward_VI=1
-            self.move_robot(self.actions[action],1000)
+            self.move_robot(self.actions[action],1500)
         else:
             Reward_VI=-1
         self.position_Score()
@@ -196,7 +194,7 @@ class Environment():
     def get_screen_buffer(self):
         self.returnCode,self.resolution, image=sim.simxGetVisionSensorImage( self.clientID,self.cameraHandle,1,sim.simx_opmode_streaming)
         self.returnCode,self.resolution, image=sim.simxGetVisionSensorImage( self.clientID,self.cameraHandle,1,sim.simx_opmode_buffer)
-        
+
         in_data=np.array(image,dtype=np.uint8)
         in_data.resize([self.resolution[0],self.resolution[1]])
         in_data = in_data[::-1]
@@ -207,7 +205,7 @@ class Environment():
     def step(self,action):   
         reward, img = self.make_action(action)
 
-        is_done=self.is_episode_finished()
+        is_done = self.is_episode_finished()
         if is_done:
             t2=time.time()
             self.EpTime=t2-self.t1
@@ -223,7 +221,6 @@ class Environment():
         self.returnCode=sim.simxRemoveModel(self.clientID,self.robotHandle,sim.simx_opmode_blocking)
         time.sleep(0.1)
         self.returnCode,baseHandle=sim.simxLoadModel(self.clientID,self.ModelPath+"/Robot.ttm",1,sim.simx_opmode_blocking )
-        print(baseHandle)
         time.sleep(0.1)
         #retrieve pioneer handle
         self.errorCode,self.robotHandle=sim.simxGetObjectHandle(self.clientID,'Pioneer_p3dx',sim.simx_opmode_oneshot_wait)
@@ -238,10 +235,10 @@ class Environment():
         self.errorCode,self.cameraHandle=sim.simxGetObjectHandle(self.clientID,'Pioneer_camera',sim.simx_opmode_oneshot_wait)
         self.returnCode,self.resolution, self.image=sim.simxGetVisionSensorImage( self.clientID,self.cameraHandle,1,sim.simx_opmode_streaming)
         
-        time.sleep(0.028)
+        time.sleep(0.1)
         img = self.get_screen_buffer()
-        # img=np.transpose(img)
-        # img= image_preprocessing.convert(img,(80,80))
+        ##img=np.transpose(img)
+        ##img= image_preprocessing.convert(img,(80,80))
         return img
 
     def is_episode_finished(self):
@@ -251,7 +248,7 @@ class Environment():
             self.returnCode=sim.simxRemoveModel(self.clientID,self.robotHandle,sim.simx_opmode_oneshot_wait)
             self.returnCode,baseHandle=sim.simxLoadModel(self.clientID,self.ModelPath+"/Robot-2.ttm",1,sim.simx_opmode_blocking )
             self.errorCode,self.robotHandle=sim.simxGetObjectHandle(self.clientID,'Pioneer_p3dx',sim.simx_opmode_oneshot_wait)
-            print ('Is Done!')
+            print ('\nIs Done!')
             return True
         else:
             return False
@@ -285,18 +282,15 @@ class Environment():
         self.errorCode,self.robotHandle=sim.simxGetObjectHandle(self.clientID,'Pioneer_p3dx',sim.simx_opmode_oneshot_wait)
         err,angle=sim.simxGetObjectOrientation(self.clientID,self.robotHandle,-1,sim.simx_opmode_buffer)
         init_g=self.convert_pos_angle(angle[2]*180/np.pi)
-        print(angle)
         euler_angle = [0,0,0]
         euler_angle[0] = angle[0]
         euler_angle[1] = angle[1]
         if orientation == 'd':
             euler_angle[2] = (self.convert_pos_angle(init_g -5)*np.pi/180)
-            print(euler_angle)
             self.errorCode = sim.simxSetObjectOrientation(self.clientID, self.robotHandle, -1,euler_angle,sim.simx_opmode_oneshot)
 
         elif orientation == 'i':
             euler_angle[2] = (self.convert_pos_angle(init_g + 5)*np.pi/180)
-            print(euler_angle)
             self.errorCode = sim.simxSetObjectOrientation(self.clientID, self.robotHandle, -1,euler_angle,sim.simx_opmode_oneshot)
             
     def convert_pos_angle(self,angle):
@@ -374,7 +368,6 @@ class Environment():
         self.errorCode = sim.simxSetJointTargetVelocity(self.clientID,self.rightmotorHandle,0.2,sim.simx_opmode_oneshot)
         end_position = in_position
 
-        print(curr_g)
         if  15 > curr_g or curr_g > 345:
             end_position[0] = in_position[0] + move_info[0]
  
@@ -385,7 +378,6 @@ class Environment():
         elif 75 < curr_g < 105:    
             end_position[1] = in_position[1] + move_info[0]
            
-            print(end_position)
             self.returnCode, current_pos = sim.simxGetObjectPosition(self.clientID,self.robotHandle,sim.sim_handle_parent,sim.simx_opmode_buffer)
             while current_pos[1] < (end_position[1] )  :   
                self.returnCode, current_pos = sim.simxGetObjectPosition(self.clientID,self.robotHandle,sim.sim_handle_parent,sim.simx_opmode_buffer)
@@ -400,7 +392,6 @@ class Environment():
         elif 255 < curr_g < 285:
             end_position[1] = in_position[1] - move_info[0]
 
-            print(end_position)
             self.returnCode, current_pos = sim.simxGetObjectPosition(self.clientID,self.robotHandle,sim.sim_handle_parent,sim.simx_opmode_buffer)
             while current_pos[1] > (end_position[1])  :   
                self.returnCode, current_pos = sim.simxGetObjectPosition(self.clientID,self.robotHandle,sim.sim_handle_parent,sim.simx_opmode_buffer)
