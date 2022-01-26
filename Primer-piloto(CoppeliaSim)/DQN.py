@@ -77,7 +77,8 @@ class DQNAgent:
         self.replay_memory.append(transition)
         
     def get_qs(self, state):
-        return self.model.predict(np.array(state).reshape(-1, *state.shape)/255)[0]
+        print('\nState.shape: ', state.shape)
+        return self.model.predict(np.array(state).reshape(*state.shape,3 )/255)
     
         # Trains main network every step during episode
     def train(self, terminal_state, step):
@@ -158,7 +159,6 @@ for episode in tqdm(range(1, EPISODES + 1), ascii=True, unit='episodes'):
         # This part stays mostly the same, the change is to query a model for Q values
         if np.random.random() > epsilon:
             # Get action from Q table
-            print('\nQ-table action!')
             action = np.argmax(agent.get_qs(current_state))
             actions_analysis = (actions_analysis[0], actions_analysis[1] + 1)
         else:
