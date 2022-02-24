@@ -13,6 +13,7 @@ import math
 import matplotlib as mpl   #used for image plotting
 import pandas as pd
 import matplotlib.pyplot as plt
+from PIL import Image
 import os
  
 
@@ -192,15 +193,14 @@ class Environment():
     
         
     def get_screen_buffer(self):
-        self.returnCode,self.resolution, image=sim.simxGetVisionSensorImage( self.clientID,self.cameraHandle,1,sim.simx_opmode_streaming)
-        self.returnCode,self.resolution, image=sim.simxGetVisionSensorImage( self.clientID,self.cameraHandle,1,sim.simx_opmode_buffer)
-
+        self.returnCode,self.resolution, image=sim.simxGetVisionSensorImage( self.clientID,self.cameraHandle,0,sim.simx_opmode_streaming)
+        time.sleep(0.5)
+        self.returnCode,self.resolution, image=sim.simxGetVisionSensorImage( self.clientID,self.cameraHandle,0,sim.simx_opmode_buffer)
         in_data=np.array(image,dtype=np.uint8)
-        in_data.resize([self.resolution[0],self.resolution[1]])
-        in_data = in_data[::-1]
-        
+        in_data.resize([self.resolution[0],self.resolution[1],3])
         return in_data
 
+   
 
     def step(self,action):   
         reward, img = self.make_action(action)

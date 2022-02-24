@@ -78,7 +78,7 @@ class DQNAgent:
         
     def get_qs(self, state):
         print('\nState.shape: ', state.shape)
-        return self.model.predict(np.array(state).reshape(*state.shape,3 )/255)
+        return self.model.predict(np.array(state)/255)
     
         # Trains main network every step during episode
     def train(self, terminal_state, step):
