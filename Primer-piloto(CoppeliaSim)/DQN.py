@@ -51,7 +51,6 @@ class DQNAgent:
 
         # Used to count when to update target network with main network's weights
         self.target_update_counter = 0
-        
     def create_model(self):
         env.get_screen_buffer()
         model = Sequential()
@@ -77,8 +76,7 @@ class DQNAgent:
         self.replay_memory.append(transition)
         
     def get_qs(self, state):
-        print('\nState.shape: ', state.shape)
-        return self.model.predict(np.array(state)/255)
+        return self.model.predict(np.array(state).reshape(-1, *state.shape)/255)[0]
     
         # Trains main network every step during episode
     def train(self, terminal_state, step):
