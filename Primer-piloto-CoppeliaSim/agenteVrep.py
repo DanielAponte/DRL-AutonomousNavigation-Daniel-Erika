@@ -37,7 +37,7 @@ class Environment():
         self.EpTime= 0
         self.t1=time.time()
         self.TD=0
-        
+
         self.dict_posible_outcomes = {
             (6.7, 6.7, 0) : 'a;',
             (6.7, 6.7, 90) : 'w;',
@@ -69,8 +69,8 @@ class Environment():
             }
         
         currDir=os.path.dirname(os.path.abspath("__file__"))
-
-        [currDir,er]=currDir.split('Primer-piloto(CoppeliaSim)')
+        print(currDir)
+        [currDir,er]=currDir.split('Primer-piloto-CoppeliaSim')
         ModelPath=currDir+"Mapas Vrep"
         self.ModelPath=ModelPath.replace("\\","/")
         self.returnCode,baseHandle=sim.simxLoadModel(self.clientID,self.ModelPath+"/Robot.ttm",1,sim.simx_opmode_blocking )
@@ -183,7 +183,7 @@ class Environment():
         allowed_action = self.dict_posible_outcomes[(x,y,theta)].split(';')
         if self.actions[action] in allowed_action:
             Reward_VI=1
-            self.move_robot(self.actions[action],1500)
+            self.move_robot(self.actions[action],850)
         else:
             Reward_VI=-1
         self.position_Score()
@@ -194,10 +194,12 @@ class Environment():
         
     def get_screen_buffer(self):
         self.returnCode,self.resolution, image=sim.simxGetVisionSensorImage( self.clientID,self.cameraHandle,0,sim.simx_opmode_streaming)
-        time.sleep(0.5)
+        time.sleep(0.1)
         self.returnCode,self.resolution, image=sim.simxGetVisionSensorImage( self.clientID,self.cameraHandle,0,sim.simx_opmode_buffer)
         in_data=np.array(image,dtype=np.uint8)
+        time.sleep(0.1)
         in_data.resize([self.resolution[0],self.resolution[1],3])
+        
         return in_data
 
    
@@ -235,7 +237,7 @@ class Environment():
         self.errorCode,self.cameraHandle=sim.simxGetObjectHandle(self.clientID,'Pioneer_camera',sim.simx_opmode_oneshot_wait)
         self.returnCode,self.resolution, self.image=sim.simxGetVisionSensorImage( self.clientID,self.cameraHandle,1,sim.simx_opmode_streaming)
         
-        time.sleep(0.1)
+        time.sleep(0.2)
         img = self.get_screen_buffer()
         ##img=np.transpose(img)
         ##img= image_preprocessing.convert(img,(80,80))
@@ -244,7 +246,7 @@ class Environment():
     def is_episode_finished(self):
         self.returnCode,self.position=sim.simxGetObjectPosition(self.clientID,self.robotHandle,sim.sim_handle_parent,sim.simx_opmode_buffer)
         
-        if(self.position[0]>-2.7 and self.position[1]>-2.5 and self.position[0]<-1.9 and self.position[1]<-1.8):
+        if(2.8 > abs(self.position[0])>1.6 and 2.9 > abs(self.position[1])> 1.6):
             self.returnCode=sim.simxRemoveModel(self.clientID,self.robotHandle,sim.simx_opmode_oneshot_wait)
             self.returnCode,baseHandle=sim.simxLoadModel(self.clientID,self.ModelPath+"/Robot-2.ttm",1,sim.simx_opmode_blocking )
             self.errorCode,self.robotHandle=sim.simxGetObjectHandle(self.clientID,'Pioneer_p3dx',sim.simx_opmode_oneshot_wait)
