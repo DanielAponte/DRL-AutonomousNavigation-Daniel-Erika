@@ -33,7 +33,7 @@ MIN_EPSILON = 0.001
 # Environment settings
 EPISODES = 10_000
 
-env = agenteVrep.Environment()
+env =  agenteVrep.Environment()
 
 
 class DQNAgent:
@@ -175,7 +175,7 @@ for episode in tqdm(range(1, EPISODES + 1), ascii=True, unit='episodes'):
         agent.train(done, step)
 
         im = Image.fromarray(current_state)
-       # im.save("../Capturas_e_Imagenes/img"+str(step)+".jpeg")
+        im.save("../Capturas_e_Imagenes/img"+str(step)+".jpeg")
 
         current_state = new_state
         step += 1

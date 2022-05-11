@@ -25,6 +25,7 @@ class Environment():
     def __init__(self):
         sim.simxFinish(-1) # just in case, close all opened connections
 
+        
         self.clientID=sim.simxStart('127.0.0.1',19999,True,True,5000,1)
 
         if self.clientID!=-1:  #check if client connection successful
@@ -37,7 +38,7 @@ class Environment():
         self.EpTime= 0
         self.t1=time.time()
         self.TD=0
-
+        self.maxintentos = 2   
         self.dict_posible_outcomes = {
             (6.7, 6.7, 0) : 'a;',
             (6.7, 6.7, 90) : 'w;',
@@ -180,7 +181,10 @@ class Environment():
         self.errorCode,angle=sim.simxGetObjectOrientation(self.clientID,self.robotHandle,-1,sim.simx_opmode_streaming)
          
         (x,y,theta)=self.aprox_pos_angle(self.position, angle)
+
         allowed_action = self.dict_posible_outcomes[(x,y,theta)].split(';')
+
+            
         if self.actions[action] in allowed_action:
             Reward_VI=1
             self.move_robot(self.actions[action],850)
@@ -205,7 +209,13 @@ class Environment():
    
 
     def step(self,action):   
-        reward, img = self.make_action(action)
+        try:
+            reward, img = self.make_action(action)
+            
+        except KeyError:
+            img= self.get_screen_buffer()
+            print('Te perdiste manin, cagaste')
+            return(img,-80000,True)
 
         is_done = self.is_episode_finished()
         if is_done:
@@ -221,8 +231,18 @@ class Environment():
     
     def reset(self):
         self.returnCode=sim.simxRemoveModel(self.clientID,self.robotHandle,sim.simx_opmode_blocking)
-        time.sleep(0.1)
-        self.returnCode,baseHandle=sim.simxLoadModel(self.clientID,self.ModelPath+"/Robot.ttm",1,sim.simx_opmode_blocking )
+        successLoad = True
+        for i in range(1,self.maxintentos): 
+            try:
+                self.returnCode,baseHandle=sim.simxLoadModel(self.clientID,self.ModelPath+"/Robot.ttm",1,sim.simx_opmode_blocking )
+                successLoad = True
+                break
+            except:
+                print('no mano, me cague')
+                successLoad = False
+        if not successLoad :
+            sys.exit()
+                
         time.sleep(0.1)
         #retrieve pioneer handle
         self.errorCode,self.robotHandle=sim.simxGetObjectHandle(self.clientID,'Pioneer_p3dx',sim.simx_opmode_oneshot_wait)
@@ -237,10 +257,10 @@ class Environment():
         self.errorCode,self.cameraHandle=sim.simxGetObjectHandle(self.clientID,'Pioneer_camera',sim.simx_opmode_oneshot_wait)
         self.returnCode,self.resolution, self.image=sim.simxGetVisionSensorImage( self.clientID,self.cameraHandle,1,sim.simx_opmode_streaming)
         
-        time.sleep(0.2)
+        time.sleep(0.1)
         img = self.get_screen_buffer()
-        ##img=np.transpose(img)
-        ##img= image_preprocessing.convert(img,(80,80))
+
+
         return img
 
     def is_episode_finished(self):
