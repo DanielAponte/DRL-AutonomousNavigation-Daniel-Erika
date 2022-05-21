@@ -17,7 +17,7 @@ from PIL import Image
 import os
  
 
-
+MOVE_TIME = 550
 
 class Environment():
     
@@ -69,11 +69,15 @@ class Environment():
             (2.4, 2.4, 0) : 'w;'
             }
         
+        
         currDir=os.path.dirname(os.path.abspath("__file__"))
         print(currDir)
         [currDir,er]=currDir.split('Primer-piloto-CoppeliaSim')
         ModelPath=currDir+"Mapas Vrep"
         self.ModelPath=ModelPath.replace("\\","/")
+        
+        
+        
         self.returnCode,baseHandle=sim.simxLoadModel(self.clientID,self.ModelPath+"/Robot.ttm",1,sim.simx_opmode_blocking )
         pingTime = sim.simxGetPingTime(self.clientID)
         print('Ping time: ', pingTime)
@@ -115,7 +119,7 @@ class Environment():
         left = 'a'
         right = 'd'
         #backward = 's'
-        self.actions = [forward, left, right]
+        self.actions = [forward, right, left]
         self.numsteps = 0
         
         
@@ -186,10 +190,10 @@ class Environment():
 
             
         if self.actions[action] in allowed_action:
-            Reward_VI=1
-            self.move_robot(self.actions[action],850)
+            Reward_VI=3
+            self.move_robot(self.actions[action], MOVE_TIME)
         else:
-            Reward_VI=-1
+            Reward_VI=-5
         self.position_Score()
         img = self.get_screen_buffer()
         LR = -0.05
@@ -323,8 +327,8 @@ class Environment():
 
     def move_f_b(self,time_ms, orientation):
         if orientation=='f':
-            self.errorCode = sim.simxSetJointTargetVelocity(self.clientID,self.leftmotorHandle,1.3,sim.simx_opmode_oneshot)
-            self.errorCode = sim.simxSetJointTargetVelocity(self.clientID,self.rightmotorHandle,1.3,sim.simx_opmode_oneshot)
+            self.errorCode = sim.simxSetJointTargetVelocity(self.clientID,self.leftmotorHandle,2.3,sim.simx_opmode_oneshot)
+            self.errorCode = sim.simxSetJointTargetVelocity(self.clientID,self.rightmotorHandle,2.3,sim.simx_opmode_oneshot)
         elif orientation == 'b':
             self.errorCode = sim.simxSetJointTargetVelocity(self.clientID,self.leftmotorHandle,-2.3,sim.simx_opmode_oneshot)
             self.errorCode = sim.simxSetJointTargetVelocity(self.clientID,self.rightmotorHandle,-2.3,sim.simx_opmode_oneshot)
@@ -338,35 +342,35 @@ class Environment():
         if self.position[0]>-7.5 and self.position[1]>-7.5 and self.position[0]<-6 and self.position[1]<-6:
             self.TD=0
         elif self.position[0]>-7.5 and self.position[1]>-6 and self.position[0]<-6 and self.position[1]<-4.5:
-            self.TD=0.025
-        elif self.position[0]>-7.5 and self.position[1]>-4.5 and self.position[0]<-6 and self.position[1]<-3:
-            self.TD=0.1
-        elif self.position[0]>-7.5 and self.position[1]>-3 and self.position[0]<-6 and self.position[1]<-1.5:
-            self.TD=0.125
-        elif self.position[0]>-6 and self.position[1]>-7.5 and self.position[0]<-4.5 and self.position[1]<-6:
-            self.TD=0.075
-        elif self.position[0]>-6 and self.position[1]>-6 and self.position[0]<-4.5 and self.position[1]<-4.5:
             self.TD=0.05
-        elif self.position[0]>-6 and self.position[1]>-4.5 and self.position[0]<-4.5 and self.position[1]<-3:
-            self.TD=0.075
-        elif self.position[0]>-6 and self.position[1]>-3 and self.position[0]<-4.5 and self.position[1]<-1.5:
-            self.TD=0.15
-        elif self.position[0]>-4.5 and self.position[1]>-7.5 and self.position[0]<-3 and self.position[1]<-6:
-            self.TD=0.1
-        elif self.position[0]>-4.5 and self.position[1]>-6 and self.position[0]<-3 and self.position[1]<-4.5:
-            self.TD=0.175
-        elif self.position[0]>-4.5 and self.position[1]>-4.5 and self.position[0]<-3 and self.position[1]<-3:
+        elif self.position[0]>-7.5 and self.position[1]>-4.5 and self.position[0]<-6 and self.position[1]<-3:
             self.TD=0.2
-        elif self.position[0]>-4.5 and self.position[1]>-3 and self.position[0]<-3 and self.position[1]<-1.5:
-            self.TD=0.225
-        elif self.position[0]>-3 and self.position[1]>-7.5 and self.position[0]<-1.5 and self.position[1]<-6:
-            self.TD=0.125
-        elif self.position[0]>-3 and self.position[1]>-6 and self.position[0]<-1.5 and self.position[1]<-4.5:
-            self.TD=0.15
-        elif self.position[0]>-3 and self.position[1]>-4.5 and self.position[0]<-1.5 and self.position[1]<-3:
-            self.TD=0.175
-        elif self.position[0]>-3 and self.position[1]>-3 and self.position[0]<-1.5 and self.position[1]<-1.5:
+        elif self.position[0]>-7.5 and self.position[1]>-3 and self.position[0]<-6 and self.position[1]<-1.5:
             self.TD=0.25
+        elif self.position[0]>-6 and self.position[1]>-7.5 and self.position[0]<-4.5 and self.position[1]<-6:
+            self.TD=0.15
+        elif self.position[0]>-6 and self.position[1]>-6 and self.position[0]<-4.5 and self.position[1]<-4.5:
+            self.TD=0.1
+        elif self.position[0]>-6 and self.position[1]>-4.5 and self.position[0]<-4.5 and self.position[1]<-3:
+            self.TD=0.15
+        elif self.position[0]>-6 and self.position[1]>-3 and self.position[0]<-4.5 and self.position[1]<-1.5:
+            self.TD=0.3
+        elif self.position[0]>-4.5 and self.position[1]>-7.5 and self.position[0]<-3 and self.position[1]<-6:
+            self.TD=0.2
+        elif self.position[0]>-4.5 and self.position[1]>-6 and self.position[0]<-3 and self.position[1]<-4.5:
+            self.TD=0.35
+        elif self.position[0]>-4.5 and self.position[1]>-4.5 and self.position[0]<-3 and self.position[1]<-3:
+            self.TD=0.4
+        elif self.position[0]>-4.5 and self.position[1]>-3 and self.position[0]<-3 and self.position[1]<-1.5:
+            self.TD=0.45
+        elif self.position[0]>-3 and self.position[1]>-7.5 and self.position[0]<-1.5 and self.position[1]<-6:
+            self.TD=0.25
+        elif self.position[0]>-3 and self.position[1]>-6 and self.position[0]<-1.5 and self.position[1]<-4.5:
+            self.TD=0.3
+        elif self.position[0]>-3 and self.position[1]>-4.5 and self.position[0]<-1.5 and self.position[1]<-3:
+            self.TD=0.35
+        elif self.position[0]>-3 and self.position[1]>-3 and self.position[0]<-1.5 and self.position[1]<-1.5:
+            self.TD=0.5
         
     def move_robot(self, move, time_ms):
         if move == 'w':
