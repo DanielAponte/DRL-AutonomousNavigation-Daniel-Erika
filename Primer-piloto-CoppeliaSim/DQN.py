@@ -20,7 +20,7 @@ import agenteVrep
 
 REPLAY_MEMORY_SIZE = 50_000
 DISCOUNT = 0.99
-MINIBATCH_SIZE = 16
+MINIBATCH_SIZE = 32
 MIN_REPLAY_MEMORY_SIZE = 1_000
 UPDATE_TARGET_EVERY = 5
 MODEL_NAME = "256x2"
@@ -98,9 +98,18 @@ class DQNAgent:
         model.add(Conv2D(256, (3, 3)))
         model.add(Activation('relu'))
         model.add(MaxPooling2D(pool_size=(2, 2)))
+        model.add(Dropout(0.2))        
+        
+        model.add(Conv2D(256, (3, 3)))
+        model.add(Activation('relu'))
+        model.add(MaxPooling2D(pool_size=(2, 2)))
         model.add(Dropout(0.2))
 
         model.add(Flatten())  # this converts our 3D feature maps to 1D feature vectors
+        model.add(Dense(1024))
+        model.add(Dense(512))
+        model.add(Dense(256))
+        model.add(Dense(128))
         model.add(Dense(64))
 
         model.add(Dense(len(env.actions), activation='linear'))  # ACTION_SPACE_SIZE = how many choices (9)

@@ -19,7 +19,7 @@ import cv2
 import os
  
 
-MOVE_TIME = 550
+MOVE_TIME = 600
 WIDTH = 64
 HEIGHT = 64
 class Environment():
