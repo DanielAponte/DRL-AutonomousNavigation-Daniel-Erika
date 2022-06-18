@@ -90,7 +90,7 @@ class DQNAgent:
         env.get_screen_buffer()
         model = Sequential()
 
-        model.add(Conv2D(256, (3, 3), input_shape=(env.resolution[0], env.resolution[1], 3)))  # OBSERVATION_SPACE_VALUES = (10, 10, 3) a 10x10 RGB image.
+        model.add(Conv2D(256, (3, 3), input_shape=(64, 64, 3)))  # OBSERVATION_SPACE_VALUES = (10, 10, 3) a 10x10 RGB image.
         model.add(Activation('relu'))
         model.add(MaxPooling2D(pool_size=(2, 2)))
         model.add(Dropout(0.2))
@@ -209,8 +209,6 @@ for episode in tqdm(range(1, EPISODES + 1), ascii=True, unit='episodes'):
         agent.update_replay_memory((current_state, action, reward, new_state, done))
         agent.train(done, step)
 
-        im = Image.fromarray(current_state)
-        im.save("../Capturas_e_Imagenes/img"+str(step)+".jpeg")
 
         current_state = new_state
         step += 1

@@ -5,6 +5,7 @@ Created on Wed Apr 22 07:36:20 2020
 
 @author: daniel y erika
 """
+from turtle import width
 import sim                  #V-rep library
 import sys
 import time                #used to keep track of time
@@ -14,11 +15,13 @@ import matplotlib as mpl   #used for image plotting
 import pandas as pd
 import matplotlib.pyplot as plt
 from PIL import Image
+import cv2
 import os
  
 
 MOVE_TIME = 550
-
+WIDTH = 64
+HEIGHT = 64
 class Environment():
     
     
@@ -207,6 +210,8 @@ class Environment():
         in_data=np.array(image,dtype=np.uint8)
         time.sleep(0.1)
         in_data.resize([self.resolution[0],self.resolution[1],3])
+        in_data = np.flipud( cv2.resize(in_data, (WIDTH,HEIGHT), interpolation = cv2.INTER_AREA))
+        
         
         return in_data
 
