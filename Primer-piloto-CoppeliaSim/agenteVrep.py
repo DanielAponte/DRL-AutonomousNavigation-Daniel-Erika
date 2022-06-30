@@ -19,7 +19,7 @@ import cv2
 import os
  
 
-MOVE_TIME = 600
+MOVE_TIME = 550
 WIDTH = 64
 HEIGHT = 64
 class Environment():
@@ -193,10 +193,10 @@ class Environment():
 
             
         if self.actions[action] in allowed_action:
-            Reward_VI=3
+            Reward_VI=8
             self.move_robot(self.actions[action], MOVE_TIME)
         else:
-            Reward_VI=-5
+            Reward_VI=-3
         self.position_Score()
         img = self.get_screen_buffer()
         LR = -0.05

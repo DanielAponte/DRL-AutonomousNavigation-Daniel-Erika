@@ -16,6 +16,7 @@ import numpy as np
 import random
 import time
 from PIL import Image
+from PIL import ImageShow
 import agenteVrep
 
 REPLAY_MEMORY_SIZE = 50_000
@@ -30,7 +31,7 @@ TIMEOUT_COUNT = 70
 
 # Exploration settings
 epsilon = 0.9  # not a constant, going to be decayed
-EPSILON_DECAY = 0.95
+EPSILON_DECAY = 0.99
 MIN_EPSILON = 0.001
 
 # Environment settings
@@ -111,6 +112,7 @@ class DQNAgent:
         model.add(Dense(256))
         model.add(Dense(128))
         model.add(Dense(64))
+        
 
         model.add(Dense(len(env.actions), activation='linear'))  # ACTION_SPACE_SIZE = how many choices (9)
         model.compile(loss="mse", optimizer=Adam(lr=0.001), metrics=['accuracy'])
@@ -164,7 +166,7 @@ class DQNAgent:
             y.append(current_qs)
 
         # Fit on all samples as one batch, log only on terminal state
-        self.model.fit(np.array(X)/255, np.array(y), batch_size=MINIBATCH_SIZE, verbose=0, shuffle=False, callbacks=[self.tensorboard] if terminal_state else None)
+        self.model.fit(np.array(X)/255, np.array(y), batch_size=MINIBATCH_SIZE, verbose=0, shuffle=False)
 
         # Update target network counter every episode
         if terminal_state:
@@ -195,8 +197,8 @@ for episode in tqdm(range(1, EPISODES + 1), ascii=True, unit='episodes'):
     
     while not done:
         current_t = time.time()
-        if (current_t - start_t )> 180 :
-            done = True
+        #if (current_t - start_t )> 180 :
+        #    done = True
             
         # This part stays mostly the same, the change is to query a model for Q values
         if np.random.random() > epsilon:
@@ -217,6 +219,7 @@ for episode in tqdm(range(1, EPISODES + 1), ascii=True, unit='episodes'):
         # Every step we update replay memory and train main network
         agent.update_replay_memory((current_state, action, reward, new_state, done))
         agent.train(done, step)
+
 
 
         current_state = new_state
