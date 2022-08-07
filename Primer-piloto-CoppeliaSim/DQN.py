@@ -7,17 +7,14 @@ Created on Thu Apr  1 14:28:14 2021
 
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Conv2D, MaxPooling2D, Activation, Flatten
-from tensorflow.keras.optimizers import Adam
-from keras.callbacks import TensorBoard
-import tensorflow as tf
+from keras.optimizers import Adam
 from collections import deque
 from tqdm import tqdm
 import numpy as np
 import random
 import time
-from PIL import Image
-from PIL import ImageShow
 import agenteVrep
+import logging
 
 REPLAY_MEMORY_SIZE = 50_000
 DISCOUNT = 0.99
@@ -39,36 +36,6 @@ EPISODES = 10_000
 
 env =  agenteVrep.Environment()
 # Own Tensorboard class
-class ModifiedTensorBoard(TensorBoard):
-
-    # Overriding init to set initial step and writer (we want one log file for all .fit() calls)
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.step = 1
-        self.writer = tf.summary.create_file_writer(self.log_dir)
-
-    # Overriding this method to stop creating default log writer
-    def set_model(self, model):
-        pass
-
-    # Overrided, saves logs with our step number
-    # (otherwise every .fit() will start writing from 0th step)
-    def on_epoch_end(self, epoch, logs=None):
-        self.update_stats(**logs)
-
-    # Overrided
-    # We train for one batch only, no need to save anything at epoch end
-    def on_batch_end(self, batch, logs=None):
-        pass
-
-    # Overrided, so won't close writer
-    def on_train_end(self, _):
-        pass
-
-    # Custom method for saving own metrics
-    # Creates writer, writes custom metrics and closes writer
-    def update_stats(self, **stats):
-        self._write_logs(stats, self.step)
 
 class DQNAgent:
     def __init__(self):
@@ -83,10 +50,22 @@ class DQNAgent:
         # An array with last n steps for training
         self.replay_memory = deque(maxlen=REPLAY_MEMORY_SIZE)
         
-        self.tensorboard = ModifiedTensorBoard(log_dir="logs/{}-{}".format(MODEL_NAME, int(time.time())))
+        #self.tensorboard = ModifiedTensorBoard(log_dir="logs/{}-{}".format(MODEL_NAME, int(time.time())))
 
         # Used to count when to update target network with main network's weights
         self.target_update_counter = 0
+
+        # Se eliminan los handlers anteriores
+        if logging.getLogger('').hasHandlers():
+            logging.getLogger('').handlers.clear()
+        
+        logging.basicConfig(
+            format = '%(asctime)-5s %(name)-15s %(levelname)-8s %(message)s',
+            level  = logging.INFO,      # Nivel de los eventos que se registran en el logger
+            filename = "logs_info.log", # Fichero en el que se escriben los logs
+            filemode = "a"              # a ("append"), en cada escritura, si el archivo de logs ya existe,
+                                        # se abre y añaden nuevas lineas.
+        )
     def create_model(self):
         env.get_screen_buffer()
         model = Sequential()
@@ -115,7 +94,7 @@ class DQNAgent:
         
 
         model.add(Dense(len(env.actions), activation='linear'))  # ACTION_SPACE_SIZE = how many choices (9)
-        model.compile(loss="mse", optimizer=Adam(lr=0.001), metrics=['accuracy'])
+        model.compile(loss="mse", optimizer=Adam(learning_rate=0.001), metrics=['accuracy'])
         return model
     
     def update_replay_memory(self, transition):
@@ -179,10 +158,11 @@ class DQNAgent:
 
 agent = DQNAgent()
 
-for episode in tqdm(range(1, EPISODES + 1), ascii=True, unit='episodes'):
+for episode in range(1, EPISODES + 1):
 
     # Restarting episode - reset episode reward and step number
     print('\nInit episode: ', episode)
+    logging.info('Init episode: ' + str(episode))
     actions_analysis = (0,0) #(Random, Q-table)
     episode_reward = 0
     step = 1
@@ -236,6 +216,13 @@ for episode in tqdm(range(1, EPISODES + 1), ascii=True, unit='episodes'):
           ' %% ', actions_analysis[0]/total_actions, 
           ' Q-Table: ', actions_analysis[1],
           ' %% ', actions_analysis[1]/total_actions)
+    logging.info('Time dif: ' + str(current_t - start_t) )
+    logging.info('Epsilon: ' + str(epsilon) + ' :: Episode_reward ' + str(episode_reward))
+    logging.info('Total acts: ' + str(total_actions) + ' Random: ' + str(actions_analysis[0]) +
+          ' %% ' + str(actions_analysis[0]/total_actions) + 
+          ' Q-Table: ' + str(actions_analysis[1]) +
+          ' %% ' + str(actions_analysis[1]/total_actions))
+        
         
         
         

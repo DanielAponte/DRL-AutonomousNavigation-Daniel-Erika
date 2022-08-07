@@ -17,9 +17,10 @@ import matplotlib.pyplot as plt
 from PIL import Image
 import cv2
 import os
+import logging
  
 
-MOVE_TIME = 550
+MOVE_TIME = 750
 WIDTH = 64
 HEIGHT = 64
 class Environment():
@@ -41,7 +42,7 @@ class Environment():
         self.EpTime= 0
         self.t1=time.time()
         self.TD=0
-        self.maxintentos = 2   
+        self.maxintentos = 5  
         self.dict_posible_outcomes = {
             (6.7, 6.7, 0) : 'a;',
             (6.7, 6.7, 90) : 'w;',
@@ -128,6 +129,18 @@ class Environment():
         
         self.errorCode = sim.simxSetJointTargetVelocity(self.clientID,self.rightmotorHandle,0,sim.simx_opmode_oneshot)
         self.errorCode = sim.simxSetJointTargetVelocity(self.clientID,self.leftmotorHandle,0,sim.simx_opmode_oneshot)
+        
+        # Se eliminan los handlers anteriores
+        if logging.getLogger('').hasHandlers():
+            logging.getLogger('').handlers.clear()
+        
+        logging.basicConfig(
+            format = '%(asctime)-5s %(name)-15s %(levelname)-8s %(message)s',
+            level  = logging.INFO,      # Nivel de los eventos que se registran en el logger
+            filename = "logs_info.log", # Fichero en el que se escriben los logs
+            filemode = "a"              # a ("append"), en cada escritura, si el archivo de logs ya existe,
+                                        # se abre y añaden nuevas lineas.
+        )
 
     def get_pos_or(self):
         err,angle=sim.simxGetObjectOrientation(self.clientID,self.robotHandle,-1,sim.simx_opmode_buffer)
@@ -200,22 +213,21 @@ class Environment():
         self.position_Score()
         img = self.get_screen_buffer()
         LR = -0.05
-        return Reward_VI+self.TD+LR, img
-    
+        return Reward_VI+self.TD+LR, img    
         
     def get_screen_buffer(self):
-        self.returnCode,self.resolution, image=sim.simxGetVisionSensorImage( self.clientID,self.cameraHandle,0,sim.simx_opmode_streaming)
-        time.sleep(0.1)
-        self.returnCode,self.resolution, image=sim.simxGetVisionSensorImage( self.clientID,self.cameraHandle,0,sim.simx_opmode_buffer)
-        in_data=np.array(image,dtype=np.uint8)
-        time.sleep(0.1)
-        in_data.resize([self.resolution[0],self.resolution[1],3])
-        in_data = np.flipud( cv2.resize(in_data, (WIDTH,HEIGHT), interpolation = cv2.INTER_AREA))
-        
-        
-        return in_data
-
-   
+        try:
+            self.returnCode,self.resolution, image=sim.simxGetVisionSensorImage( self.clientID,self.cameraHandle,0,sim.simx_opmode_streaming)
+            time.sleep(0.1)
+            self.returnCode,self.resolution, image=sim.simxGetVisionSensorImage( self.clientID,self.cameraHandle,0,sim.simx_opmode_buffer)
+            in_data=np.array(image,dtype=np.uint8)
+            time.sleep(0.1)
+            in_data.resize([self.resolution[0],self.resolution[1],3])
+            in_data = np.flipud( cv2.resize(in_data, (WIDTH,HEIGHT), interpolation = cv2.INTER_AREA))
+        except:
+            print('\nError get screen buffer')
+            logging.info('Error get screen buffer, in_data: ' +  str(in_data) + ' image: ' + str(image))
+        return in_data   
 
     def step(self,action):   
         try:
@@ -223,7 +235,8 @@ class Environment():
             
         except KeyError:
             img= self.get_screen_buffer()
-            print('Te perdiste manin, cagaste')
+            print ('\nUnknown location error') 
+            logging.info('Unknown location error')
             return(img,-80000,True)
 
         is_done = self.is_episode_finished()
@@ -245,9 +258,11 @@ class Environment():
             try:
                 self.returnCode,baseHandle=sim.simxLoadModel(self.clientID,self.ModelPath+"/Robot.ttm",1,sim.simx_opmode_blocking )
                 successLoad = True
+                logging.info('Se configuró correctamente el modelo')
                 break
             except:
-                print('no mano, me cague')
+                print('Imposible configurar el modelo')
+                logging.info('Imposible configurar el modelo')
                 successLoad = False
         if not successLoad :
             sys.exit()
@@ -279,7 +294,8 @@ class Environment():
             self.returnCode=sim.simxRemoveModel(self.clientID,self.robotHandle,sim.simx_opmode_oneshot_wait)
             self.returnCode,baseHandle=sim.simxLoadModel(self.clientID,self.ModelPath+"/Robot-2.ttm",1,sim.simx_opmode_blocking )
             self.errorCode,self.robotHandle=sim.simxGetObjectHandle(self.clientID,'Pioneer_p3dx',sim.simx_opmode_oneshot_wait)
-            print ('\nIs Done!')
+            print ('\nIs Done!')            
+            logging.info('Is Done!')
             return True
         else:
             return False
