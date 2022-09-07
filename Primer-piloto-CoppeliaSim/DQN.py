@@ -7,13 +7,15 @@ Created on Thu Apr  1 14:28:14 2021
 
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Conv2D, MaxPooling2D, Activation, Flatten
-from keras.optimizers import Adam
+from tensorflow.keras.optimizers import Adam
 from collections import deque
 from tqdm import tqdm
+from PIL import Image
+from PIL import ImageShow
 import numpy as np
 import random
 import time
-import agenteVrep
+import agenteVrep_Train
 import logging
 
 REPLAY_MEMORY_SIZE = 50_000
@@ -28,13 +30,13 @@ TIMEOUT_COUNT = 70
 
 # Exploration settings
 epsilon = 0.9  # not a constant, going to be decayed
-EPSILON_DECAY = 0.99
+EPSILON_DECAY = 0.999
 MIN_EPSILON = 0.001
 
 # Environment settings
 EPISODES = 10_000
 
-env =  agenteVrep.Environment()
+env =  agenteVrep_Train.Environment()
 # Own Tensorboard class
 
 class DQNAgent:
@@ -177,8 +179,6 @@ for episode in range(1, EPISODES + 1):
     
     while not done:
         current_t = time.time()
-        #if (current_t - start_t )> 180 :
-        #    done = True
             
         # This part stays mostly the same, the change is to query a model for Q values
         if np.random.random() > epsilon:
@@ -200,11 +200,20 @@ for episode in range(1, EPISODES + 1):
         agent.update_replay_memory((current_state, action, reward, new_state, done))
         agent.train(done, step)
 
-
+        # im = Image.fromarray(current_state)
+        # im.save("../Capturas_e_Imagenes/ep"+str(episode)+"img"+str(step)+".jpeg")
 
         current_state = new_state
         step += 1
         
+        if (current_t - start_t ) > 800 :
+            done = True
+            logging.info('Timeout!')
+
+        if((actions_analysis[0] + actions_analysis[1]) > 100):
+            done = True
+            logging.info('MaxAttemps!')
+            
     # Decay epsilon
     if epsilon > MIN_EPSILON:
         epsilon *= EPSILON_DECAY
@@ -222,6 +231,9 @@ for episode in range(1, EPISODES + 1):
           ' %% ' + str(actions_analysis[0]/total_actions) + 
           ' Q-Table: ' + str(actions_analysis[1]) +
           ' %% ' + str(actions_analysis[1]/total_actions))
+
+agent.model.save('model1.model')
+agent.target_model.save('target_model1.model')
         
         
         

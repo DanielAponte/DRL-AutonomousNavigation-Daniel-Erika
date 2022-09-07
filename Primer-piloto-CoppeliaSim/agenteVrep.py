@@ -20,16 +20,15 @@ import os
 import logging
  
 
-MOVE_TIME = 750
+MOVE_TIME = 1200
 WIDTH = 64
 HEIGHT = 64
 class Environment():
     
     
     def __init__(self):
-        sim.simxFinish(-1) # just in case, close all opened connections
-
-        
+        sim.simxFinish(-1) # just in case, close all opened connections        
+        self.moveTime = MOVE_TIME
         self.clientID=sim.simxStart('127.0.0.1',19999,True,True,5000,1)
 
         if self.clientID!=-1:  #check if client connection successful
@@ -82,7 +81,7 @@ class Environment():
         
         
         
-        self.returnCode,baseHandle=sim.simxLoadModel(self.clientID,self.ModelPath+"/Robot.ttm",1,sim.simx_opmode_blocking )
+        self.returnCode,baseHandle=sim.simxLoadModel(self.clientID,self.ModelPath+"/Robot-4.ttm",1,sim.simx_opmode_blocking )
         pingTime = sim.simxGetPingTime(self.clientID)
         print('Ping time: ', pingTime)
         #print ('Line 40 - code: ', self.returnCode, ' :: basehandle: ', baseHandle)
@@ -147,11 +146,9 @@ class Environment():
         curr_g=self.convert_pos_angle(angle[2]*180/np.pi)
         self.returnCode,currposition=sim.simxGetObjectPosition(self.clientID,self.robotHandle,sim.sim_handle_parent,sim.simx_opmode_buffer)
 
-
     def parate(self):
         self.errorCode = sim.simxSetJointTargetVelocity(self.clientID,self.rightmotorHandle,0,sim.simx_opmode_oneshot)
         self.errorCode = sim.simxSetJointTargetVelocity(self.clientID,self.leftmotorHandle,0,sim.simx_opmode_oneshot)
-    
     
     ### esta funcion calcula la recompensa con base a la flecha mas cercana, pero se decidio tomar en cuenta solo las posiciones posibles
     def determine_nearest_Arrow(self,pos_R):
@@ -195,7 +192,6 @@ class Environment():
             theta= 0  
         return [x,y,theta]
 
-
     def make_action(self, action):
         self.returnCode,self.position=sim.simxGetObjectPosition(self.clientID,self.robotHandle,sim.sim_handle_parent,sim.simx_opmode_buffer)
         self.errorCode,angle=sim.simxGetObjectOrientation(self.clientID,self.robotHandle,-1,sim.simx_opmode_streaming)
@@ -207,7 +203,7 @@ class Environment():
             
         if self.actions[action] in allowed_action:
             Reward_VI=8
-            self.move_robot(self.actions[action], MOVE_TIME)
+            self.move_robot(self.actions[action], self.moveTime)
         else:
             Reward_VI=-3
         self.position_Score()
@@ -250,13 +246,12 @@ class Environment():
     def numactions(self):
         return len(self.actions)
     
-    
     def reset(self):
         self.returnCode=sim.simxRemoveModel(self.clientID,self.robotHandle,sim.simx_opmode_blocking)
         successLoad = True
         for i in range(1,self.maxintentos): 
             try:
-                self.returnCode,baseHandle=sim.simxLoadModel(self.clientID,self.ModelPath+"/Robot.ttm",1,sim.simx_opmode_blocking )
+                self.returnCode,baseHandle=sim.simxLoadModel(self.clientID,self.ModelPath+"/Robot-4.ttm",1,sim.simx_opmode_blocking )
                 successLoad = True
                 logging.info('Se configuró correctamente el modelo')
                 break
@@ -280,10 +275,14 @@ class Environment():
         #retrieve camera handles
         self.errorCode,self.cameraHandle=sim.simxGetObjectHandle(self.clientID,'Pioneer_camera',sim.simx_opmode_oneshot_wait)
         self.returnCode,self.resolution, self.image=sim.simxGetVisionSensorImage( self.clientID,self.cameraHandle,1,sim.simx_opmode_streaming)
+
+        pingTime = sim.simxGetPingTime(self.clientID)
+        self.moveTime = pingTime[1] + MOVE_TIME
+        print('Ping time: ', pingTime, ' :: Move time: ' + str(self.moveTime))
+        logging.info('Ping time: ' + str(pingTime[1]) + ' :: Move time: ' + str(self.moveTime))
         
         time.sleep(0.1)
         img = self.get_screen_buffer()
-
 
         return img
 
@@ -325,6 +324,7 @@ class Environment():
         #print("final gamma ",g)
         
         #### prueba de rotacion inmediata con funcion de vrep
+    
     def rotate_orb(self, orientation):
         self.errorCode,self.robotHandle=sim.simxGetObjectHandle(self.clientID,'Pioneer_p3dx',sim.simx_opmode_oneshot_wait)
         err,angle=sim.simxGetObjectOrientation(self.clientID,self.robotHandle,-1,sim.simx_opmode_buffer)
@@ -353,7 +353,6 @@ class Environment():
         elif orientation == 'b':
             self.errorCode = sim.simxSetJointTargetVelocity(self.clientID,self.leftmotorHandle,-2.3,sim.simx_opmode_oneshot)
             self.errorCode = sim.simxSetJointTargetVelocity(self.clientID,self.rightmotorHandle,-2.3,sim.simx_opmode_oneshot)
-
         time.sleep(time_ms/1000)
         self.errorCode = sim.simxSetJointTargetVelocity(self.clientID,self.rightmotorHandle,0,sim.simx_opmode_oneshot)
         self.errorCode = sim.simxSetJointTargetVelocity(self.clientID,self.leftmotorHandle,0,sim.simx_opmode_oneshot)
