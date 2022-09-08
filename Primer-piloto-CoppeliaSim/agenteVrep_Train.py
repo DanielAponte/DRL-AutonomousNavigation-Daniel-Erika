@@ -18,6 +18,8 @@ from PIL import Image
 import cv2
 import os
 import logging
+from datetime import date
+from datetime import datetime
  
 
 class Agent():   
@@ -155,7 +157,7 @@ class Environment():
         logging.basicConfig(
             format = '%(asctime)-5s %(name)-15s %(levelname)-8s %(message)s',
             level  = logging.INFO,      # Nivel de los eventos que se registran en el logger
-            filename = "logs_info.log", # Fichero en el que se escriben los logs
+            filename = "logs_info" + str(date.today()) + ".log", # Fichero en el que se escriben los logs
             filemode = "a"              # a ("append"), en cada escritura, si el archivo de logs ya existe,
                                         # se abre y añaden nuevas lineas.
         )

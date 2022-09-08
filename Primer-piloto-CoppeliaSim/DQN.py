@@ -9,7 +9,6 @@ from keras.models import Sequential
 from keras.layers import Dense, Dropout, Conv2D, MaxPooling2D, Activation, Flatten
 from tensorflow.keras.optimizers import Adam
 from collections import deque
-from tqdm import tqdm
 from PIL import Image
 from PIL import ImageShow
 import numpy as np
@@ -17,6 +16,9 @@ import random
 import time
 import agenteVrep_Train
 import logging
+import msvcrt
+from datetime import date
+from datetime import datetime
 
 REPLAY_MEMORY_SIZE = 50_000
 DISCOUNT = 0.99
@@ -213,6 +215,7 @@ for episode in range(1, EPISODES + 1):
         if((actions_analysis[0] + actions_analysis[1]) > 100):
             done = True
             logging.info('MaxAttemps!')
+
             
     # Decay epsilon
     if epsilon > MIN_EPSILON:
@@ -231,9 +234,14 @@ for episode in range(1, EPISODES + 1):
           ' %% ' + str(actions_analysis[0]/total_actions) + 
           ' Q-Table: ' + str(actions_analysis[1]) +
           ' %% ' + str(actions_analysis[1]/total_actions))
+    
+    if msvcrt.kbhit():
+        if msvcrt.getch() == b'\x1b':
+            break
 
-agent.model.save('model1.model')
-agent.target_model.save('target_model1.model')
+print('Saving Model...')
+agent.model.save('model' + str(date.today()) + '.model')
+agent.target_model.save('target_model' + str(date.today()) + '.model')
         
         
         
