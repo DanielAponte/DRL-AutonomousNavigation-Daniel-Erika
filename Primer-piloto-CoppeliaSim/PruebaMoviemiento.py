@@ -129,7 +129,7 @@ class Environment():
 
 
 env = Environment()
-time_ms = 850
+time_ms = 600
 while(True):
     tecla = input()
     env.mover_robot(tecla, time_ms)

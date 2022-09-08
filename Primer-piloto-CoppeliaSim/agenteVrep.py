@@ -26,8 +26,6 @@ MOVE_TIME = 1200
 WIDTH = 64
 HEIGHT = 64
 class Environment():
-    
-    
     def __init__(self):
         sim.simxFinish(-1) # just in case, close all opened connections        
         self.moveTime = MOVE_TIME
@@ -35,7 +33,6 @@ class Environment():
 
         if self.clientID!=-1:  #check if client connection successful
             print ('Connected to remote API server')
-
         else:
             print ('Connection not successful')
             sys.exit('Could not connect')
@@ -73,34 +70,26 @@ class Environment():
             (5.2, 2.4, 0) : 'w;',
             (2.4, 2.4, 0) : 'w;'
             }
-        
-        
+
         currDir=os.path.dirname(os.path.abspath("__file__"))
-        print(currDir)
         [currDir,er]=currDir.split('Primer-piloto-CoppeliaSim')
         ModelPath=currDir+"Mapas Vrep"
-        self.ModelPath=ModelPath.replace("\\","/")
-        
-        
+        self.ModelPath=ModelPath.replace("\\","/")       
         
         self.returnCode,baseHandle=sim.simxLoadModel(self.clientID,self.ModelPath+"/Robot-4.ttm",1,sim.simx_opmode_blocking )
         pingTime = sim.simxGetPingTime(self.clientID)
         print('Ping time: ', pingTime)
-        #print ('Line 40 - code: ', self.returnCode, ' :: basehandle: ', baseHandle)
         #retrieve pioneer handle
         self.errorCode,self.robotHandle=sim.simxGetObjectHandle(self.clientID,'Pioneer_p3dx',sim.simx_opmode_oneshot_wait)
         self.returnCode,self.position=sim.simxGetObjectPosition(self.clientID,self.robotHandle,sim.sim_handle_parent,sim.simx_opmode_streaming)
         #retrieve motor  handles
         self.errorCode,self.leftmotorHandle=sim.simxGetObjectHandle(self.clientID,'Pioneer_p3dx_leftMotor',sim.simx_opmode_oneshot_wait)
         self.errorCode,self.rightmotorHandle=sim.simxGetObjectHandle(self.clientID,'Pioneer_p3dx_rightMotor',sim.simx_opmode_oneshot_wait)
-        #print ('Line 49 - leftMotor: ', self.leftmotorHandle, ' :: rightMotor: ', self.rightmotorHandle, ':: code: ', self.errorCode)
         self.errorCode,angle=sim.simxGetObjectOrientation(self.clientID,self.robotHandle,-1,sim.simx_opmode_streaming)
 
         #retrieve camera handles
         self.errorCode,self.cameraHandle=sim.simxGetObjectHandle(self.clientID,'Pioneer_camera',sim.simx_opmode_oneshot_wait)
-        #print ('Line 52 - camera: ', self.cameraHandle, ':: code: ', self.errorCode)
         self.returnCode,self.resolution, self.image=sim.simxGetVisionSensorImage( self.clientID,self.cameraHandle,1,sim.simx_opmode_streaming)
-        #print ('Line 54 - resolution: ', self.resolution, ' :: img: ', self.image, ':: code: ', self.returnCode)
         
         #retieve Arrows info
         self.Arrows = {}
