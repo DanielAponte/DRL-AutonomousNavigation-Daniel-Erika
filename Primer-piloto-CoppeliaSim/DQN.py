@@ -14,6 +14,7 @@ from PIL import ImageShow
 import numpy as np
 import random
 import time
+import agenteVrep
 import agenteVrep_Train
 import logging
 import msvcrt
@@ -38,7 +39,7 @@ MIN_EPSILON = 0.001
 # Environment settings
 EPISODES = 10_000
 
-env =  agenteVrep_Train.Environment()
+env =  agenteVrep.Environment()
 # Own Tensorboard class
 
 class DQNAgent:
@@ -202,8 +203,8 @@ for episode in range(1, EPISODES + 1):
         agent.update_replay_memory((current_state, action, reward, new_state, done))
         agent.train(done, step)
 
-        # im = Image.fromarray(current_state)
-        # im.save("../Capturas_e_Imagenes/ep"+str(episode)+"img"+str(step)+".jpeg")
+        im = Image.fromarray(current_state)
+        im.save("../Capturas_e_Imagenes/ep"+str(episode)+"img"+str(step)+".jpeg")
 
         current_state = new_state
         step += 1

@@ -22,7 +22,7 @@ from datetime import date
 from datetime import datetime
  
 
-MOVE_TIME = 1200
+MOVE_TIME = 700
 WIDTH = 64
 HEIGHT = 64
 class Environment():
