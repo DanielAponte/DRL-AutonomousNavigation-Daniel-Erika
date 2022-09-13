@@ -1352,3 +1352,471 @@
 2022-09-08 22:14:18,848 root            INFO     Se configuró correctamente el modelo
 2022-09-08 22:14:19,570 root            INFO     Ping time: 45 :: Move time: 745
 2022-09-08 22:15:55,238 root            INFO     Error get screen buffer, in_data: [] image: []
+2022-09-11 23:45:54,722 root            INFO     Init episode: 1
+2022-09-11 23:45:55,328 root            INFO     Time dif: 0.6026811599731445
+2022-09-11 23:45:55,328 root            INFO     Epsilon: 0.8955 :: Episode_reward 5.100000000000016
+2022-09-11 23:45:55,328 root            INFO     Total acts: 38 Random: 32 %% 0.8421052631578947 Q-Table: 6 %% 0.15789473684210525
+2022-09-11 23:45:55,328 root            INFO     Init episode: 2
+2022-09-11 23:45:55,555 root            INFO     Time dif: 0.22356891632080078
+2022-09-11 23:45:55,556 root            INFO     Epsilon: 0.8910224999999999 :: Episode_reward 28.399999999999995
+2022-09-11 23:45:55,556 root            INFO     Total acts: 52 Random: 49 %% 0.9423076923076923 Q-Table: 3 %% 0.057692307692307696
+2022-09-11 23:45:55,556 root            INFO     Init episode: 3
+2022-09-11 23:45:55,629 root            INFO     Time dif: 0.06931185722351074
+2022-09-11 23:45:55,629 root            INFO     Epsilon: 0.8865673875 :: Episode_reward 63.050000000000004
+2022-09-11 23:45:55,629 root            INFO     Total acts: 19 Random: 18 %% 0.9473684210526315 Q-Table: 1 %% 0.05263157894736842
+2022-09-11 23:45:55,630 root            INFO     Init episode: 4
+2022-09-11 23:45:55,992 root            INFO     Time dif: 0.35900068283081055
+2022-09-11 23:45:55,992 root            INFO     Epsilon: 0.8821345505625 :: Episode_reward -8.400000000000002
+2022-09-11 23:45:55,993 root            INFO     Total acts: 28 Random: 22 %% 0.7857142857142857 Q-Table: 6 %% 0.21428571428571427
+2022-09-11 23:45:55,993 root            INFO     Init episode: 5
+2022-09-11 23:45:56,068 root            INFO     Time dif: 0.07200002670288086
+2022-09-11 23:45:56,068 root            INFO     Epsilon: 0.8777238778096875 :: Episode_reward -21.900000000000002
+2022-09-11 23:45:56,068 root            INFO     Total acts: 18 Random: 17 %% 0.9444444444444444 Q-Table: 1 %% 0.05555555555555555
+2022-09-11 23:45:56,069 root            INFO     Init episode: 6
+2022-09-11 23:45:56,144 root            INFO     Time dif: 0.07200074195861816
+2022-09-11 23:45:56,144 root            INFO     Epsilon: 0.8733352584206391 :: Episode_reward 31.899999999999995
+2022-09-11 23:45:56,144 root            INFO     Total acts: 22 Random: 21 %% 0.9545454545454546 Q-Table: 1 %% 0.045454545454545456
+2022-09-11 23:45:56,144 root            INFO     Init episode: 7
+2022-09-11 23:45:56,387 root            INFO     Time dif: 0.23999953269958496
+2022-09-11 23:45:56,387 root            INFO     Epsilon: 0.8689685821285359 :: Episode_reward -9.05
+2022-09-11 23:45:56,387 root            INFO     Total acts: 21 Random: 17 %% 0.8095238095238095 Q-Table: 4 %% 0.19047619047619047
+2022-09-11 23:45:56,387 root            INFO     Init episode: 8
+2022-09-11 23:45:56,462 root            INFO     Time dif: 0.07200121879577637
+2022-09-11 23:45:56,463 root            INFO     Epsilon: 0.8646237392178933 :: Episode_reward 25.15
+2022-09-11 23:45:56,463 root            INFO     Total acts: 17 Random: 16 %% 0.9411764705882353 Q-Table: 1 %% 0.058823529411764705
+2022-09-11 23:45:56,463 root            INFO     Init episode: 9
+2022-09-11 23:45:56,469 root            INFO     Time dif: 0.0030035972595214844
+2022-09-11 23:45:56,469 root            INFO     Epsilon: 0.8603006205218038 :: Episode_reward 25.7
+2022-09-11 23:45:56,469 root            INFO     Total acts: 6 Random: 6 %% 1.0 Q-Table: 0 %% 0.0
+2022-09-11 23:45:56,469 root            INFO     Init episode: 10
+2022-09-11 23:45:56,832 root            INFO     Time dif: 0.3599998950958252
+2022-09-11 23:45:56,832 root            INFO     Epsilon: 0.8559991174191948 :: Episode_reward -24.299999999999994
+2022-09-11 23:45:56,833 root            INFO     Total acts: 26 Random: 20 %% 0.7692307692307693 Q-Table: 6 %% 0.23076923076923078
+2022-09-11 23:45:56,833 root            INFO     Init episode: 11
+2022-09-11 23:45:56,952 root            INFO     Time dif: 0.11600017547607422
+2022-09-11 23:45:56,952 root            INFO     Epsilon: 0.8517191218320987 :: Episode_reward 9.8
+2022-09-11 23:45:56,952 root            INFO     Total acts: 4 Random: 2 %% 0.5 Q-Table: 2 %% 0.5
+2022-09-11 23:45:56,953 root            INFO     Init episode: 12
+2022-09-11 23:45:57,469 root            INFO     Time dif: 0.5142598152160645
+2022-09-11 23:45:57,469 root            INFO     Epsilon: 0.8474605262229382 :: Episode_reward 77.20000000000002
+2022-09-11 23:45:57,469 root            INFO     Total acts: 36 Random: 27 %% 0.75 Q-Table: 9 %% 0.25
+2022-09-11 23:45:57,470 root            INFO     Init episode: 13
+2022-09-11 23:45:58,108 root            INFO     Time dif: 0.6351556777954102
+2022-09-11 23:45:58,108 root            INFO     Epsilon: 0.8432232235918236 :: Episode_reward -14.950000000000017
+2022-09-11 23:45:58,108 root            INFO     Total acts: 59 Random: 48 %% 0.8135593220338984 Q-Table: 11 %% 0.1864406779661017
+2022-09-11 23:45:58,108 root            INFO     Init episode: 14
+2022-09-11 23:45:58,529 root            INFO     Time dif: 0.41808581352233887
+2022-09-11 23:45:58,529 root            INFO     Epsilon: 0.8390071074738644 :: Episode_reward -13.95
+2022-09-11 23:45:58,529 root            INFO     Total acts: 19 Random: 12 %% 0.631578947368421 Q-Table: 7 %% 0.3684210526315789
+2022-09-11 23:45:58,529 root            INFO     Init episode: 15
+2022-09-11 23:45:58,762 root            INFO     Time dif: 0.23001551628112793
+2022-09-11 23:45:58,762 root            INFO     Epsilon: 0.8348120719364951 :: Episode_reward -5.999999999999996
+2022-09-11 23:45:58,762 root            INFO     Total acts: 20 Random: 16 %% 0.8 Q-Table: 4 %% 0.2
+2022-09-11 23:45:58,762 root            INFO     Init episode: 16
+2022-09-11 23:48:40,053 root            INFO     Init episode: 1
+2022-09-11 23:50:22,115 root            INFO     Init episode: 1
+2022-09-11 23:50:22,510 root            INFO     Time dif: 0.3902115821838379
+2022-09-11 23:50:22,510 root            INFO     Epsilon: 0.8955 :: Episode_reward 15.999999999999993
+2022-09-11 23:50:22,510 root            INFO     Total acts: 20 Random: 16 %% 0.8 Q-Table: 4 %% 0.2
+2022-09-11 23:50:22,510 root            INFO     Init episode: 2
+2022-09-11 23:50:22,644 root            INFO     Time dif: 0.13300013542175293
+2022-09-11 23:50:22,645 root            INFO     Epsilon: 0.8910224999999999 :: Episode_reward -24.749999999999996
+2022-09-11 23:50:22,645 root            INFO     Total acts: 55 Random: 53 %% 0.9636363636363636 Q-Table: 2 %% 0.03636363636363636
+2022-09-11 23:50:22,645 root            INFO     Init episode: 3
+2022-09-11 23:50:22,767 root            INFO     Time dif: 0.11899924278259277
+2022-09-11 23:50:22,767 root            INFO     Epsilon: 0.8865673875 :: Episode_reward 6.849999999999998
+2022-09-11 23:50:22,767 root            INFO     Total acts: 23 Random: 21 %% 0.9130434782608695 Q-Table: 2 %% 0.08695652173913043
+2022-09-11 23:50:22,767 root            INFO     Init episode: 4
+2022-09-11 23:50:22,823 root            INFO     Time dif: 0.0540013313293457
+2022-09-11 23:50:22,824 root            INFO     Epsilon: 0.8821345505625 :: Episode_reward 6.750000000000002
+2022-09-11 23:50:22,824 root            INFO     Total acts: 5 Random: 4 %% 0.8 Q-Table: 1 %% 0.2
+2022-09-11 23:50:22,824 root            INFO     Init episode: 5
+2022-09-11 23:50:23,053 root            INFO     Time dif: 0.2259984016418457
+2022-09-11 23:50:23,053 root            INFO     Epsilon: 0.8777238778096875 :: Episode_reward 38.099999999999994
+2022-09-11 23:50:23,053 root            INFO     Total acts: 38 Random: 34 %% 0.8947368421052632 Q-Table: 4 %% 0.10526315789473684
+2022-09-11 23:50:23,054 root            INFO     Init episode: 6
+2022-09-11 23:50:23,059 root            INFO     Time dif: 0.002002239227294922
+2022-09-11 23:50:23,059 root            INFO     Epsilon: 0.8733352584206391 :: Episode_reward 28.75
+2022-09-11 23:50:23,059 root            INFO     Total acts: 5 Random: 5 %% 1.0 Q-Table: 0 %% 0.0
+2022-09-11 23:50:23,060 root            INFO     Init episode: 7
+2022-09-11 23:50:23,299 root            INFO     Time dif: 0.17914509773254395
+2022-09-11 23:50:23,299 root            INFO     Epsilon: 0.8689685821285359 :: Episode_reward 17.94999999999999
+2022-09-11 23:50:23,299 root            INFO     Total acts: 41 Random: 37 %% 0.9024390243902439 Q-Table: 4 %% 0.0975609756097561
+2022-09-11 23:50:23,300 root            INFO     Init episode: 8
+2022-09-11 23:50:23,470 root            INFO     Time dif: 0.11600160598754883
+2022-09-11 23:50:23,470 root            INFO     Epsilon: 0.8646237392178933 :: Episode_reward 9.250000000000004
+2022-09-11 23:50:23,471 root            INFO     Total acts: 15 Random: 12 %% 0.8 Q-Table: 3 %% 0.2
+2022-09-11 23:50:23,471 root            INFO     Init episode: 9
+2022-09-11 23:50:23,584 root            INFO     Time dif: 0.06200098991394043
+2022-09-11 23:50:23,585 root            INFO     Epsilon: 0.8603006205218038 :: Episode_reward -2.950000000000009
+2022-09-11 23:50:23,585 root            INFO     Total acts: 19 Random: 17 %% 0.8947368421052632 Q-Table: 2 %% 0.10526315789473684
+2022-09-11 23:50:23,585 root            INFO     Init episode: 10
+2022-09-11 23:50:23,714 root            INFO     Time dif: 0.06600069999694824
+2022-09-11 23:50:23,714 root            INFO     Epsilon: 0.8559991174191948 :: Episode_reward 52.7
+2022-09-11 23:50:23,714 root            INFO     Total acts: 26 Random: 24 %% 0.9230769230769231 Q-Table: 2 %% 0.07692307692307693
+2022-09-11 23:50:23,715 root            INFO     Init episode: 11
+2022-09-11 23:50:23,945 root            INFO     Time dif: 0.1770014762878418
+2022-09-11 23:50:23,945 root            INFO     Epsilon: 0.8517191218320987 :: Episode_reward 5.650000000000007
+2022-09-11 23:50:23,945 root            INFO     Total acts: 27 Random: 23 %% 0.8518518518518519 Q-Table: 4 %% 0.14814814814814814
+2022-09-11 23:50:23,946 root            INFO     Init episode: 12
+2022-09-11 23:50:23,957 root            INFO     Time dif: 0.009999990463256836
+2022-09-11 23:50:23,958 root            INFO     Epsilon: 0.8474605262229382 :: Episode_reward 36.150000000000006
+2022-09-11 23:50:23,958 root            INFO     Total acts: 17 Random: 17 %% 1.0 Q-Table: 0 %% 0.0
+2022-09-11 23:50:23,958 root            INFO     Init episode: 13
+2022-09-11 23:50:24,193 root            INFO     Time dif: 0.2319934368133545
+2022-09-11 23:50:24,193 root            INFO     Epsilon: 0.8432232235918236 :: Episode_reward 10.549999999999997
+2022-09-11 23:50:24,193 root            INFO     Total acts: 29 Random: 25 %% 0.8620689655172413 Q-Table: 4 %% 0.13793103448275862
+2022-09-11 23:50:24,193 root            INFO     Init episode: 14
+2022-09-11 23:50:24,483 root            INFO     Time dif: 0.28800034523010254
+2022-09-11 23:50:24,483 root            INFO     Epsilon: 0.8390071074738644 :: Episode_reward 30.699999999999992
+2022-09-11 23:50:24,484 root            INFO     Total acts: 26 Random: 21 %% 0.8076923076923077 Q-Table: 5 %% 0.19230769230769232
+2022-09-11 23:50:24,484 root            INFO     Init episode: 15
+2022-09-11 23:50:24,546 root            INFO     Time dif: 0.06002378463745117
+2022-09-11 23:50:24,548 root            INFO     Epsilon: 0.8348120719364951 :: Episode_reward 27.549999999999997
+2022-09-11 23:50:24,548 root            INFO     Total acts: 9 Random: 8 %% 0.8888888888888888 Q-Table: 1 %% 0.1111111111111111
+2022-09-11 23:50:24,548 root            INFO     Init episode: 16
+2022-09-11 23:50:24,783 root            INFO     Time dif: 0.23199892044067383
+2022-09-11 23:50:24,783 root            INFO     Epsilon: 0.8306380115768126 :: Episode_reward 15.449999999999994
+2022-09-11 23:50:24,783 root            INFO     Total acts: 31 Random: 27 %% 0.8709677419354839 Q-Table: 4 %% 0.12903225806451613
+2022-09-11 23:50:24,784 root            INFO     Init episode: 17
+2022-09-11 23:50:24,959 root            INFO     Time dif: 0.12100028991699219
+2022-09-11 23:50:24,960 root            INFO     Epsilon: 0.8264848215189285 :: Episode_reward 20.25
+2022-09-11 23:50:24,960 root            INFO     Total acts: 15 Random: 12 %% 0.8 Q-Table: 3 %% 0.2
+2022-09-11 23:50:24,960 root            INFO     Init episode: 18
+2022-09-11 23:50:25,031 root            INFO     Time dif: 0.06800007820129395
+2022-09-11 23:50:25,031 root            INFO     Epsilon: 0.8223523974113339 :: Episode_reward 20.34999999999999
+2022-09-11 23:50:25,031 root            INFO     Total acts: 33 Random: 32 %% 0.9696969696969697 Q-Table: 1 %% 0.030303030303030304
+2022-09-11 23:50:25,032 root            INFO     Init episode: 19
+2022-09-11 23:50:25,418 root            INFO     Time dif: 0.3829972743988037
+2022-09-11 23:50:25,418 root            INFO     Epsilon: 0.8182406354242773 :: Episode_reward -10.800000000000004
+2022-09-11 23:50:25,419 root            INFO     Total acts: 36 Random: 29 %% 0.8055555555555556 Q-Table: 7 %% 0.19444444444444445
+2022-09-11 23:50:25,419 root            INFO     Init episode: 20
+2022-09-11 23:50:25,710 root            INFO     Time dif: 0.23540544509887695
+2022-09-11 23:50:25,710 root            INFO     Epsilon: 0.8141494322471559 :: Episode_reward 31.34999999999999
+2022-09-11 23:50:25,710 root            INFO     Total acts: 33 Random: 28 %% 0.8484848484848485 Q-Table: 5 %% 0.15151515151515152
+2022-09-11 23:50:25,710 root            INFO     Init episode: 21
+2022-09-11 23:50:25,823 root            INFO     Time dif: 0.1100013256072998
+2022-09-11 23:50:25,823 root            INFO     Epsilon: 0.8100786850859201 :: Episode_reward 38.55
+2022-09-11 23:50:25,823 root            INFO     Total acts: 9 Random: 7 %% 0.7777777777777778 Q-Table: 2 %% 0.2222222222222222
+2022-09-11 23:50:25,823 root            INFO     Init episode: 22
+2022-09-11 23:50:26,325 root            INFO     Time dif: 0.49900007247924805
+2022-09-11 23:50:26,325 root            INFO     Epsilon: 0.8060282916604905 :: Episode_reward 63.80000000000003
+2022-09-11 23:50:26,325 root            INFO     Total acts: 44 Random: 35 %% 0.7954545454545454 Q-Table: 9 %% 0.20454545454545456
+2022-09-11 23:50:26,326 root            INFO     Init episode: 23
+2022-09-11 23:52:43,753 root            INFO     Init episode: 1
+2022-09-11 23:52:43,992 root            INFO     Time dif: 0.23635554313659668
+2022-09-11 23:52:43,992 root            INFO     Epsilon: 0.8955 :: Episode_reward 6.750000000000001
+2022-09-11 23:52:43,992 root            INFO     Total acts: 5 Random: 4 %% 0.8 Q-Table: 1 %% 0.2
+2022-09-11 23:52:43,992 root            INFO     Init episode: 2
+2022-09-11 23:52:44,199 root            INFO     Time dif: 0.2050015926361084
+2022-09-11 23:52:44,200 root            INFO     Epsilon: 0.8910224999999999 :: Episode_reward -10.15000000000001
+2022-09-11 23:52:44,200 root            INFO     Total acts: 43 Random: 39 %% 0.9069767441860465 Q-Table: 4 %% 0.09302325581395349
+2022-09-11 23:52:44,200 root            INFO     Init episode: 3
+2022-09-11 23:52:44,209 root            INFO     Time dif: 0.005999326705932617
+2022-09-11 23:52:44,209 root            INFO     Epsilon: 0.8865673875 :: Episode_reward -21.9
+2022-09-11 23:52:44,209 root            INFO     Total acts: 18 Random: 18 %% 1.0 Q-Table: 0 %% 0.0
+2022-09-11 23:52:44,209 root            INFO     Init episode: 4
+2022-09-11 23:52:44,469 root            INFO     Time dif: 0.255997896194458
+2022-09-11 23:52:44,469 root            INFO     Epsilon: 0.8821345505625 :: Episode_reward -0.4499999999999966
+2022-09-11 23:52:44,469 root            INFO     Total acts: 29 Random: 24 %% 0.8275862068965517 Q-Table: 5 %% 0.1724137931034483
+2022-09-11 23:52:44,470 root            INFO     Init episode: 5
+2022-09-11 23:52:44,680 root            INFO     Time dif: 0.20799875259399414
+2022-09-11 23:52:44,680 root            INFO     Epsilon: 0.8777238778096875 :: Episode_reward 41.15000000000004
+2022-09-11 23:52:44,680 root            INFO     Total acts: 37 Random: 33 %% 0.8918918918918919 Q-Table: 4 %% 0.10810810810810811
+2022-09-11 23:52:44,680 root            INFO     Init episode: 6
+2022-09-11 23:52:44,844 root            INFO     Time dif: 0.16100430488586426
+2022-09-11 23:52:44,844 root            INFO     Epsilon: 0.8733352584206391 :: Episode_reward 30.699999999999996
+2022-09-11 23:52:44,844 root            INFO     Total acts: 26 Random: 23 %% 0.8846153846153846 Q-Table: 3 %% 0.11538461538461539
+2022-09-11 23:52:44,845 root            INFO     Init episode: 7
+2022-09-11 23:52:44,956 root            INFO     Time dif: 0.11006689071655273
+2022-09-11 23:52:44,957 root            INFO     Epsilon: 0.8689685821285359 :: Episode_reward 7.499999999999993
+2022-09-11 23:52:44,957 root            INFO     Total acts: 30 Random: 28 %% 0.9333333333333333 Q-Table: 2 %% 0.06666666666666667
+2022-09-11 23:52:44,957 root            INFO     Init episode: 8
+2022-09-11 23:52:45,113 root            INFO     Time dif: 0.1549994945526123
+2022-09-11 23:52:45,113 root            INFO     Epsilon: 0.8646237392178933 :: Episode_reward 6.200000000000004
+2022-09-11 23:52:45,114 root            INFO     Total acts: 16 Random: 13 %% 0.8125 Q-Table: 3 %% 0.1875
+2022-09-11 23:52:45,114 root            INFO     Init episode: 9
+2022-09-11 23:54:03,397 root            INFO     Init episode: 1
+2022-09-11 23:54:03,722 root            INFO     Time dif: 0.3214385509490967
+2022-09-11 23:54:03,722 root            INFO     Epsilon: 0.8955 :: Episode_reward 17.200000000000003
+2022-09-11 23:54:03,722 root            INFO     Total acts: 16 Random: 13 %% 0.8125 Q-Table: 3 %% 0.1875
+2022-09-11 23:54:03,723 root            INFO     Init episode: 2
+2022-09-11 23:54:03,732 root            INFO     Time dif: 0.007999897003173828
+2022-09-11 23:54:03,733 root            INFO     Epsilon: 0.8910224999999999 :: Episode_reward 34.95
+2022-09-11 23:54:03,733 root            INFO     Total acts: 21 Random: 21 %% 1.0 Q-Table: 0 %% 0.0
+2022-09-11 23:54:03,733 root            INFO     Init episode: 3
+2022-09-11 23:54:03,740 root            INFO     Time dif: 0.0029993057250976562
+2022-09-11 23:54:03,740 root            INFO     Epsilon: 0.8865673875 :: Episode_reward 21.449999999999996
+2022-09-11 23:54:03,740 root            INFO     Total acts: 11 Random: 11 %% 1.0 Q-Table: 0 %% 0.0
+2022-09-11 23:54:03,741 root            INFO     Init episode: 4
+2022-09-11 23:54:03,908 root            INFO     Time dif: 0.16499662399291992
+2022-09-11 23:54:03,909 root            INFO     Epsilon: 0.8821345505625 :: Episode_reward -15.050000000000015
+2022-09-11 23:54:03,909 root            INFO     Total acts: 41 Random: 38 %% 0.926829268292683 Q-Table: 3 %% 0.07317073170731707
+2022-09-11 23:54:03,909 root            INFO     Init episode: 5
+2022-09-11 23:54:04,022 root            INFO     Time dif: 0.11100077629089355
+2022-09-11 23:54:04,022 root            INFO     Epsilon: 0.8777238778096875 :: Episode_reward -10.250000000000007
+2022-09-11 23:54:04,022 root            INFO     Total acts: 25 Random: 23 %% 0.92 Q-Table: 2 %% 0.08
+2022-09-11 23:54:04,022 root            INFO     Init episode: 6
+2022-09-11 23:54:04,418 root            INFO     Time dif: 0.39373302459716797
+2022-09-11 23:54:04,418 root            INFO     Epsilon: 0.8733352584206391 :: Episode_reward -12.75
+2022-09-11 23:54:04,418 root            INFO     Total acts: 15 Random: 7 %% 0.4666666666666667 Q-Table: 8 %% 0.5333333333333333
+2022-09-11 23:54:04,418 root            INFO     Init episode: 7
+2022-09-11 23:54:04,639 root            INFO     Time dif: 0.21799612045288086
+2022-09-11 23:54:04,639 root            INFO     Epsilon: 0.8689685821285359 :: Episode_reward -2.2
+2022-09-11 23:54:04,639 root            INFO     Total acts: 44 Random: 40 %% 0.9090909090909091 Q-Table: 4 %% 0.09090909090909091
+2022-09-11 23:54:04,639 root            INFO     Init episode: 8
+2022-09-11 23:54:04,707 root            INFO     Time dif: 0.06599855422973633
+2022-09-11 23:54:04,708 root            INFO     Epsilon: 0.8646237392178933 :: Episode_reward 12.3
+2022-09-11 23:54:04,708 root            INFO     Total acts: 14 Random: 13 %% 0.9285714285714286 Q-Table: 1 %% 0.07142857142857142
+2022-09-11 23:54:04,708 root            INFO     Init episode: 9
+2022-09-11 23:54:04,819 root            INFO     Time dif: 0.10999822616577148
+2022-09-11 23:54:04,820 root            INFO     Epsilon: 0.8603006205218038 :: Episode_reward -20.599999999999994
+2022-09-11 23:54:04,820 root            INFO     Total acts: 32 Random: 30 %% 0.9375 Q-Table: 2 %% 0.0625
+2022-09-11 23:54:04,820 root            INFO     Init episode: 10
+2022-09-11 23:54:04,932 root            INFO     Time dif: 0.11099910736083984
+2022-09-11 23:54:04,932 root            INFO     Epsilon: 0.8559991174191948 :: Episode_reward 15.449999999999992
+2022-09-11 23:54:04,933 root            INFO     Total acts: 31 Random: 29 %% 0.9354838709677419 Q-Table: 2 %% 0.06451612903225806
+2022-09-11 23:54:04,933 root            INFO     Init episode: 11
+2022-09-11 23:54:05,052 root            INFO     Time dif: 0.11700153350830078
+2022-09-11 23:54:05,052 root            INFO     Epsilon: 0.8517191218320987 :: Episode_reward 16.1
+2022-09-11 23:54:05,052 root            INFO     Total acts: 38 Random: 36 %% 0.9473684210526315 Q-Table: 2 %% 0.05263157894736842
+2022-09-11 23:54:05,052 root            INFO     Init episode: 12
+2022-09-11 23:54:05,158 root            INFO     Time dif: 0.10299992561340332
+2022-09-11 23:54:05,158 root            INFO     Epsilon: 0.8474605262229382 :: Episode_reward 4.350000000000002
+2022-09-11 23:54:05,158 root            INFO     Total acts: 13 Random: 11 %% 0.8461538461538461 Q-Table: 2 %% 0.15384615384615385
+2022-09-11 23:54:05,158 root            INFO     Init episode: 13
+2022-09-11 23:54:05,570 root            INFO     Time dif: 0.408555269241333
+2022-09-11 23:54:05,570 root            INFO     Epsilon: 0.8432232235918236 :: Episode_reward 14.349999999999996
+2022-09-11 23:54:05,570 root            INFO     Total acts: 53 Random: 45 %% 0.8490566037735849 Q-Table: 8 %% 0.1509433962264151
+2022-09-11 23:54:05,571 root            INFO     Init episode: 14
+2022-09-11 23:54:05,575 root            INFO     Time dif: 0.0029997825622558594
+2022-09-11 23:54:05,576 root            INFO     Epsilon: 0.8390071074738644 :: Episode_reward 0.6500000000000012
+2022-09-11 23:54:05,576 root            INFO     Total acts: 7 Random: 7 %% 1.0 Q-Table: 0 %% 0.0
+2022-09-11 23:54:05,576 root            INFO     Init episode: 15
+2022-09-11 23:54:05,787 root            INFO     Time dif: 0.20800042152404785
+2022-09-11 23:54:05,787 root            INFO     Epsilon: 0.8348120719364951 :: Episode_reward 28.949999999999985
+2022-09-11 23:54:05,787 root            INFO     Total acts: 41 Random: 37 %% 0.9024390243902439 Q-Table: 4 %% 0.0975609756097561
+2022-09-11 23:54:05,787 root            INFO     Init episode: 16
+2022-09-11 23:54:05,894 root            INFO     Time dif: 0.10500025749206543
+2022-09-11 23:54:05,894 root            INFO     Epsilon: 0.8306380115768126 :: Episode_reward -4.800000000000003
+2022-09-11 23:54:05,895 root            INFO     Total acts: 16 Random: 14 %% 0.875 Q-Table: 2 %% 0.125
+2022-09-11 23:54:05,895 root            INFO     Init episode: 17
+2022-09-11 23:54:06,108 root            INFO     Time dif: 0.2109994888305664
+2022-09-11 23:54:06,108 root            INFO     Epsilon: 0.8264848215189285 :: Episode_reward -14.499999999999993
+2022-09-11 23:54:06,108 root            INFO     Total acts: 30 Random: 26 %% 0.8666666666666667 Q-Table: 4 %% 0.13333333333333333
+2022-09-11 23:54:06,108 root            INFO     Init episode: 18
+2022-09-11 23:54:06,311 root            INFO     Time dif: 0.19999980926513672
+2022-09-11 23:54:06,311 root            INFO     Epsilon: 0.8223523974113339 :: Episode_reward 25.149999999999995
+2022-09-11 23:54:06,311 root            INFO     Total acts: 17 Random: 13 %% 0.7647058823529411 Q-Table: 4 %% 0.23529411764705882
+2022-09-11 23:54:06,311 root            INFO     Init episode: 19
+2022-09-11 23:54:06,865 root            INFO     Time dif: 0.5524473190307617
+2022-09-11 23:54:06,866 root            INFO     Epsilon: 0.8182406354242773 :: Episode_reward -11.90000000000001
+2022-09-11 23:54:06,866 root            INFO     Total acts: 58 Random: 47 %% 0.8103448275862069 Q-Table: 11 %% 0.1896551724137931
+2022-09-11 23:54:06,866 root            INFO     Init episode: 20
+2022-09-11 23:54:07,280 root            INFO     Time dif: 0.4119997024536133
+2022-09-11 23:54:07,280 root            INFO     Epsilon: 0.8141494322471559 :: Episode_reward 29.59999999999999
+2022-09-11 23:54:07,280 root            INFO     Total acts: 48 Random: 40 %% 0.8333333333333334 Q-Table: 8 %% 0.16666666666666666
+2022-09-11 23:54:07,280 root            INFO     Init episode: 21
+2022-09-11 23:54:07,494 root            INFO     Time dif: 0.21100139617919922
+2022-09-11 23:54:07,494 root            INFO     Epsilon: 0.8100786850859201 :: Episode_reward -13.850000000000012
+2022-09-11 23:54:07,494 root            INFO     Total acts: 37 Random: 33 %% 0.8918918918918919 Q-Table: 4 %% 0.10810810810810811
+2022-09-11 23:54:07,494 root            INFO     Init episode: 22
+2022-09-11 23:54:07,599 root            INFO     Time dif: 0.10200047492980957
+2022-09-11 23:54:07,599 root            INFO     Epsilon: 0.8060282916604905 :: Episode_reward 8.600000000000001
+2022-09-11 23:54:07,599 root            INFO     Total acts: 8 Random: 6 %% 0.75 Q-Table: 2 %% 0.25
+2022-09-11 23:54:07,600 root            INFO     Init episode: 23
+2022-09-11 23:54:07,655 root            INFO     Time dif: 0.05299949645996094
+2022-09-11 23:54:07,655 root            INFO     Epsilon: 0.801998150202188 :: Episode_reward 20.8
+2022-09-11 23:54:07,655 root            INFO     Total acts: 4 Random: 3 %% 0.75 Q-Table: 1 %% 0.25
+2022-09-11 23:54:07,655 root            INFO     Init episode: 24
+2022-09-11 23:54:07,910 root            INFO     Time dif: 0.2519993782043457
+2022-09-11 23:54:07,910 root            INFO     Epsilon: 0.7979881594511771 :: Episode_reward 9.250000000000004
+2022-09-11 23:54:07,910 root            INFO     Total acts: 15 Random: 10 %% 0.6666666666666666 Q-Table: 5 %% 0.3333333333333333
+2022-09-11 23:54:07,910 root            INFO     Init episode: 25
+2022-09-11 23:54:08,374 root            INFO     Time dif: 0.46033143997192383
+2022-09-11 23:54:08,374 root            INFO     Epsilon: 0.7939982186539212 :: Episode_reward 3.350000000000003
+2022-09-11 23:54:08,374 root            INFO     Total acts: 53 Random: 44 %% 0.8301886792452831 Q-Table: 9 %% 0.16981132075471697
+2022-09-11 23:54:08,374 root            INFO     Init episode: 26
+2022-09-11 23:54:08,727 root            INFO     Time dif: 0.34999942779541016
+2022-09-11 23:54:08,727 root            INFO     Epsilon: 0.7900282275606516 :: Episode_reward -28.549999999999986
+2022-09-11 23:54:08,727 root            INFO     Total acts: 31 Random: 24 %% 0.7741935483870968 Q-Table: 7 %% 0.22580645161290322
+2022-09-11 23:54:08,727 root            INFO     Init episode: 27
+2022-09-11 23:54:09,134 root            INFO     Time dif: 0.40400028228759766
+2022-09-11 23:54:09,134 root            INFO     Epsilon: 0.7860780864228484 :: Episode_reward 9.350000000000005
+2022-09-11 23:54:09,134 root            INFO     Total acts: 33 Random: 25 %% 0.7575757575757576 Q-Table: 8 %% 0.24242424242424243
+2022-09-11 23:54:09,135 root            INFO     Init episode: 28
+2022-09-11 23:54:09,591 root            INFO     Time dif: 0.4539148807525635
+2022-09-11 23:54:09,591 root            INFO     Epsilon: 0.7821476959907341 :: Episode_reward 9.449999999999994
+2022-09-11 23:54:09,591 root            INFO     Total acts: 51 Random: 42 %% 0.8235294117647058 Q-Table: 9 %% 0.17647058823529413
+2022-09-11 23:54:09,592 root            INFO     Init episode: 29
+2022-09-11 23:54:10,049 root            INFO     Time dif: 0.45548582077026367
+2022-09-11 23:54:10,049 root            INFO     Epsilon: 0.7782369575107804 :: Episode_reward 11.850000000000005
+2022-09-11 23:54:10,049 root            INFO     Total acts: 43 Random: 34 %% 0.7906976744186046 Q-Table: 9 %% 0.20930232558139536
+2022-09-11 23:54:10,050 root            INFO     Init episode: 30
+2022-09-11 23:54:10,211 root            INFO     Time dif: 0.15918779373168945
+2022-09-11 23:54:10,211 root            INFO     Epsilon: 0.7743457727232265 :: Episode_reward 3.150000000000003
+2022-09-11 23:54:10,211 root            INFO     Total acts: 17 Random: 14 %% 0.8235294117647058 Q-Table: 3 %% 0.17647058823529413
+2022-09-11 23:54:10,212 root            INFO     Init episode: 31
+2022-09-11 23:54:10,467 root            INFO     Time dif: 0.25300049781799316
+2022-09-11 23:54:10,467 root            INFO     Epsilon: 0.7704740438596104 :: Episode_reward -20.05
+2022-09-11 23:54:10,467 root            INFO     Total acts: 21 Random: 16 %% 0.7619047619047619 Q-Table: 5 %% 0.23809523809523808
+2022-09-11 23:54:10,468 root            INFO     Init episode: 32
+2022-09-11 23:54:11,126 root            INFO     Time dif: 0.6553869247436523
+2022-09-11 23:54:11,126 root            INFO     Epsilon: 0.7666216736403123 :: Episode_reward 10.099999999999973
+2022-09-11 23:54:11,126 root            INFO     Total acts: 58 Random: 45 %% 0.7758620689655172 Q-Table: 13 %% 0.22413793103448276
+2022-09-11 23:54:11,126 root            INFO     Init episode: 33
+2022-09-11 23:54:11,780 root            INFO     Time dif: 0.6510014533996582
+2022-09-11 23:54:11,780 root            INFO     Epsilon: 0.7627885652721107 :: Episode_reward 3.3500000000000423
+2022-09-11 23:54:11,780 root            INFO     Total acts: 53 Random: 40 %% 0.7547169811320755 Q-Table: 13 %% 0.24528301886792453
+2022-09-11 23:54:11,780 root            INFO     Init episode: 34
+2022-09-11 23:54:18,724 root            INFO     Time dif: 5.796924352645874
+2022-09-11 23:54:18,724 root            INFO     Epsilon: 0.7589746224457501 :: Episode_reward -8.500000000000004
+2022-09-11 23:54:18,724 root            INFO     Total acts: 10 Random: 7 %% 0.7 Q-Table: 3 %% 0.3
+2022-09-11 23:54:18,725 root            INFO     Init episode: 35
+2022-09-11 23:54:32,172 root            INFO     Init episode: 1
+2022-09-11 23:54:32,176 root            INFO     Time dif: 0.0010008811950683594
+2022-09-11 23:54:32,176 root            INFO     Epsilon: 0.8955 :: Episode_reward 12.850000000000001
+2022-09-11 23:54:32,176 root            INFO     Total acts: 3 Random: 3 %% 1.0 Q-Table: 0 %% 0.0
+2022-09-11 23:54:32,177 root            INFO     Init episode: 2
+2022-09-11 23:54:32,494 root            INFO     Time dif: 0.31499767303466797
+2022-09-11 23:54:32,494 root            INFO     Epsilon: 0.8910224999999999 :: Episode_reward -10.250000000000007
+2022-09-11 23:54:32,494 root            INFO     Total acts: 25 Random: 22 %% 0.88 Q-Table: 3 %% 0.12
+2022-09-11 23:54:32,494 root            INFO     Init episode: 3
+2022-09-11 23:54:32,750 root            INFO     Time dif: 0.25302696228027344
+2022-09-11 23:54:32,750 root            INFO     Epsilon: 0.8865673875 :: Episode_reward 30.14999999999999
+2022-09-11 23:54:32,750 root            INFO     Total acts: 37 Random: 32 %% 0.8648648648648649 Q-Table: 5 %% 0.13513513513513514
+2022-09-11 23:54:32,750 root            INFO     Init episode: 4
+2022-09-11 23:54:33,414 root            INFO     Time dif: 0.6610078811645508
+2022-09-11 23:54:33,414 root            INFO     Epsilon: 0.8821345505625 :: Episode_reward -49.69999999999999
+2022-09-11 23:54:33,414 root            INFO     Total acts: 74 Random: 61 %% 0.8243243243243243 Q-Table: 13 %% 0.17567567567567569
+2022-09-11 23:54:33,414 root            INFO     Init episode: 5
+2022-09-11 23:54:33,671 root            INFO     Time dif: 0.254000186920166
+2022-09-11 23:54:33,671 root            INFO     Epsilon: 0.8777238778096875 :: Episode_reward -5.349999999999993
+2022-09-11 23:54:33,671 root            INFO     Total acts: 27 Random: 22 %% 0.8148148148148148 Q-Table: 5 %% 0.18518518518518517
+2022-09-11 23:54:33,671 root            INFO     Init episode: 6
+2022-09-11 23:54:33,926 root            INFO     Time dif: 0.25299906730651855
+2022-09-11 23:54:33,926 root            INFO     Epsilon: 0.8733352584206391 :: Episode_reward -0.4500000000000002
+2022-09-11 23:54:33,927 root            INFO     Total acts: 29 Random: 24 %% 0.8275862068965517 Q-Table: 5 %% 0.1724137931034483
+2022-09-11 23:54:33,927 root            INFO     Init episode: 7
+2022-09-11 23:54:34,088 root            INFO     Time dif: 0.15828967094421387
+2022-09-11 23:54:34,088 root            INFO     Epsilon: 0.8689685821285359 :: Episode_reward 19.050000000000004
+2022-09-11 23:54:34,088 root            INFO     Total acts: 19 Random: 16 %% 0.8421052631578947 Q-Table: 3 %% 0.15789473684210525
+2022-09-11 23:54:34,089 root            INFO     Init episode: 8
+2022-09-11 23:54:34,250 root            INFO     Time dif: 0.15999937057495117
+2022-09-11 23:54:34,251 root            INFO     Epsilon: 0.8646237392178933 :: Episode_reward -15.149999999999999
+2022-09-11 23:54:34,251 root            INFO     Total acts: 23 Random: 20 %% 0.8695652173913043 Q-Table: 3 %% 0.13043478260869565
+2022-09-11 23:54:34,251 root            INFO     Init episode: 9
+2022-09-11 23:54:34,558 root            INFO     Time dif: 0.3040006160736084
+2022-09-11 23:54:34,558 root            INFO     Epsilon: 0.8603006205218038 :: Episode_reward -23.000000000000007
+2022-09-11 23:54:34,558 root            INFO     Total acts: 40 Random: 34 %% 0.85 Q-Table: 6 %% 0.15
+2022-09-11 23:54:34,559 root            INFO     Init episode: 10
+2022-09-11 23:54:34,624 root            INFO     Time dif: 0.06299710273742676
+2022-09-11 23:54:34,624 root            INFO     Epsilon: 0.8559991174191948 :: Episode_reward -15.150000000000002
+2022-09-11 23:54:34,624 root            INFO     Total acts: 23 Random: 22 %% 0.9565217391304348 Q-Table: 1 %% 0.043478260869565216
+2022-09-11 23:54:34,624 root            INFO     Init episode: 11
+2022-09-11 23:54:34,883 root            INFO     Time dif: 0.25699877738952637
+2022-09-11 23:54:34,884 root            INFO     Epsilon: 0.8517191218320987 :: Episode_reward 2.6999999999999833
+2022-09-11 23:54:34,884 root            INFO     Total acts: 46 Random: 41 %% 0.8913043478260869 Q-Table: 5 %% 0.10869565217391304
+2022-09-11 23:54:34,884 root            INFO     Init episode: 12
+2022-09-11 23:54:34,945 root            INFO     Time dif: 0.05899953842163086
+2022-09-11 23:54:34,945 root            INFO     Epsilon: 0.8474605262229382 :: Episode_reward -9.050000000000004
+2022-09-11 23:54:34,945 root            INFO     Total acts: 21 Random: 20 %% 0.9523809523809523 Q-Table: 1 %% 0.047619047619047616
+2022-09-11 23:54:34,945 root            INFO     Init episode: 13
+2022-09-11 23:54:35,309 root            INFO     Time dif: 0.36127543449401855
+2022-09-11 23:54:35,309 root            INFO     Epsilon: 0.8432232235918236 :: Episode_reward 0.849999999999997
+2022-09-11 23:54:35,309 root            INFO     Total acts: 43 Random: 36 %% 0.8372093023255814 Q-Table: 7 %% 0.16279069767441862
+2022-09-11 23:54:35,309 root            INFO     Init episode: 14
+2022-09-11 23:54:35,367 root            INFO     Time dif: 0.05495762825012207
+2022-09-11 23:54:35,367 root            INFO     Epsilon: 0.8390071074738644 :: Episode_reward 2.5000000000000027
+2022-09-11 23:54:35,367 root            INFO     Total acts: 10 Random: 9 %% 0.9 Q-Table: 1 %% 0.1
+2022-09-11 23:54:35,368 root            INFO     Init episode: 15
+2022-09-11 23:54:35,629 root            INFO     Time dif: 0.2589993476867676
+2022-09-11 23:54:35,629 root            INFO     Epsilon: 0.8348120719364951 :: Episode_reward 7.5
+2022-09-11 23:54:35,629 root            INFO     Total acts: 30 Random: 25 %% 0.8333333333333334 Q-Table: 5 %% 0.16666666666666666
+2022-09-11 23:54:35,630 root            INFO     Init episode: 16
+2022-09-11 23:54:35,689 root            INFO     Time dif: 0.057997703552246094
+2022-09-11 23:54:35,690 root            INFO     Epsilon: 0.8306380115768126 :: Episode_reward 17.200000000000003
+2022-09-11 23:54:35,690 root            INFO     Total acts: 16 Random: 15 %% 0.9375 Q-Table: 1 %% 0.0625
+2022-09-11 23:54:35,690 root            INFO     Init episode: 17
+2022-09-11 23:54:36,193 root            INFO     Time dif: 0.5010087490081787
+2022-09-11 23:54:36,194 root            INFO     Epsilon: 0.8264848215189285 :: Episode_reward -43.799999999999955
+2022-09-11 23:54:36,194 root            INFO     Total acts: 36 Random: 26 %% 0.7222222222222222 Q-Table: 10 %% 0.2777777777777778
+2022-09-11 23:54:36,194 root            INFO     Init episode: 18
+2022-09-11 23:54:36,353 root            INFO     Time dif: 0.15599846839904785
+2022-09-11 23:54:36,353 root            INFO     Epsilon: 0.8223523974113339 :: Episode_reward 35.6
+2022-09-11 23:54:36,353 root            INFO     Total acts: 28 Random: 25 %% 0.8928571428571429 Q-Table: 3 %% 0.10714285714285714
+2022-09-11 23:54:36,353 root            INFO     Init episode: 19
+2022-09-11 23:54:36,463 root            INFO     Time dif: 0.10799908638000488
+2022-09-11 23:54:36,463 root            INFO     Epsilon: 0.8182406354242773 :: Episode_reward 52.7
+2022-09-11 23:54:36,463 root            INFO     Total acts: 26 Random: 24 %% 0.9230769230769231 Q-Table: 2 %% 0.07692307692307693
+2022-09-11 23:54:36,464 root            INFO     Init episode: 20
+2022-09-11 23:54:36,673 root            INFO     Time dif: 0.2070004940032959
+2022-09-11 23:54:36,673 root            INFO     Epsilon: 0.8141494322471559 :: Episode_reward -25.50000000000001
+2022-09-11 23:54:36,673 root            INFO     Total acts: 30 Random: 26 %% 0.8666666666666667 Q-Table: 4 %% 0.13333333333333333
+2022-09-11 23:54:36,673 root            INFO     Init episode: 21
+2022-09-11 23:54:37,176 root            INFO     Time dif: 0.5001571178436279
+2022-09-11 23:54:37,176 root            INFO     Epsilon: 0.8100786850859201 :: Episode_reward 13.700000000000008
+2022-09-11 23:54:37,177 root            INFO     Total acts: 46 Random: 36 %% 0.782608695652174 Q-Table: 10 %% 0.21739130434782608
+2022-09-11 23:54:37,177 root            INFO     Init episode: 22
+2022-09-11 23:54:37,285 root            INFO     Time dif: 0.10599946975708008
+2022-09-11 23:54:37,285 root            INFO     Epsilon: 0.8060282916604905 :: Episode_reward 56.95000000000002
+2022-09-11 23:54:37,285 root            INFO     Total acts: 21 Random: 19 %% 0.9047619047619048 Q-Table: 2 %% 0.09523809523809523
+2022-09-11 23:54:37,286 root            INFO     Init episode: 23
+2022-09-11 23:54:37,438 root            INFO     Time dif: 0.14999961853027344
+2022-09-11 23:54:37,438 root            INFO     Epsilon: 0.801998150202188 :: Episode_reward 24.5
+2022-09-11 23:54:37,438 root            INFO     Total acts: 10 Random: 7 %% 0.7 Q-Table: 3 %% 0.3
+2022-09-11 23:54:37,439 root            INFO     Init episode: 24
+2022-09-11 23:54:37,850 root            INFO     Time dif: 0.4090285301208496
+2022-09-11 23:54:37,850 root            INFO     Epsilon: 0.7979881594511771 :: Episode_reward -0.9999999999999956
+2022-09-11 23:54:37,850 root            INFO     Total acts: 40 Random: 32 %% 0.8 Q-Table: 8 %% 0.2
+2022-09-11 23:54:37,850 root            INFO     Init episode: 25
+2022-09-11 23:54:37,856 root            INFO     Time dif: 0.0029997825622558594
+2022-09-11 23:54:37,856 root            INFO     Epsilon: 0.7939982186539212 :: Episode_reward -5.450000000000002
+2022-09-11 23:54:37,856 root            INFO     Total acts: 9 Random: 9 %% 1.0 Q-Table: 0 %% 0.0
+2022-09-11 23:54:37,857 root            INFO     Init episode: 26
+2022-09-11 23:54:38,472 root            INFO     Time dif: 0.6120352745056152
+2022-09-11 23:54:38,472 root            INFO     Epsilon: 0.7900282275606516 :: Episode_reward 48.55000000000001
+2022-09-11 23:54:38,472 root            INFO     Total acts: 49 Random: 37 %% 0.7551020408163265 Q-Table: 12 %% 0.24489795918367346
+2022-09-11 23:54:38,472 root            INFO     Init episode: 27
+2022-09-11 23:54:38,870 root            INFO     Time dif: 0.39499878883361816
+2022-09-11 23:54:38,870 root            INFO     Epsilon: 0.7860780864228484 :: Episode_reward -45.09999999999999
+2022-09-11 23:54:38,870 root            INFO     Total acts: 22 Random: 14 %% 0.6363636363636364 Q-Table: 8 %% 0.36363636363636365
+2022-09-11 23:54:38,871 root            INFO     Init episode: 28
+2022-09-11 23:54:39,480 root            INFO     Time dif: 0.6070008277893066
+2022-09-11 23:54:39,480 root            INFO     Epsilon: 0.7821476959907341 :: Episode_reward -30.2
+2022-09-11 23:54:39,480 root            INFO     Total acts: 64 Random: 52 %% 0.8125 Q-Table: 12 %% 0.1875
+2022-09-11 23:54:39,480 root            INFO     Init episode: 29
+2022-09-11 23:54:39,733 root            INFO     Time dif: 0.24984025955200195
+2022-09-11 23:54:39,733 root            INFO     Epsilon: 0.7782369575107804 :: Episode_reward 23.94999999999999
+2022-09-11 23:54:39,733 root            INFO     Total acts: 21 Random: 16 %% 0.7619047619047619 Q-Table: 5 %% 0.23809523809523808
+2022-09-11 23:54:39,734 root            INFO     Init episode: 30
+2022-09-11 23:54:39,992 root            INFO     Time dif: 0.25582098960876465
+2022-09-11 23:54:39,992 root            INFO     Epsilon: 0.7743457727232265 :: Episode_reward 50.85000000000002
+2022-09-11 23:54:39,992 root            INFO     Total acts: 23 Random: 18 %% 0.782608695652174 Q-Table: 5 %% 0.21739130434782608
+2022-09-11 23:54:39,992 root            INFO     Init episode: 31
+2022-09-11 23:54:40,096 root            INFO     Time dif: 0.05333137512207031
+2022-09-11 23:54:40,096 root            INFO     Epsilon: 0.7704740438596104 :: Episode_reward 14.700000000000001
+2022-09-11 23:54:40,096 root            INFO     Total acts: 6 Random: 4 %% 0.6666666666666666 Q-Table: 2 %% 0.3333333333333333
+2022-09-11 23:54:40,097 root            INFO     Init episode: 32
+2022-09-11 23:54:40,797 root            INFO     Time dif: 0.6980001926422119
+2022-09-11 23:54:40,797 root            INFO     Epsilon: 0.7666216736403123 :: Episode_reward 14.899999999999997
+2022-09-11 23:54:40,797 root            INFO     Total acts: 42 Random: 28 %% 0.6666666666666666 Q-Table: 14 %% 0.3333333333333333
+2022-09-11 23:54:40,798 root            INFO     Init episode: 33
+2022-09-11 23:54:40,956 root            INFO     Time dif: 0.15714406967163086
+2022-09-11 23:54:40,956 root            INFO     Epsilon: 0.7627885652721107 :: Episode_reward -14.600000000000001
+2022-09-11 23:54:40,957 root            INFO     Total acts: 12 Random: 9 %% 0.75 Q-Table: 3 %% 0.25
+2022-09-11 23:54:40,957 root            INFO     Init episode: 34
+2022-09-11 23:54:41,260 root            INFO     Time dif: 0.3020157814025879
+2022-09-11 23:54:41,261 root            INFO     Epsilon: 0.7589746224457501 :: Episode_reward -4.150000000000001
+2022-09-11 23:54:41,261 root            INFO     Total acts: 23 Random: 17 %% 0.7391304347826086 Q-Table: 6 %% 0.2608695652173913
+2022-09-11 23:54:41,261 root            INFO     Init episode: 35
+2022-09-11 23:54:41,323 root            INFO     Time dif: 0.058997392654418945
+2022-09-11 23:54:41,323 root            INFO     Epsilon: 0.7551797493335214 :: Episode_reward 30.6
+2022-09-11 23:54:41,323 root            INFO     Total acts: 8 Random: 7 %% 0.875 Q-Table: 1 %% 0.125
+2022-09-11 23:54:41,323 root            INFO     Init episode: 36
+2022-09-11 23:55:12,274 root            INFO     Time dif: 30.01480007171631
+2022-09-11 23:55:12,274 root            INFO     Epsilon: 0.7514038505868538 :: Episode_reward 18.599999999999994
+2022-09-11 23:55:12,274 root            INFO     Total acts: 48 Random: 38 %% 0.7916666666666666 Q-Table: 10 %% 0.20833333333333334
+2022-09-11 23:55:14,726 tensorflow      INFO     Assets written to: model2022-09-11.model\assets
+2022-09-11 23:55:16,497 tensorflow      INFO     Assets written to: target_model2022-09-11.model\assets
+2022-09-11 23:55:16,552 root            INFO     Saving Model... 2022-09-11

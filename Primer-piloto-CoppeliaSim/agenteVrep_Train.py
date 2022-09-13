@@ -21,7 +21,7 @@ import logging
 from datetime import date
 from datetime import datetime
 
-BATCH_SIZE = 1
+BATCH_SIZE = 20
 
 class Agent():   
     def __init__(self):
@@ -173,7 +173,6 @@ class Environment():
         self.routes = [self.list_init_positions, self.list_route_short, self.list_route_long]
 
         currDir=os.path.dirname(os.path.abspath("__file__"))
-        print(currDir)
         [currDir,er] = currDir.split('Primer-piloto-CoppeliaSim')
         ModelPath = currDir + "Img_Test/"
         self.ModelPath = ModelPath.replace("\\","/")
@@ -213,8 +212,7 @@ class Environment():
         return Reward_VI+self.TD+LR, img    
         
     def get_screen_buffer(self):
-        print('Img path: ' + self.ModelPath + self.dict_img[self.routes[self.agent.route][self.agent.position]] + '/' + str(1) + '.jpeg')        
-        return np.array(Image.open(self.ModelPath + self.dict_img[self.routes[self.agent.route][self.agent.position]] + '/' + str(1) + '.jpeg').convert('RGB'))
+        return np.array(Image.open(self.ModelPath + self.dict_img[self.routes[self.agent.route][self.agent.position]] + '/' + str(np.random.randint(1, BATCH_SIZE)) + '.jpeg').convert('RGB'))
 
     def step(self,action):           
         reward, img = self.make_action(action)
@@ -228,19 +226,19 @@ class Environment():
         init_position = self.list_posibles_inits[np.random.randint(0, len(self.list_posibles_inits) - 1)]
         if init_position in self.list_init_positions:
             self.agent.reset(self.list_init_positions.index(init_position), 0)
-            print('Reset: initP: ', init_position, ' index list: ',self.list_init_positions.index(init_position), ' list: list_init_positions')
         elif init_position in self.list_route_short:        
             self.agent.reset(self.list_route_short.index(init_position), 1)
-            print('Reset: initP: ', init_position, ' index list: ', self.list_route_short.index(init_position),' list: list_route_short')
         elif init_position in self.list_route_long:        
-            self.agent.reset(self.list_route_long.index(init_position), 2)
-            print('Reset: initP: ', init_position, ' index list: ', self.list_route_long.index(init_position), ' list: list_route_long')        
+            self.agent.reset(self.list_route_long.index(init_position), 2)  
+        logging.info('Initial position: ' + str(self.dict_img[self.routes[self.agent.route][self.agent.position]]) 
+            + ' route: ' + str(self.routes[self.agent.route]))    
         return self.get_screen_buffer()
 
     def is_episode_finished(self):
         success = False
         if(self.routes[self.agent.route][self.agent.position] == (2.4, 2.4, 0)):
-            success = True
+            success = True        
+            logging.info('Is Done!')
         return success
 
     def position_Score(self):
@@ -277,8 +275,3 @@ class Environment():
             self.TD=0.35
         elif self.position[0]>-3 and self.position[1]>-3 and self.position[0]<-1.5 and self.position[1]<-1.5:
             self.TD=0.5
-
-env = Environment()
-for i in range(0,10):
-    env.reset()
-    env.get_screen_buffer()

@@ -20,7 +20,14 @@ import logging
 import msvcrt
 from datetime import date
 from datetime import datetime
+import tensorflow as tf
+import json
 
+
+AGENT_INIT = "CREATE"   # OPTIONS: CREATE, LOAD
+MODEL_NAME = "" #Necessary when AGENT_INIT = "LOAD"
+TARGET_MODEL_NAME = "" #Necessary when AGENT_INIT = "LOAD"
+REPLAY_MEMORY_NAME = "" #Necessary when AGENT_INIT = "LOAD"
 REPLAY_MEMORY_SIZE = 50_000
 DISCOUNT = 0.99
 MINIBATCH_SIZE = 32
@@ -39,23 +46,16 @@ MIN_EPSILON = 0.001
 # Environment settings
 EPISODES = 10_000
 
-env =  agenteVrep.Environment()
+env =  agenteVrep_Train.Environment()
 # Own Tensorboard class
 
 class DQNAgent:
     def __init__(self):
 
-        # Main model
-        self.model = self.create_model()
-
-        # Target network
-        self.target_model = self.create_model()
-        self.target_model.set_weights(self.model.get_weights())
-
-        # An array with last n steps for training
-        self.replay_memory = deque(maxlen=REPLAY_MEMORY_SIZE)
-        
-        #self.tensorboard = ModifiedTensorBoard(log_dir="logs/{}-{}".format(MODEL_NAME, int(time.time())))
+        if(AGENT_INIT == "CREATE"):
+            self.model, self.target_model, self.replay_memory = self.create_agent()
+        else:
+            self.model, self.target_model, self.replay_memory = self.load_agent()
 
         # Used to count when to update target network with main network's weights
         self.target_update_counter = 0
@@ -67,10 +67,32 @@ class DQNAgent:
         logging.basicConfig(
             format = '%(asctime)-5s %(name)-15s %(levelname)-8s %(message)s',
             level  = logging.INFO,      # Nivel de los eventos que se registran en el logger
-            filename = "logs_info.log", # Fichero en el que se escriben los logs
+            filename = "logs_info" + str(date.today()) + ".log", # Fichero en el que se escriben los logs
             filemode = "a"              # a ("append"), en cada escritura, si el archivo de logs ya existe,
                                         # se abre y añaden nuevas lineas.
         )
+
+    def create_agent(self): 
+        model = self.create_model()
+        target_model = self.create_model()
+        target_model.set_weights(model.get_weights())
+        replay_memory = deque(maxlen=REPLAY_MEMORY_SIZE)
+
+        return model, target_model, replay_memory
+
+    def load_agent(self):
+        model = tf.keras.models.load_model(MODEL_NAME)
+        target_model = tf.keras.models.load_model(TARGET_MODEL_NAME)
+
+        file_json = open(REPLAY_MEMORY_NAME)
+        replay_memory = deque(json.load(file_json))
+        file_json.close()
+
+        return model, target_model, replay_memory
+
+    def load_model(self, model):
+        return tf.keras.models.load_model(model)
+        
     def create_model(self):
         env.get_screen_buffer()
         model = Sequential()
@@ -203,8 +225,8 @@ for episode in range(1, EPISODES + 1):
         agent.update_replay_memory((current_state, action, reward, new_state, done))
         agent.train(done, step)
 
-        im = Image.fromarray(current_state)
-        im.save("../Capturas_e_Imagenes/ep"+str(episode)+"img"+str(step)+".jpeg")
+        # im = Image.fromarray(current_state)
+        # im.save("../Capturas_e_Imagenes/ep"+str(episode)+"img"+str(step)+".jpeg")
 
         current_state = new_state
         step += 1
@@ -243,6 +265,9 @@ for episode in range(1, EPISODES + 1):
 print('Saving Model...')
 agent.model.save('model' + str(date.today()) + '.model')
 agent.target_model.save('target_model' + str(date.today()) + '.model')
+with open('replay_memory' + str(date.today()) + '.json', 'w') as f:
+    json.dump(list(self.replay_memory), f)
+logging.info('Saving Model... ' + str(date.today()))
         
         
         
