@@ -44,10 +44,20 @@ EPSILON_DECAY = 0.999
 MIN_EPSILON = 0.001
 
 # Environment settings
-EPISODES = 10_000
+EPISODES = 2_000
 
 env =  agenteVrep_Train.Environment()
 # Own Tensorboard class
+class NpEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, np.integer):
+            return int(obj)
+        if isinstance(obj, np.floating):
+            return float(obj)
+        if isinstance(obj, np.ndarray):
+            return obj.tolist()
+        return json.JSONEncoder.default(self, obj)
+
 
 class DQNAgent:
     def __init__(self):
@@ -266,9 +276,11 @@ print('Saving Model...')
 agent.model.save('model' + str(date.today()) + '.model')
 agent.target_model.save('target_model' + str(date.today()) + '.model')
 with open('replay_memory' + str(date.today()) + '.json', 'w') as f:
-    json.dump(list(self.replay_memory), f)
+    replay_memory_list=list(agent.replay_memory)
+    print(type(replay_memory_list))
+    json.dumps(replay_memory_list, cls=NpEncoder)
 logging.info('Saving Model... ' + str(date.today()))
         
-        
+   
         
         
