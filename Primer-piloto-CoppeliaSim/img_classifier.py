@@ -1,6 +1,7 @@
 
 from turtle import forward
 from keras.models import Sequential
+from tensorflow.keras.callbacks import TensorBoard
 from keras.layers import Dense, Dropout, Conv2D, MaxPooling2D, Activation, Flatten
 from tensorflow.keras.optimizers import Adam, RMSprop
 from tensorflow.keras.utils import to_categorical
@@ -66,7 +67,7 @@ class ImageClassifier():
         
 
         model.add(Dense(self.labels_number(), activation='linear'))  # ACTION_SPACE_SIZE = how many choices (9)
-        model.compile(loss='mse', optimizer='adam', metrics=['accuracy'])
+        model.compile(loss='mse', optimizer=Adam(learning_rate = 0.001), metrics=['accuracy'])
         return model
 
     def data_batch(self,data):
@@ -181,7 +182,9 @@ class ImageClassifier():
         return img.astype(np.float32)/255.
 
     def train(self):
-        history = self.model.fit(self.train_data_batch, epochs = EPOCHS, steps_per_epoch = self.number_steps)
+        tensorboardCallback = TensorBoard(log_dir = "tb_logs", histogram_freq = 1)
+        history = self.model.fit(self.train_data_batch, epochs = EPOCHS, steps_per_epoch = self.number_steps,
+        callbacks = [tensorboardCallback], verbose=2)
 
     def save_model(self):
         self.model.save('img_classifier_model' + str(date.today()) + '.model')
