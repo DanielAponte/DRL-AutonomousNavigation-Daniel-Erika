@@ -8,6 +8,7 @@ Created on Thu Apr  1 14:28:14 2021
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Conv2D, MaxPooling2D, Activation, Flatten
 from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.callbacks import TensorBoard
 from collections import deque
 from PIL import Image
 from PIL import ImageShow
@@ -25,15 +26,18 @@ import json
 
 
 AGENT_INIT = "CREATE"   # OPTIONS: CREATE, LOAD
-MODEL_NAME = "" #Necessary when AGENT_INIT = "LOAD"
-TARGET_MODEL_NAME = "" #Necessary when AGENT_INIT = "LOAD"
-REPLAY_MEMORY_NAME = "" #Necessary when AGENT_INIT = "LOAD"
+MODEL_NAME = ""         # Necessary when AGENT_INIT = "LOAD"
+TARGET_MODEL_NAME = ""  # Necessary when AGENT_INIT = "LOAD"
+REPLAY_MEMORY_NAME = "" # Necessary when AGENT_INIT = "LOAD"
+
 REPLAY_MEMORY_SIZE = 50_000
 DISCOUNT = 0.99
 MINIBATCH_SIZE = 32
 MIN_REPLAY_MEMORY_SIZE = 1_000
 UPDATE_TARGET_EVERY = 5
 MODEL_NAME = "256x2"
+
+VALIDATION_LEARNING_POLICY = 50
 
 #Number of steps for timeout
 TIMEOUT_COUNT = 70
@@ -81,6 +85,8 @@ class DQNAgent:
             filemode = "a"              # a ("append"), en cada escritura, si el archivo de logs ya existe,
                                         # se abre y añaden nuevas lineas.
         )
+
+        self.tensorboardCallback = TensorBoard(log_dir = "tb_logs", histogram_freq = 1)
 
     def create_agent(self): 
         model = self.create_model()
@@ -141,7 +147,8 @@ class DQNAgent:
         return self.model.predict(np.array(state).reshape(-1, *state.shape)/255)[0]
     
         # Trains main network every step during episode
-    def train(self, terminal_state, step):
+    
+    def train(self, terminal_state, step, tensorboard):
 
         # Start training only if certain number of samples is already saved
         if len(self.replay_memory) < MIN_REPLAY_MEMORY_SIZE:
@@ -182,7 +189,11 @@ class DQNAgent:
             y.append(current_qs)
 
         # Fit on all samples as one batch, log only on terminal state
-        self.model.fit(np.array(X)/255, np.array(y), batch_size=MINIBATCH_SIZE, verbose=0, shuffle=False)
+        if tensorboard: 
+            self.model.fit(np.array(X)/255, np.array(y), batch_size=MINIBATCH_SIZE, verbose=2, shuffle=False, 
+                callbacks = [self.tensorboardCallback])
+        else: 
+            self.model.fit(np.array(X)/255, np.array(y), batch_size=MINIBATCH_SIZE, verbose=2, shuffle=False)
 
         # Update target network counter every episode
         if terminal_state:
@@ -193,7 +204,34 @@ class DQNAgent:
             self.target_model.set_weights(self.model.get_weights())
             self.target_update_counter = 0
 
-agent = DQNAgent()
+    def save_model(self): 
+        print('Saving model...')
+        agent.model.save('model' + str(date.today()) + '.model')
+        agent.target_model.save('target_model' + str(date.today()) + '.model')
+        print('Model saved')
+
+        with open('replay_memory' + str(date.today()) + '.json', 'w') as f:
+            replay_memory_list = list(agent.replay_memory)
+            print(type(replay_memory_list))
+            json.dumps(replay_memory_list, cls = NpEncoder)
+        logging.info('Model and replay memory saved' + str(date.today()))
+
+    def define_learning_policy(self, episode):
+        if episode % VALIDATION_LEARNING_POLICY == 0:
+            epsilon = 0.75
+            tensorboard = False
+        else:
+            epsilon = 0
+            tensorboard = True
+        return epsilon, tensorboard
+    
+    def get_epsilon(self):        
+        # Decay epsilon
+        if epsilon > MIN_EPSILON:
+            epsilon *= EPSILON_DECAY
+            epsilon = max(MIN_EPSILON, epsilon)
+
+agent = DQNAgent()   
 
 for episode in range(1, EPISODES + 1):
 
@@ -203,6 +241,7 @@ for episode in range(1, EPISODES + 1):
     actions_analysis = (0,0) #(Random, Q-table)
     episode_reward = 0
     step = 1
+    tensorboard = False
 
     # Reset environment and get initial state
     current_state = env.reset()
@@ -210,7 +249,6 @@ for episode in range(1, EPISODES + 1):
     # Reset flag and start iterating until episode ends
     done = False
     start_t =  time.time()
-    
     
     while not done:
         current_t = time.time()
@@ -249,38 +287,26 @@ for episode in range(1, EPISODES + 1):
             done = True
             logging.info('MaxAttemps!')
 
-            
-    # Decay epsilon
-    if epsilon > MIN_EPSILON:
-        epsilon *= EPSILON_DECAY
-        epsilon = max(MIN_EPSILON, epsilon)
+    epsilon, tensorboard = agent.define_learning_policy(episode)
+    
     total_actions = actions_analysis[0] + actions_analysis[1]
     print('\nTime dif: ', current_t - start_t )
     print('\nEpsilon: ', epsilon, ' :: Episode_reward ', episode_reward)
     print('\nTotal acts: ', total_actions, ' Random: ', actions_analysis[0],
-          ' %% ', actions_analysis[0]/total_actions, 
-          ' Q-Table: ', actions_analysis[1],
-          ' %% ', actions_analysis[1]/total_actions)
+        ' %% ', actions_analysis[0]/total_actions, 
+        ' Q-Table: ', actions_analysis[1],
+        ' %% ', actions_analysis[1]/total_actions)
     logging.info('Time dif: ' + str(current_t - start_t) )
     logging.info('Epsilon: ' + str(epsilon) + ' :: Episode_reward ' + str(episode_reward))
     logging.info('Total acts: ' + str(total_actions) + ' Random: ' + str(actions_analysis[0]) +
-          ' %% ' + str(actions_analysis[0]/total_actions) + 
-          ' Q-Table: ' + str(actions_analysis[1]) +
-          ' %% ' + str(actions_analysis[1]/total_actions))
+        ' %% ' + str(actions_analysis[0]/total_actions) + 
+        ' Q-Table: ' + str(actions_analysis[1]) +
+        ' %% ' + str(actions_analysis[1]/total_actions))
     
     if msvcrt.kbhit():
         if msvcrt.getch() == b'\x1b':
             break
 
-print('Saving Model...')
-agent.model.save('model' + str(date.today()) + '.model')
-agent.target_model.save('target_model' + str(date.today()) + '.model')
-with open('replay_memory' + str(date.today()) + '.json', 'w') as f:
-    replay_memory_list=list(agent.replay_memory)
-    print(type(replay_memory_list))
-    json.dumps(replay_memory_list, cls=NpEncoder)
-logging.info('Saving Model... ' + str(date.today()))
-        
-   
+agent.save_model()
         
         
