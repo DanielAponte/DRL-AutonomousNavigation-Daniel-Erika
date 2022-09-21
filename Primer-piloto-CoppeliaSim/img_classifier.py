@@ -39,6 +39,7 @@ class ImageClassifier():
         self.number_steps = train_data_df.shape[0]//BATCH_SIZE
 
         self.model = self.create_model()
+        self.tensorboardCallback = TensorBoard(log_dir = "tb_logs", histogram_freq = 1)
 
     def create_model(self):
         model = Sequential()
@@ -67,7 +68,7 @@ class ImageClassifier():
         
 
         model.add(Dense(self.labels_number(), activation='linear'))  # ACTION_SPACE_SIZE = how many choices (9)
-        model.compile(loss='mse', optimizer=Adam(learning_rate = 0.001), metrics=['accuracy'])
+        model.compile(loss= tf.keras.losses.CategoricalCrossentropy(), optimizer=Adam(learning_rate = 0.001), metrics=['accuracy'])
         return model
 
     def data_batch(self,data):
@@ -182,9 +183,8 @@ class ImageClassifier():
         return img.astype(np.float32)/255.
 
     def train(self):
-        tensorboardCallback = TensorBoard(log_dir = "tb_logs", histogram_freq = 1)
         history = self.model.fit(self.train_data_batch, epochs = EPOCHS, steps_per_epoch = self.number_steps,
-        callbacks = [tensorboardCallback], verbose=2)
+            callbacks = [self.tensorboardCallback], verbose=2, validation_data = (self.validation_data, self.validation_labels))
 
     def save_model(self):
         self.model.save('img_classifier_model' + str(date.today()) + '.model')
@@ -195,6 +195,7 @@ class ImageClassifier():
         print('Predict: ', pred)
 
 agent_pretrain = ImageClassifier()
-for i in range(3):
+
+for i in range(1):
     agent_pretrain.train()
     agent_pretrain.test_model()
