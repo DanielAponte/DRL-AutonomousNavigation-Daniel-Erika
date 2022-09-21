@@ -24,8 +24,8 @@ LEFT_PATH = "left/"
 RIGHT_PATH = "right/"
 FORWARD_PATH = "forward/"
 
-EPOCHS = 100
-BATCH_SIZE = 10
+EPOCHS = 5
+BATCH_SIZE = 150
 class ImageClassifier():
     def __init__(self):
         #Variables definition
@@ -195,12 +195,17 @@ class ImageClassifier():
     
     def test_model(self):
         test_data, test_label = self.load_data(data_type = 'TEST')
-        pred = self.model.predict(test_data, batch_size = len(test_data))
-        print('Predict: ', pred)
+        predicted_data = self.model.predict(test_data, batch_size = len(test_data))
+        list_result =[]
+        for r in predicted_data:
+            a = np.where(r == max(r)) 
+            list_result.append(self.labels[int(a[0])])
+        print('Predict: ', list_result)
+        print('Predicted data: ', predicted_data)
 
 agent_pretrain = ImageClassifier()
 
-for i in range(2):
-    agent_pretrain.train()
-    agent_pretrain.test_model()
+
+agent_pretrain.train()
+agent_pretrain.test_model()
 agent_pretrain.save_model()
