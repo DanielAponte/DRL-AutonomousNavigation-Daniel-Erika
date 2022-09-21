@@ -11,6 +11,7 @@ import cv2
 import glob
 import pandas as pd
 import os
+from datetime import date
 
 currDir=os.path.dirname(os.path.abspath("__file__"))
 [currDir,er] = currDir.split('Primer-piloto-CoppeliaSim')
@@ -23,7 +24,7 @@ LEFT_PATH = "left/"
 RIGHT_PATH = "right/"
 FORWARD_PATH = "forward/"
 
-EPOCHS = 500
+EPOCHS = 100
 BATCH_SIZE = 10
 class ImageClassifier():
     def __init__(self):
@@ -60,14 +61,14 @@ class ImageClassifier():
         model.add(Dropout(0.2))
 
         model.add(Flatten())  # this converts our 3D feature maps to 1D feature vectors
-        model.add(Dense(1024))
-        model.add(Dense(512))
-        model.add(Dense(256))
-        model.add(Dense(128))
-        model.add(Dense(64))
+        model.add(Dense(1024, activation=Activation('relu')))
+        model.add(Dense(512, activation=Activation('relu')))
+        model.add(Dense(256, activation=Activation('relu')))
+        model.add(Dense(128, activation=Activation('relu')))
+        model.add(Dense(64, activation=Activation('relu')))
         
 
-        model.add(Dense(self.labels_number(), activation='linear'))  # ACTION_SPACE_SIZE = how many choices (9)
+        model.add(Dense(self.labels_number(), activation=Activation('sigmoid')))  # Métodos de activación disp. sigmoid o mejor softmax
         model.compile(loss= tf.keras.losses.CategoricalCrossentropy(), optimizer=Adam(learning_rate = 0.001), metrics=['accuracy'])
         return model
 
@@ -105,12 +106,15 @@ class ImageClassifier():
         load_left_path = IMG_GNRL_PATH + TRAIN_PATH + LEFT_PATH
         load_right_path = IMG_GNRL_PATH + TRAIN_PATH + RIGHT_PATH
         load_forward_path = IMG_GNRL_PATH + TRAIN_PATH + FORWARD_PATH
-        left_cases = self.glob_custom(load_left_path,'*.jpg')
-        right_cases = self.glob_custom(load_right_path,'*.jpg')
-        forward_cases = self.glob_custom(load_forward_path,'*.jpg')
+        # left_cases = self.glob_custom(load_left_path,'*.jpg')
+        # right_cases = self.glob_custom(load_right_path,'*.jpg')
+        # forward_cases = self.glob_custom(load_forward_path,'*.jpg')
         # left_cases = self.glob_custom(load_left_path,'*.jpeg')
         # right_cases = self.glob_custom(load_right_path,'*.jpeg')
         # forward_cases = self.glob_custom(load_forward_path,'*.jpeg')
+        left_cases = self.glob_custom(load_left_path,'*.jpg') + self.glob_custom(load_left_path,'*.jpeg')
+        right_cases = self.glob_custom(load_right_path,'*.jpg') + self.glob_custom(load_right_path,'*.jpeg')
+        forward_cases = self.glob_custom(load_forward_path,'*.jpg') + self.glob_custom(load_forward_path,'*.jpeg')
         train_data = []
         train_label = []
         for img in left_cases:
@@ -196,6 +200,7 @@ class ImageClassifier():
 
 agent_pretrain = ImageClassifier()
 
-for i in range(1):
+for i in range(2):
     agent_pretrain.train()
     agent_pretrain.test_model()
+agent_pretrain.save_model()

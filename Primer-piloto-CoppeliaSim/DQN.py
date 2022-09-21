@@ -129,14 +129,14 @@ class DQNAgent:
         model.add(Dropout(0.2))
 
         model.add(Flatten())  # this converts our 3D feature maps to 1D feature vectors
-        model.add(Dense(1024))
-        model.add(Dense(512))
-        model.add(Dense(256))
-        model.add(Dense(128))
-        model.add(Dense(64))
+        model.add(Dense(1024), activation=Activation('relu'))
+        model.add(Dense(512), activation=Activation('relu'))
+        model.add(Dense(256), activation=Activation('relu'))
+        model.add(Dense(128), activation=Activation('relu'))
+        model.add(Dense(64), activation=Activation('relu'))
         
 
-        model.add(Dense(len(env.actions), activation='linear'))  # ACTION_SPACE_SIZE = how many choices (9)
+        model.add(Dense(len(env.actions), activation=Activation('sigmoid')))  # Métodos de activación disp. sigmoid o mejor softmax
         model.compile(loss="mse", optimizer=Adam(learning_rate=0.001), metrics=['accuracy'])
         return model
     
