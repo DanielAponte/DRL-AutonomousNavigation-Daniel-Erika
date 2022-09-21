@@ -25,7 +25,7 @@ import tensorflow as tf
 import json
 
 
-AGENT_INIT = "CREATE"   # OPTIONS: CREATE, LOAD
+AGENT_INIT = "LOAD"   # OPTIONS: CREATE, LOAD
 MODEL_NAME = ""         # Necessary when AGENT_INIT = "LOAD"
 TARGET_MODEL_NAME = ""  # Necessary when AGENT_INIT = "LOAD"
 REPLAY_MEMORY_NAME = "" # Necessary when AGENT_INIT = "LOAD"
@@ -97,12 +97,18 @@ class DQNAgent:
         return model, target_model, replay_memory
 
     def load_agent(self):
-        model = tf.keras.models.load_model(MODEL_NAME)
-        target_model = tf.keras.models.load_model(TARGET_MODEL_NAME)
+        model = self.load_model(MODEL_NAME)
 
-        file_json = open(REPLAY_MEMORY_NAME)
-        replay_memory = deque(json.load(file_json))
-        file_json.close()
+        # Sección de código para lectura de modelo pre-calentado
+        target_model = model
+        replay_memory = deque(maxlen=REPLAY_MEMORY_SIZE)
+
+        # Seccion de código para lectura de modelo entrenado
+        # target_model = self.load_model(TARGET_MODEL_NAME)
+
+        # file_json = open(REPLAY_MEMORY_NAME)
+        # replay_memory = deque(json.load(file_json))
+        # file_json.close()        
 
         return model, target_model, replay_memory
 
@@ -129,11 +135,16 @@ class DQNAgent:
         model.add(Dropout(0.2))
 
         model.add(Flatten())  # this converts our 3D feature maps to 1D feature vectors
-        model.add(Dense(1024), activation=Activation('relu'))
-        model.add(Dense(512), activation=Activation('relu'))
-        model.add(Dense(256), activation=Activation('relu'))
-        model.add(Dense(128), activation=Activation('relu'))
-        model.add(Dense(64), activation=Activation('relu'))
+        model.add(Dense(1024))
+        model.add(Activation('relu'))
+        model.add(Dense(512))
+        model.add(Activation('relu'))
+        model.add(Dense(256))
+        model.add(Activation('relu'))
+        model.add(Dense(128))
+        model.add(Activation('relu'))
+        model.add(Dense(64))
+        model.add(Activation('relu'))
         
 
         model.add(Dense(len(env.actions), activation=Activation('sigmoid')))  # Métodos de activación disp. sigmoid o mejor softmax
@@ -210,19 +221,18 @@ class DQNAgent:
         agent.target_model.save('target_model' + str(date.today()) + '.model')
         print('Model saved')
 
+        json_object = json.dumps(list(self.replay_memory), cls = NpEncoder)
         with open('replay_memory' + str(date.today()) + '.json', 'w') as f:
-            replay_memory_list = list(agent.replay_memory)
-            print(type(replay_memory_list))
-            json.dumps(replay_memory_list, cls = NpEncoder)
+            f.write(json_object)
         logging.info('Model and replay memory saved' + str(date.today()))
 
     def define_learning_policy(self, episode):
         if episode % VALIDATION_LEARNING_POLICY == 0:
-            epsilon = 0.75
-            tensorboard = False
-        else:
             epsilon = 0
             tensorboard = True
+        else:
+            epsilon = 0.75
+            tensorboard = False
         return epsilon, tensorboard
     
     def get_epsilon(self):        
@@ -271,7 +281,7 @@ for episode in range(1, EPISODES + 1):
 
         # Every step we update replay memory and train main network
         agent.update_replay_memory((current_state, action, reward, new_state, done))
-        agent.train(done, step)
+        agent.train(done, step, tensorboard)
 
         # im = Image.fromarray(current_state)
         # im.save("../Capturas_e_Imagenes/ep"+str(episode)+"img"+str(step)+".jpeg")
