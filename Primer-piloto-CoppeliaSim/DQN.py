@@ -23,10 +23,10 @@ from datetime import date
 from datetime import datetime
 import tensorflow as tf
 import json
-
+import os
 
 AGENT_INIT = "LOAD"   # OPTIONS: CREATE, LOAD
-MODEL_NAME = ""         # Necessary when AGENT_INIT = "LOAD"
+MODEL_NAME = "img_classifier_model2022-09-20.model_precalentar"         # Necessary when AGENT_INIT = "LOAD"
 TARGET_MODEL_NAME = ""  # Necessary when AGENT_INIT = "LOAD"
 REPLAY_MEMORY_NAME = "" # Necessary when AGENT_INIT = "LOAD"
 
@@ -35,9 +35,9 @@ DISCOUNT = 0.99
 MINIBATCH_SIZE = 32
 MIN_REPLAY_MEMORY_SIZE = 1_000
 UPDATE_TARGET_EVERY = 5
-MODEL_NAME = "256x2"
-
-VALIDATION_LEARNING_POLICY = 50
+TIMEOUT_MAX = 40
+AGGREGATE_STATS_EVERY = 5
+VALIDATION_LEARNING_POLICY = 20
 
 #Number of steps for timeout
 TIMEOUT_COUNT = 70
@@ -52,6 +52,38 @@ EPISODES = 2_000
 
 env =  agenteVrep_Train.Environment()
 # Own Tensorboard class
+class ModifiedTensorBoard(TensorBoard):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.step = 1
+        self.writer = tf.summary.create_file_writer(self.log_dir)
+        self._log_write_dir = self.log_dir
+
+    def set_model(self, model):
+        self.model = model
+
+        self._train_dir = os.path.join(self._log_write_dir, 'train')
+        self._train_step = self.model._train_counter
+
+        self._val_dir = os.path.join(self._log_write_dir, 'validation')
+        self._val_step = self.model._test_counter
+
+        self._should_write_train_graph = False
+
+    def on_epoch_end(self, epoch, logs=None):
+        self.update_stats(**logs)
+
+    def on_batch_end(self, batch, logs=None):
+        pass
+
+    def on_train_end(self, _):
+        pass
+
+    def update_stats(self, **stats):
+        with self.writer.as_default():
+            for key, value in stats.items():
+                tf.summary.scalar(key, value, step = self.step)
+                self.writer.flush()
 class NpEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, np.integer):
@@ -71,6 +103,8 @@ class DQNAgent:
         else:
             self.model, self.target_model, self.replay_memory = self.load_agent()
 
+        self.tensorboard = ModifiedTensorBoard(log_dir="tb_logs/{}-{}".format(MODEL_NAME, int(time.time())))
+
         # Used to count when to update target network with main network's weights
         self.target_update_counter = 0
 
@@ -86,7 +120,7 @@ class DQNAgent:
                                         # se abre y añaden nuevas lineas.
         )
 
-        self.tensorboardCallback = TensorBoard(log_dir = "tb_logs", histogram_freq = 1)
+     
 
     def create_agent(self): 
         model = self.create_model()
@@ -147,8 +181,8 @@ class DQNAgent:
         model.add(Activation('relu'))
         
 
-        model.add(Dense(len(env.actions), activation=Activation('sigmoid')))  # Métodos de activación disp. sigmoid o mejor softmax
-        model.compile(loss="mse", optimizer=Adam(learning_rate=0.001), metrics=['accuracy'])
+        model.add(Dense(len(env.actions), activation=Activation('softmax')))  # Métodos de activación disp. sigmoid o mejor softmax
+        model.compile(loss="mse", optimizer=Adam(), metrics=['accuracy'])
         return model
     
     def update_replay_memory(self, transition):
@@ -198,13 +232,8 @@ class DQNAgent:
             # And append to our training data
             X.append(current_state)
             y.append(current_qs)
-
-        # Fit on all samples as one batch, log only on terminal state
-        if tensorboard: 
-            self.model.fit(np.array(X)/255, np.array(y), batch_size=MINIBATCH_SIZE, verbose=2, shuffle=False, 
-                callbacks = [self.tensorboardCallback])
-        else: 
-            self.model.fit(np.array(X)/255, np.array(y), batch_size=MINIBATCH_SIZE, verbose=2, shuffle=False)
+        self.model.fit(np.array(X)/255, np.array(y), batch_size=MINIBATCH_SIZE, verbose=2, shuffle=False, 
+                callbacks = [self.tensorboard] if terminal_state else None)    
 
         # Update target network counter every episode
         if terminal_state:
@@ -242,7 +271,7 @@ class DQNAgent:
             epsilon = max(MIN_EPSILON, epsilon)
 
 agent = DQNAgent()   
-
+ep_reward = []
 for episode in range(1, EPISODES + 1):
 
     # Restarting episode - reset episode reward and step number
@@ -258,9 +287,10 @@ for episode in range(1, EPISODES + 1):
 
     # Reset flag and start iterating until episode ends
     done = False
+    finished = False
     start_t =  time.time()
-    
-    while not done:
+    epsilon, tensorboard = agent.define_learning_policy(episode)
+    while not (done or finished):
         current_t = time.time()
             
         # This part stays mostly the same, the change is to query a model for Q values
@@ -274,7 +304,15 @@ for episode in range(1, EPISODES + 1):
             actions_analysis = (actions_analysis[0] + 1, actions_analysis[1])
 
         new_state, reward, done = env.step(action)
-        
+        if (current_t - start_t ) > TIMEOUT_MAX :
+            finished = True
+            reward = -1
+            logging.info('Timeout!')
+
+        if((actions_analysis[0] + actions_analysis[1]) > 50):
+            finished = True
+            reward = -1
+            logging.info('MaxAttemps!')
 
         # Transform new continous state to new discrete state and count reward
         episode_reward += reward
@@ -288,16 +326,15 @@ for episode in range(1, EPISODES + 1):
 
         current_state = new_state
         step += 1
-        
-        if (current_t - start_t ) > 800 :
-            done = True
-            logging.info('Timeout!')
+        ep_reward.append(episode_reward)
+        if tensorboard or episode == 1:
+            average_reward = sum(ep_reward[-AGGREGATE_STATS_EVERY:])/len(ep_reward[-AGGREGATE_STATS_EVERY:])
+            min_reward = min(ep_reward[-AGGREGATE_STATS_EVERY:])
+            max_reward = max(ep_reward[-AGGREGATE_STATS_EVERY:])
+            agent.tensorboard.update_stats(reward_avg=average_reward, reward_min=min_reward, reward_max=max_reward, epsilon=epsilon)
+       
 
-        if((actions_analysis[0] + actions_analysis[1]) > 100):
-            done = True
-            logging.info('MaxAttemps!')
-
-    epsilon, tensorboard = agent.define_learning_policy(episode)
+    
     
     total_actions = actions_analysis[0] + actions_analysis[1]
     print('\nTime dif: ', current_t - start_t )
