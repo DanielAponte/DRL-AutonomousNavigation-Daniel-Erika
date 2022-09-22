@@ -26,7 +26,8 @@ import json
 import os
 
 AGENT_INIT = "LOAD"   # OPTIONS: CREATE, LOAD
-MODEL_NAME = "img_classifier_model2022-09-20.model_precalentar"         # Necessary when AGENT_INIT = "LOAD"
+MODEL_NAME = "img_classifier_model2022-09-20.model_precalentar"
+MODEL_NAME_SAVE = "ModelDQN_Precalentar"         # Necessary when AGENT_INIT = "LOAD"
 TARGET_MODEL_NAME = ""  # Necessary when AGENT_INIT = "LOAD"
 REPLAY_MEMORY_NAME = "" # Necessary when AGENT_INIT = "LOAD"
 
@@ -83,7 +84,9 @@ class ModifiedTensorBoard(TensorBoard):
         with self.writer.as_default():
             for key, value in stats.items():
                 tf.summary.scalar(key, value, step = self.step)
+                self.step +=1
                 self.writer.flush()
+            
 class NpEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, np.integer):
@@ -103,7 +106,7 @@ class DQNAgent:
         else:
             self.model, self.target_model, self.replay_memory = self.load_agent()
 
-        self.tensorboard = ModifiedTensorBoard(log_dir="tb_logs/{}-{}".format(MODEL_NAME, int(time.time())))
+        self.tensorboard = ModifiedTensorBoard(log_dir="tb_logs/{}-{}".format(MODEL_NAME_SAVE, int(time.time())))
 
         # Used to count when to update target network with main network's weights
         self.target_update_counter = 0
