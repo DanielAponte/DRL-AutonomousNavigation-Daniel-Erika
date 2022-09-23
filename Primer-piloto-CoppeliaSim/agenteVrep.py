@@ -113,7 +113,7 @@ class Environment():
         left = 'a'
         right = 'd'
         #backward = 's'
-        self.actions = [forward, right, left]
+        self.actions = [left, right, forward]
         self.numsteps = 0
         
         
@@ -193,13 +193,13 @@ class Environment():
 
             
         if self.actions[action] in allowed_action:
-            Reward_VI=8
+            Reward_VI=0.9
             self.move_robot(self.actions[action], self.moveTime)
         else:
-            Reward_VI=-3
+            Reward_VI=-0.8
         self.position_Score()
         img = self.get_screen_buffer()
-        LR = -0.05
+        LR = -0.2
         return Reward_VI+self.TD+LR, img    
         
     def get_screen_buffer(self):
@@ -353,35 +353,35 @@ class Environment():
         if self.position[0]>-7.5 and self.position[1]>-7.5 and self.position[0]<-6 and self.position[1]<-6:
             self.TD=0
         elif self.position[0]>-7.5 and self.position[1]>-6 and self.position[0]<-6 and self.position[1]<-4.5:
-            self.TD=0.05
+            self.TD=0.03
         elif self.position[0]>-7.5 and self.position[1]>-4.5 and self.position[0]<-6 and self.position[1]<-3:
-            self.TD=0.2
+            self.TD=0.12
         elif self.position[0]>-7.5 and self.position[1]>-3 and self.position[0]<-6 and self.position[1]<-1.5:
-            self.TD=0.25
+            self.TD=0.15
         elif self.position[0]>-6 and self.position[1]>-7.5 and self.position[0]<-4.5 and self.position[1]<-6:
-            self.TD=0.15
+            self.TD=0.09
         elif self.position[0]>-6 and self.position[1]>-6 and self.position[0]<-4.5 and self.position[1]<-4.5:
-            self.TD=0.1
+            self.TD=0.06
         elif self.position[0]>-6 and self.position[1]>-4.5 and self.position[0]<-4.5 and self.position[1]<-3:
-            self.TD=0.15
+            self.TD=0.09
         elif self.position[0]>-6 and self.position[1]>-3 and self.position[0]<-4.5 and self.position[1]<-1.5:
-            self.TD=0.3
+            self.TD=0.18
         elif self.position[0]>-4.5 and self.position[1]>-7.5 and self.position[0]<-3 and self.position[1]<-6:
-            self.TD=0.2
+            self.TD=0.12
         elif self.position[0]>-4.5 and self.position[1]>-6 and self.position[0]<-3 and self.position[1]<-4.5:
-            self.TD=0.35
+            self.TD=0
         elif self.position[0]>-4.5 and self.position[1]>-4.5 and self.position[0]<-3 and self.position[1]<-3:
-            self.TD=0.4
+            self.TD=0.24
         elif self.position[0]>-4.5 and self.position[1]>-3 and self.position[0]<-3 and self.position[1]<-1.5:
-            self.TD=0.45
+            self.TD=0.27
         elif self.position[0]>-3 and self.position[1]>-7.5 and self.position[0]<-1.5 and self.position[1]<-6:
-            self.TD=0.25
+            self.TD=0.15
         elif self.position[0]>-3 and self.position[1]>-6 and self.position[0]<-1.5 and self.position[1]<-4.5:
-            self.TD=0.3
+            self.TD=0.18
         elif self.position[0]>-3 and self.position[1]>-4.5 and self.position[0]<-1.5 and self.position[1]<-3:
-            self.TD=0.35
+            self.TD=0.21
         elif self.position[0]>-3 and self.position[1]>-3 and self.position[0]<-1.5 and self.position[1]<-1.5:
-            self.TD=0.5
+            self.TD=0.3
         
     def move_robot(self, move, time_ms):
         if move == 'w':

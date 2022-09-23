@@ -47,7 +47,7 @@ class Environment():
         left = 'a'
         right = 'd'
         #backward = 's'
-        self.actions = [forward, right, left]
+        self.actions = [left, right, forward]
         self.position = [0,0,0]
         self.agent = Agent()
 
@@ -173,7 +173,7 @@ class Environment():
         }
         
         self.routes = [self.list_init_positions, self.list_route_short, self.list_route_long]
-
+        self.routes_names = ['list_init_positions', 'list_route_short', 'list_route_long']
         currDir=os.path.dirname(os.path.abspath("__file__"))
         [currDir,er] = currDir.split('Primer-piloto-CoppeliaSim')
         ModelPath = currDir + "Img_Test/"
@@ -204,14 +204,14 @@ class Environment():
         allowed_action = self.dict_posible_outcomes[(x,y,theta)].split(';')
             
         if self.actions[action] in allowed_action:
-            Reward_VI=8
+            Reward_VI=0.9
             self.move_agent(self.actions[action])
         else:
-            Reward_VI=-3
+            Reward_VI=-0.8
         self.position_Score()
         img = self.get_screen_buffer()
-        LR = -0.05
-        return Reward_VI+self.TD+LR, img    
+        LR = -0.2
+        return Reward_VI+self.TD+LR, img    ## EL MÁXIMO REWARD ES 1, EL MÍNIMO -1
         
     def get_screen_buffer(self):
         return np.array(Image.open(self.ModelPath + self.dict_img[self.routes[self.agent.route][self.agent.position]] + '/' + str(np.random.randint(1, BATCH_SIZE)) + '.jpeg').convert('RGB'))
@@ -237,8 +237,7 @@ class Environment():
             self.agent.reset(0, 0)   
 
         logging.info('Initial position: ' + str(self.dict_img[self.routes[self.agent.route][self.agent.position]]) 
-            + ' route: ' + str(self.routes[self.agent.route]))    
-        
+            + ' route: ' + str(self.routes_names[self.agent.route]))    
         return self.get_screen_buffer()
 
     def is_episode_finished(self):
@@ -253,32 +252,32 @@ class Environment():
         if self.position[0]>-7.5 and self.position[1]>-7.5 and self.position[0]<-6 and self.position[1]<-6:
             self.TD=0
         elif self.position[0]>-7.5 and self.position[1]>-6 and self.position[0]<-6 and self.position[1]<-4.5:
-            self.TD=0.05
+            self.TD=0.03
         elif self.position[0]>-7.5 and self.position[1]>-4.5 and self.position[0]<-6 and self.position[1]<-3:
-            self.TD=0.2
+            self.TD=0.12
         elif self.position[0]>-7.5 and self.position[1]>-3 and self.position[0]<-6 and self.position[1]<-1.5:
-            self.TD=0.25
+            self.TD=0.15
         elif self.position[0]>-6 and self.position[1]>-7.5 and self.position[0]<-4.5 and self.position[1]<-6:
-            self.TD=0.15
+            self.TD=0.09
         elif self.position[0]>-6 and self.position[1]>-6 and self.position[0]<-4.5 and self.position[1]<-4.5:
-            self.TD=0.1
+            self.TD=0.06
         elif self.position[0]>-6 and self.position[1]>-4.5 and self.position[0]<-4.5 and self.position[1]<-3:
-            self.TD=0.15
+            self.TD=0.09
         elif self.position[0]>-6 and self.position[1]>-3 and self.position[0]<-4.5 and self.position[1]<-1.5:
-            self.TD=0.3
+            self.TD=0.18
         elif self.position[0]>-4.5 and self.position[1]>-7.5 and self.position[0]<-3 and self.position[1]<-6:
-            self.TD=0.2
+            self.TD=0.12
         elif self.position[0]>-4.5 and self.position[1]>-6 and self.position[0]<-3 and self.position[1]<-4.5:
-            self.TD=0.35
+            self.TD=0
         elif self.position[0]>-4.5 and self.position[1]>-4.5 and self.position[0]<-3 and self.position[1]<-3:
-            self.TD=0.4
+            self.TD=0.24
         elif self.position[0]>-4.5 and self.position[1]>-3 and self.position[0]<-3 and self.position[1]<-1.5:
-            self.TD=0.45
+            self.TD=0.27
         elif self.position[0]>-3 and self.position[1]>-7.5 and self.position[0]<-1.5 and self.position[1]<-6:
-            self.TD=0.25
+            self.TD=0.15
         elif self.position[0]>-3 and self.position[1]>-6 and self.position[0]<-1.5 and self.position[1]<-4.5:
-            self.TD=0.3
+            self.TD=0.18
         elif self.position[0]>-3 and self.position[1]>-4.5 and self.position[0]<-1.5 and self.position[1]<-3:
-            self.TD=0.35
+            self.TD=0.21
         elif self.position[0]>-3 and self.position[1]>-3 and self.position[0]<-1.5 and self.position[1]<-1.5:
-            self.TD=0.5
+            self.TD=0.3
