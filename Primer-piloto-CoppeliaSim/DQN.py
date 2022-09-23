@@ -38,7 +38,7 @@ MIN_REPLAY_MEMORY_SIZE = 1_000
 UPDATE_TARGET_EVERY = 5
 TIMEOUT_MAX = 40
 AGGREGATE_STATS_EVERY = 5
-VALIDATION_LEARNING_POLICY = 20
+VALIDATION_LEARNING_POLICY = 500
 
 #Number of steps for timeout
 TIMEOUT_COUNT = 70
@@ -122,8 +122,6 @@ class DQNAgent:
             filemode = "a"              # a ("append"), en cada escritura, si el archivo de logs ya existe,
                                         # se abre y añaden nuevas lineas.
         )
-
-     
 
     def create_agent(self): 
         model = self.create_model()
@@ -258,20 +256,24 @@ class DQNAgent:
             f.write(json_object)
         logging.info('Model and replay memory saved' + str(date.today()))
 
-    def define_learning_policy(self, episode):
+    def define_learning_policy(self, episode, epsilon):
+        epsilon = self.get_decay_epsilon(epsilon)
         if episode % VALIDATION_LEARNING_POLICY == 0:
-            epsilon = 0
+            # epsilon = 0
             tensorboard = True
+            reset_mood_bool = not bool(env.reset_mood)
+            env.reset_mood = int(reset_mood_bool)
         else:
-            epsilon = 0.75
+            # epsilon = 0.75
             tensorboard = False
         return epsilon, tensorboard
     
-    def get_epsilon(self):        
+    def get_decay_epsilon(self, epsilon):        
         # Decay epsilon
         if epsilon > MIN_EPSILON:
             epsilon *= EPSILON_DECAY
             epsilon = max(MIN_EPSILON, epsilon)
+        return epsilon
 
 agent = DQNAgent()   
 ep_reward = []
@@ -292,7 +294,7 @@ for episode in range(1, EPISODES + 1):
     done = False
     finished = False
     start_t =  time.time()
-    epsilon, tensorboard = agent.define_learning_policy(episode)
+    epsilon, tensorboard = agent.define_learning_policy(episode, epsilon)
     while not (done or finished):
         current_t = time.time()
             

@@ -40,6 +40,8 @@ class Environment():
     
     def __init__(self):
 
+        self.reset_moods = ['static', 'random']
+        self.reset_mood = 0
         self.TD = 0
         forward = 'w'
         left = 'a'
@@ -223,15 +225,20 @@ class Environment():
         return len(self.actions)
     
     def reset(self):
-        init_position = self.list_posibles_inits[np.random.randint(0, len(self.list_posibles_inits) - 1)]
-        if init_position in self.list_init_positions:
-            self.agent.reset(self.list_init_positions.index(init_position), 0)
-        elif init_position in self.list_route_short:        
-            self.agent.reset(self.list_route_short.index(init_position), 1)
-        elif init_position in self.list_route_long:        
-            self.agent.reset(self.list_route_long.index(init_position), 2)  
+        if (self.reset_moods[self.reset_mood] == 'random'):
+            init_position = self.list_posibles_inits[np.random.randint(0, len(self.list_posibles_inits) - 1)]
+            if init_position in self.list_init_positions:
+                self.agent.reset(self.list_init_positions.index(init_position), 0)
+            elif init_position in self.list_route_short:        
+                self.agent.reset(self.list_route_short.index(init_position), 1)
+            elif init_position in self.list_route_long:        
+                self.agent.reset(self.list_route_long.index(init_position), 2)
+        else: 
+            self.agent.reset(0, 0)   
+
         logging.info('Initial position: ' + str(self.dict_img[self.routes[self.agent.route][self.agent.position]]) 
             + ' route: ' + str(self.routes[self.agent.route]))    
+        
         return self.get_screen_buffer()
 
     def is_episode_finished(self):
