@@ -24,8 +24,8 @@ LEFT_PATH = "left/"
 RIGHT_PATH = "right/"
 FORWARD_PATH = "forward/"
 
-EPOCHS = 5
-BATCH_SIZE = 150
+EPOCHS = 150
+BATCH_SIZE = 10
 class ImageClassifier():
     def __init__(self):
         #Variables definition
@@ -45,7 +45,7 @@ class ImageClassifier():
     def create_model(self):
         model = Sequential()
 
-        model.add(Conv2D(256, (3, 3), input_shape=(64, 64, 3)))  # OBSERVATION_SPACE_VALUES = (10, 10, 3) a 10x10 RGB image.
+        model.add(Conv2D(256, (5, 5), input_shape=(64, 64, 3)))  # OBSERVATION_SPACE_VALUES = (10, 10, 3) a 10x10 RGB image.
         model.add(Activation('relu'))
         model.add(MaxPooling2D(pool_size=(2, 2)))
         model.add(Dropout(0.2))
@@ -66,9 +66,8 @@ class ImageClassifier():
         model.add(Dense(256, activation=Activation('relu')))
         model.add(Dense(128, activation=Activation('relu')))
         model.add(Dense(64, activation=Activation('relu')))
-        
 
-        model.add(Dense(self.labels_number(), activation=Activation('sigmoid')))  # Métodos de activación disp. sigmoid o mejor softmax
+        model.add(Dense(self.labels_number(), activation=Activation('softmax')))  # Métodos de activación disp. sigmoid o mejor softmax
         model.compile(loss= tf.keras.losses.CategoricalCrossentropy(), optimizer=Adam(learning_rate = 0.001), metrics=['accuracy'])
         return model
 

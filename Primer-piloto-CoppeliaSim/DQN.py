@@ -29,12 +29,12 @@ AGENT_INIT = "LOAD"   # OPTIONS: CREATE, LOAD
 MODEL_NAME = "img_classifier_model2022-09-20.model_precalentar"
 MODEL_NAME_SAVE = "ModelDQN_Precalentar"         # Necessary when AGENT_INIT = "LOAD"
 TARGET_MODEL_NAME = ""  # Necessary when AGENT_INIT = "LOAD"
-REPLAY_MEMORY_NAME = "" # Necessary when AGENT_INIT = "LOAD"
+REPLAY_MEMORY_NAME = "replay_memory_pre_train2022-09-22.json" # Necessary when AGENT_INIT = "LOAD"
 
 REPLAY_MEMORY_SIZE = 50_000
 DISCOUNT = 0.99
 MINIBATCH_SIZE = 32
-MIN_REPLAY_MEMORY_SIZE = 1_000
+MIN_REPLAY_MEMORY_SIZE = 300
 UPDATE_TARGET_EVERY = 5
 TIMEOUT_MAX = 40
 AGGREGATE_STATS_EVERY = 5
@@ -136,14 +136,14 @@ class DQNAgent:
 
         # Sección de código para lectura de modelo pre-calentado
         target_model = model
-        replay_memory = deque(maxlen=REPLAY_MEMORY_SIZE)
+        # replay_memory = deque(maxlen=REPLAY_MEMORY_SIZE)
 
         # Seccion de código para lectura de modelo entrenado
         # target_model = self.load_model(TARGET_MODEL_NAME)
 
-        # file_json = open(REPLAY_MEMORY_NAME)
-        # replay_memory = deque(json.load(file_json))
-        # file_json.close()        
+        file_json = open(REPLAY_MEMORY_NAME)
+        replay_memory = deque(json.load(file_json))
+        file_json.close()        
 
         return model, target_model, replay_memory
 
