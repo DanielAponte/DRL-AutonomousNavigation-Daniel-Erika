@@ -22,7 +22,7 @@ from datetime import date
 from datetime import datetime
  
 
-MOVE_TIME = 700
+MOVE_TIME = 900
 WIDTH = 64
 HEIGHT = 64
 class Environment():
@@ -41,6 +41,40 @@ class Environment():
         self.t1=time.time()
         self.TD=0
         self.maxintentos = 5  
+        self.list_allowed_forward_actions = [
+            (6.7, 6.7, 90),
+            (6.7, 5.2, 0),
+            (5.2, 5.2, 270),
+            (5.2, 6.7, 0),
+            (3.8, 6.7, 0),
+            (2.4, 6.7, 90),
+            (2.4, 5.2, 90),
+            (2.4, 3.8, 180),
+            (3.8, 3.8, 90),
+            (3.8, 2.4, 0),
+            (5.2, 5.2, 90),
+            (5.2, 3.8, 180),
+            (6.7, 3.8, 90),
+            (6.7, 2.4, 0),
+            (5.2, 2.4, 0),
+            (2.4, 2.4, 0),
+            (3.8, 2.4, 180),
+            (5.2, 2.4, 180),
+            (6.7, 2.4, 270),
+            (6.7, 3.8, 0),
+            (5.2, 3.8, 270),
+            (5.2, 5.2, 180),
+            (6.7, 5.2, 270),
+            (3.8, 2.4, 270),
+            (3.8, 3.8, 0),
+            (3.8, 3.8, 270),
+            (2.4, 3.8, 270),
+            (2.4, 5.2, 270),
+            (2.4, 6.7, 180),
+            (3.8, 6.7, 180),
+            (5.2, 6.7, 90)
+        ]
+
         self.dict_posible_outcomes = {
             (6.7, 6.7, 0) : 'a;',
             (6.7, 6.7, 90) : 'w;',
@@ -69,7 +103,7 @@ class Environment():
             (6.7, 2.4, 0) : 'w;',
             (5.2, 2.4, 0) : 'w;',
             (2.4, 2.4, 0) : 'w;'
-            }
+        }
 
         currDir=os.path.dirname(os.path.abspath("__file__"))
         [currDir,er]=currDir.split('Primer-piloto-CoppeliaSim')
@@ -184,20 +218,28 @@ class Environment():
         return [x,y,theta]
 
     def make_action(self, action):
+        is_valid_action = True
         self.returnCode,self.position=sim.simxGetObjectPosition(self.clientID,self.robotHandle,sim.sim_handle_parent,sim.simx_opmode_buffer)
         self.errorCode,angle=sim.simxGetObjectOrientation(self.clientID,self.robotHandle,-1,sim.simx_opmode_streaming)
          
         (x,y,theta)=self.aprox_pos_angle(self.position, angle)
 
-        allowed_action = self.dict_posible_outcomes[(x,y,theta)].split(';')
+        try: 
+            allowed_action = self.dict_posible_outcomes[(x,y,theta)].split(';')    
+        except: 
+            allowed_action = []
 
-            
+        if self.actions[action] == 'w':
+            is_valid_action = (x,y,theta) in self.list_allowed_forward_actions
+        
         if self.actions[action] in allowed_action:
-            Reward_VI=0.9
-            self.move_robot(self.actions[action], self.moveTime)
+            Reward_VI = 0.9
         else:
-            Reward_VI=-0.8
-        self.position_Score()
+            Reward_VI = -0.8
+
+        self.move_robot(self.actions[action], self.moveTime) if is_valid_action else None
+
+        self.position_score()
         img = self.get_screen_buffer()
         LR = -0.2
         return Reward_VI+self.TD+LR, img    
@@ -217,15 +259,8 @@ class Environment():
         return in_data   
 
     def step(self,action):   
-        try:
-            reward, img = self.make_action(action)
-            
-        except KeyError:
-            img= self.get_screen_buffer()
-            print ('\nUnknown location error') 
-            logging.info('Unknown location error')
-            return(img,-80000,True)
 
+        reward, img = self.make_action(action)
         is_done = self.is_episode_finished()
         if is_done:
             t2=time.time()
@@ -348,7 +383,7 @@ class Environment():
         self.errorCode = sim.simxSetJointTargetVelocity(self.clientID,self.rightmotorHandle,0,sim.simx_opmode_oneshot)
         self.errorCode = sim.simxSetJointTargetVelocity(self.clientID,self.leftmotorHandle,0,sim.simx_opmode_oneshot)
 
-    def position_Score(self):
+    def position_score(self):
         self.returnCode,self.position=sim.simxGetObjectPosition(self.clientID,self.robotHandle,sim.sim_handle_parent,sim.simx_opmode_buffer)
         if self.position[0]>-7.5 and self.position[1]>-7.5 and self.position[0]<-6 and self.position[1]<-6:
             self.TD=0

@@ -7,7 +7,7 @@ import numpy as np
 from datetime import date
 from datetime import datetime
 
-REPLAY_MEMORY_SIZE = 50_000
+REPLAY_MEMORY_SIZE = 384
 
 class NpEncoder(json.JSONEncoder):
     def default(self, obj):

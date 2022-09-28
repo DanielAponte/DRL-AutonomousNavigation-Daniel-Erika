@@ -18,7 +18,7 @@ import time
 import agenteVrep
 import agenteVrep_Train
 import logging
-import msvcrt
+# import msvcrt
 from datetime import date
 from datetime import datetime
 import tensorflow as tf
@@ -26,19 +26,20 @@ import json
 import os
 
 AGENT_INIT = "LOAD"   # OPTIONS: CREATE, LOAD
-MODEL_NAME = "img_classifier_model2022-09-20.model_precalentar"
-MODEL_NAME_SAVE = "ModelDQN_Precalentar"         # Necessary when AGENT_INIT = "LOAD"
-TARGET_MODEL_NAME = ""  # Necessary when AGENT_INIT = "LOAD"
-REPLAY_MEMORY_NAME = "replay_memory_pre_train2022-09-22.json" # Necessary when AGENT_INIT = "LOAD"
+MODEL_NAME = "model2022-09-27.model"
+MODEL_NAME_SAVE = "ModelDQN_Entrenamiento"         # Necessary when AGENT_INIT = "LOAD"
+TARGET_MODEL_NAME = "target_model2022-09-27.model"  # Necessary when AGENT_INIT = "LOAD"
+REPLAY_MEMORY_NAME = "replay_memory2022-09-27.json" # Necessary when AGENT_INIT = "LOAD"
 
 REPLAY_MEMORY_SIZE = 50_000
 DISCOUNT = 0.99
-MINIBATCH_SIZE = 32
-MIN_REPLAY_MEMORY_SIZE = 300
+MINIBATCH_SIZE = 64
+MIN_REPLAY_MEMORY_SIZE = 0
 UPDATE_TARGET_EVERY = 5
-TIMEOUT_MAX = 40
-AGGREGATE_STATS_EVERY = 5
-VALIDATION_LEARNING_POLICY = 500
+TIMEOUT_MAX = 100
+AGGREGATE_STATS_EVERY = 1
+VALIDATION_LEARNING_POLICY = 50
+CHANGE_RESET_EVERY = 10
 
 #Number of steps for timeout
 TIMEOUT_COUNT = 70
@@ -49,9 +50,9 @@ EPSILON_DECAY = 0.999
 MIN_EPSILON = 0.001
 
 # Environment settings
-EPISODES = 2_000
+EPISODES = 200
 
-env =  agenteVrep_Train.Environment()
+env =  agenteVrep.Environment()
 # Own Tensorboard class
 class ModifiedTensorBoard(TensorBoard):
     def __init__(self, **kwargs):
@@ -135,11 +136,11 @@ class DQNAgent:
         model = self.load_model(MODEL_NAME)
 
         # Sección de código para lectura de modelo pre-calentado
-        target_model = model
+        # target_model = model
         # replay_memory = deque(maxlen=REPLAY_MEMORY_SIZE)
 
         # Seccion de código para lectura de modelo entrenado
-        # target_model = self.load_model(TARGET_MODEL_NAME)
+        target_model = self.load_model(TARGET_MODEL_NAME)
 
         file_json = open(REPLAY_MEMORY_NAME)
         replay_memory = deque(json.load(file_json))
@@ -257,15 +258,16 @@ class DQNAgent:
         logging.info('Model and replay memory saved' + str(date.today()))
 
     def define_learning_policy(self, episode, epsilon):
-        epsilon = self.get_decay_epsilon(epsilon)
-        if episode % VALIDATION_LEARNING_POLICY == 0:
-            # epsilon = 0
+        # epsilon = self.get_decay_epsilon(epsilon)
+        if episode % VALIDATION_LEARNING_POLICY == 0 or episode == 1:
+            epsilon = 0
             tensorboard = True
-            reset_mood_bool = not bool(env.reset_mood)
-            env.reset_mood = int(reset_mood_bool)
         else:
-            # epsilon = 0.75
+            epsilon = 0.65
             tensorboard = False
+        # if episode % CHANGE_RESET_EVERY:
+        #     reset_mood_bool = not bool(env.reset_mood)
+        #     env.reset_mood = int(reset_mood_bool)             
         return epsilon, tensorboard
     
     def get_decay_epsilon(self, epsilon):        
@@ -337,9 +339,6 @@ for episode in range(1, EPISODES + 1):
             min_reward = min(ep_reward[-AGGREGATE_STATS_EVERY:])
             max_reward = max(ep_reward[-AGGREGATE_STATS_EVERY:])
             agent.tensorboard.update_stats(reward_avg=average_reward, reward_min=min_reward, reward_max=max_reward, epsilon=epsilon)
-       
-
-    
     
     total_actions = actions_analysis[0] + actions_analysis[1]
     print('\nTime dif: ', current_t - start_t )
@@ -355,9 +354,9 @@ for episode in range(1, EPISODES + 1):
         ' Q-Table: ' + str(actions_analysis[1]) +
         ' %% ' + str(actions_analysis[1]/total_actions))
     
-    if msvcrt.kbhit():
-        if msvcrt.getch() == b'\x1b':
-            break
+    # if msvcrt.kbhit():
+    #     if msvcrt.getch() == b'\x1b':
+    #         break
 
 agent.save_model()
         
