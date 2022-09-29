@@ -18,7 +18,7 @@ import time
 import agenteVrep
 import agenteVrep_Train
 import logging
-# import msvcrt
+import msvcrt
 from datetime import date
 from datetime import datetime
 import tensorflow as tf
@@ -26,17 +26,17 @@ import json
 import os
 
 AGENT_INIT = "LOAD"   # OPTIONS: CREATE, LOAD
-MODEL_NAME = "model2022-09-27.model"
+MODEL_NAME = "model2022-09-28.model"
 MODEL_NAME_SAVE = "ModelDQN_Entrenamiento"         # Necessary when AGENT_INIT = "LOAD"
-TARGET_MODEL_NAME = "target_model2022-09-27.model"  # Necessary when AGENT_INIT = "LOAD"
-REPLAY_MEMORY_NAME = "replay_memory2022-09-27.json" # Necessary when AGENT_INIT = "LOAD"
+TARGET_MODEL_NAME = "target_model2022-09-28.model"  # Necessary when AGENT_INIT = "LOAD"
+REPLAY_MEMORY_NAME = "replay_memory2022-09-28.json" # Necessary when AGENT_INIT = "LOAD"
 
 REPLAY_MEMORY_SIZE = 50_000
 DISCOUNT = 0.99
 MINIBATCH_SIZE = 64
 MIN_REPLAY_MEMORY_SIZE = 0
 UPDATE_TARGET_EVERY = 5
-TIMEOUT_MAX = 100
+TIMEOUT_MAX = 300
 AGGREGATE_STATS_EVERY = 1
 VALIDATION_LEARNING_POLICY = 50
 CHANGE_RESET_EVERY = 10
@@ -45,9 +45,10 @@ CHANGE_RESET_EVERY = 10
 TIMEOUT_COUNT = 70
 
 # Exploration settings
-epsilon = 0.9  # not a constant, going to be decayed
+epsilon = 0.5  # not a constant, going to be decayed
 EPSILON_DECAY = 0.999
-MIN_EPSILON = 0.001
+MIN_EPSILON = 0
+MAX_EPSILON = 0.5
 
 # Environment settings
 EPISODES = 200
@@ -132,7 +133,7 @@ class DQNAgent:
 
         return model, target_model, replay_memory
 
-    def load_agent(self):
+    def load_agent(self):                                                                                                                                                                     
         model = self.load_model(MODEL_NAME)
 
         # Sección de código para lectura de modelo pre-calentado
@@ -258,23 +259,26 @@ class DQNAgent:
         logging.info('Model and replay memory saved' + str(date.today()))
 
     def define_learning_policy(self, episode, epsilon):
-        # epsilon = self.get_decay_epsilon(epsilon)
-        if episode % VALIDATION_LEARNING_POLICY == 0 or episode == 1:
-            epsilon = 0
-            tensorboard = True
-        else:
-            epsilon = 0.65
-            tensorboard = False
-        # if episode % CHANGE_RESET_EVERY:
-        #     reset_mood_bool = not bool(env.reset_mood)
-        #     env.reset_mood = int(reset_mood_bool)             
+        epsilon = self.get_decay_epsilon(epsilon, episode)
+        tensorboard = True
+        # if episode % VALIDATION_LEARNING_POLICY == 0 or episode == 1:
+        #     epsilon = 0
+        #     tensorboard = True
+        # else:
+        #     epsilon = 0.65
+        #     tensorboard = False
+        # # if episode % CHANGE_RESET_EVERY:
+        # #     reset_mood_bool = not bool(env.reset_mood)
+        # #     env.reset_mood = int(reset_mood_bool)             
         return epsilon, tensorboard
     
-    def get_decay_epsilon(self, epsilon):        
+    def get_decay_epsilon(self, epsilon, episode):        
         # Decay epsilon
+        # if epsilon > MIN_EPSILON:
+        #     epsilon *= EPSILON_DECAY
+        #     epsilon = max(MIN_EPSILON, epsilon)
         if epsilon > MIN_EPSILON:
-            epsilon *= EPSILON_DECAY
-            epsilon = max(MIN_EPSILON, epsilon)
+            epsilon = ((180-episode)/180)*MAX_EPSILON        
         return epsilon
 
 agent = DQNAgent()   
@@ -316,7 +320,7 @@ for episode in range(1, EPISODES + 1):
             reward = -1
             logging.info('Timeout!')
 
-        if((actions_analysis[0] + actions_analysis[1]) > 50):
+        if((actions_analysis[0] + actions_analysis[1]) > 75):
             finished = True
             reward = -1
             logging.info('MaxAttemps!')
@@ -354,9 +358,9 @@ for episode in range(1, EPISODES + 1):
         ' Q-Table: ' + str(actions_analysis[1]) +
         ' %% ' + str(actions_analysis[1]/total_actions))
     
-    # if msvcrt.kbhit():
-    #     if msvcrt.getch() == b'\x1b':
-    #         break
+    if msvcrt.kbhit():
+        if msvcrt.getch() == b'\x1b':
+            break
 
 agent.save_model()
         

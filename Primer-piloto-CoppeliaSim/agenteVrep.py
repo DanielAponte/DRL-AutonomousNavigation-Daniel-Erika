@@ -22,7 +22,7 @@ from datetime import date
 from datetime import datetime
  
 
-MOVE_TIME = 900
+MOVE_TIME = 720
 WIDTH = 64
 HEIGHT = 64
 class Environment():
@@ -218,21 +218,24 @@ class Environment():
         return [x,y,theta]
 
     def make_action(self, action):
+        is_lost = True
         is_valid_action = True
         self.returnCode,self.position=sim.simxGetObjectPosition(self.clientID,self.robotHandle,sim.sim_handle_parent,sim.simx_opmode_buffer)
         self.errorCode,angle=sim.simxGetObjectOrientation(self.clientID,self.robotHandle,-1,sim.simx_opmode_streaming)
          
         (x,y,theta)=self.aprox_pos_angle(self.position, angle)
 
-        try: 
-            allowed_action = self.dict_posible_outcomes[(x,y,theta)].split(';')    
-        except: 
-            allowed_action = []
+        is_valid_action = (x,y,theta) in self.list_allowed_forward_actions if self.actions[action] == 'w' else True
 
-        if self.actions[action] == 'w':
-            is_valid_action = (x,y,theta) in self.list_allowed_forward_actions
+        try: 
+            allowed_action = self.dict_posible_outcomes[(x,y,theta)].split(';')
+            is_lost = False     
+        except:             
+            allowed_action = [self.actions[2]] if is_valid_action and self.actions[action] == 'w' else [self.actions[0]]
         
-        if self.actions[action] in allowed_action:
+        if  is_lost and self.actions[action] in allowed_action:
+            Reward_VI = 0.45
+        elif self.actions[action] in allowed_action:
             Reward_VI = 0.9
         else:
             Reward_VI = -0.8
@@ -247,10 +250,10 @@ class Environment():
     def get_screen_buffer(self):
         try:
             self.returnCode,self.resolution, image=sim.simxGetVisionSensorImage( self.clientID,self.cameraHandle,0,sim.simx_opmode_streaming)
-            time.sleep(0.1)
+            time.sleep(0.3)
             self.returnCode,self.resolution, image=sim.simxGetVisionSensorImage( self.clientID,self.cameraHandle,0,sim.simx_opmode_buffer)
             in_data=np.array(image,dtype=np.uint8)
-            time.sleep(0.1)
+            time.sleep(0.3)
             in_data.resize([self.resolution[0],self.resolution[1],3])
             in_data = np.flipud( cv2.resize(in_data, (WIDTH,HEIGHT), interpolation = cv2.INTER_AREA))
         except:
