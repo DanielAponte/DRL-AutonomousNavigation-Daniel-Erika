@@ -38,7 +38,7 @@ MIN_REPLAY_MEMORY_SIZE = 0
 UPDATE_TARGET_EVERY = 5
 TIMEOUT_MAX = 300
 AGGREGATE_STATS_EVERY = 1
-VALIDATION_LEARNING_POLICY = 50
+VALIDATION_LEARNING_POLICY = 20
 CHANGE_RESET_EVERY = 10
 
 #Number of steps for timeout
@@ -259,17 +259,18 @@ class DQNAgent:
         logging.info('Model and replay memory saved' + str(date.today()))
 
     def define_learning_policy(self, episode, epsilon):
-        epsilon = self.get_decay_epsilon(epsilon, episode)
+        # epsilon = self.get_decay_epsilon(epsilon, episode)
         tensorboard = True
-        # if episode % VALIDATION_LEARNING_POLICY == 0 or episode == 1:
-        #     epsilon = 0
-        #     tensorboard = True
-        # else:
-        #     epsilon = 0.65
-        #     tensorboard = False
-        # # if episode % CHANGE_RESET_EVERY:
-        # #     reset_mood_bool = not bool(env.reset_mood)
-        # #     env.reset_mood = int(reset_mood_bool)             
+        if episode % VALIDATION_LEARNING_POLICY == 0 or episode == 1:
+            epsilon = 0
+            tensorboard = True
+        else:
+            epsilon = 0.5
+            # epsilon = self.get_decay_epsilon(epsilon, episode)
+            tensorboard = False
+        # if episode % CHANGE_RESET_EVERY:
+        #     reset_mood_bool = not bool(env.reset_mood)
+        #     env.reset_mood = int(reset_mood_bool)             
         return epsilon, tensorboard
     
     def get_decay_epsilon(self, epsilon, episode):        
@@ -278,7 +279,7 @@ class DQNAgent:
         #     epsilon *= EPSILON_DECAY
         #     epsilon = max(MIN_EPSILON, epsilon)
         if epsilon > MIN_EPSILON:
-            epsilon = ((180-episode)/180)*MAX_EPSILON        
+            epsilon = ((195-episode)/195)*MAX_EPSILON        
         return epsilon
 
 agent = DQNAgent()   

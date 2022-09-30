@@ -234,7 +234,7 @@ class Environment():
             allowed_action = [self.actions[2]] if is_valid_action and self.actions[action] == 'w' else [self.actions[0]]
         
         if  is_lost and self.actions[action] in allowed_action:
-            Reward_VI = 0.45
+            Reward_VI = 0.3
         elif self.actions[action] in allowed_action:
             Reward_VI = 0.9
         else:
