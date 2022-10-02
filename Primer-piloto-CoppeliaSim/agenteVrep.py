@@ -22,13 +22,13 @@ from datetime import date
 from datetime import datetime
  
 
-MOVE_TIME = 720
+MOVE_TIME = 625
 WIDTH = 64
 HEIGHT = 64
+MOVE_DISTANCE = 1.4
 class Environment():
     def __init__(self):
-        sim.simxFinish(-1) # just in case, close all opened connections        
-        self.moveTime = MOVE_TIME
+        sim.simxFinish(-1) # just in case, close all opened connections   
         self.clientID=sim.simxStart('127.0.0.1',19999,True,True,5000,1)
 
         if self.clientID!=-1:  #check if client connection successful
@@ -41,6 +41,12 @@ class Environment():
         self.t1=time.time()
         self.TD=0
         self.maxintentos = 5  
+        self.move_directions = {
+            0: (-1,0,0),
+            90: (0,-1,1),
+            180: (1,0,0),
+            270: (0,1,1)
+        }
         self.list_allowed_forward_actions = [
             (6.7, 6.7, 90),
             (6.7, 5.2, 0),
@@ -72,7 +78,8 @@ class Environment():
             (2.4, 5.2, 270),
             (2.4, 6.7, 180),
             (3.8, 6.7, 180),
-            (5.2, 6.7, 90)
+            (5.2, 6.7, 90),
+            (3.8, 5.2, 90)
         ]
 
         self.dict_posible_outcomes = {
@@ -240,7 +247,7 @@ class Environment():
         else:
             Reward_VI = -0.8
 
-        self.move_robot(self.actions[action], self.moveTime) if is_valid_action else None
+        self.move_robot(self.actions[action], (x,y,theta)) if is_valid_action else None
 
         self.position_score()
         img = self.get_screen_buffer()
@@ -304,12 +311,6 @@ class Environment():
         #retrieve camera handles
         self.errorCode,self.cameraHandle=sim.simxGetObjectHandle(self.clientID,'Pioneer_camera',sim.simx_opmode_oneshot_wait)
         self.returnCode,self.resolution, self.image=sim.simxGetVisionSensorImage( self.clientID,self.cameraHandle,1,sim.simx_opmode_streaming)
-
-        pingTime = sim.simxGetPingTime(self.clientID)
-        self.moveTime = pingTime[1] + MOVE_TIME
-        print('Ping time: ', pingTime, ' :: Move time: ' + str(self.moveTime))
-        logging.info('Ping time: ' + str(pingTime[1]) + ' :: Move time: ' + str(self.moveTime))
-        
         time.sleep(0.1)
         img = self.get_screen_buffer()
 
@@ -329,62 +330,89 @@ class Environment():
             return False
 
     def rotate(self, orientation):
-        err,angle=sim.simxGetObjectOrientation(self.clientID,self.robotHandle,-1,sim.simx_opmode_buffer)
-        init_g=self.convert_pos_angle(angle[2]*180/np.pi)
+        err, angle = sim.simxGetObjectOrientation(
+        self.clientID, self.robotHandle, -1, sim.simx_opmode_buffer)
+        current_g = self.convert_pos_angle(angle[2]*180/np.pi)
+        print(current_g)
+        if orientation == 'i':
+            # if( 70 < current_g < 100):
+            #     target_g = 0
+            # elif(250 < current_g < 280):
+            #     target_g = 360
+            # else:
+            target_g = self.convert_pos_angle(current_g + 90)
+            is_especial_case = 170 < current_g < 190 and 260 < target_g < 280 
+            while not(0.1 > np.abs(current_g-target_g) > 0):
+                err, angle = sim.simxGetObjectOrientation(
+                    self.clientID, self.robotHandle, -1, sim.simx_opmode_buffer)
+                current_g = self.convert_pos_angle(angle[2]*180/np.pi)
+                velocity = (np.abs(self.convert_neg_angle(current_g) - self.convert_neg_angle(target_g))/90)*0.7
+                self.errorCode = sim.simxSetJointTargetVelocity(
+                    self.clientID, self.rightmotorHandle, velocity, sim.simx_opmode_oneshot)
+                self.errorCode = sim.simxSetJointTargetVelocity(
+                    self.clientID, self.leftmotorHandle, -velocity, sim.simx_opmode_oneshot)
+        elif orientation == 'd':
+            # if( 70 < current_g < 100):
+            #     target_g = 0
+            # elif(250 < current_g < 280):
+            #     target_g = 360
+            # else:
+            target_g = self.convert_pos_angle(current_g - 90)
+            is_especial_case = 170 < target_g < 190 and 260 < current_g < 280 
+            while not(0.1 > np.abs(current_g-target_g) > 0):
+                err, angle = sim.simxGetObjectOrientation(
+                    self.clientID, self.robotHandle, -1, sim.simx_opmode_buffer)
+                current_g = self.convert_pos_angle(angle[2]*180/np.pi)
+                if is_especial_case:
+                    velocity = (np.abs(current_g - target_g)/90)*0.7
+                else:
+                    velocity = (np.abs(self.convert_neg_angle(current_g) - self.convert_neg_angle(target_g))/90)*0.7
+                self.errorCode = sim.simxSetJointTargetVelocity(
+                    self.clientID, self.rightmotorHandle, -velocity, sim.simx_opmode_oneshot)
+                self.errorCode = sim.simxSetJointTargetVelocity(
+                    self.clientID, self.leftmotorHandle, velocity, sim.simx_opmode_oneshot)
+        self.errorCode = sim.simxSetJointTargetVelocity(
+                    self.clientID, self.rightmotorHandle, 0, sim.simx_opmode_oneshot)
+        self.errorCode = sim.simxSetJointTargetVelocity(
+                    self.clientID, self.leftmotorHandle, 0, sim.simx_opmode_oneshot)
 
-        if orientation == 'd':
-            self.errorCode = sim.simxSetJointTargetVelocity(self.clientID,self.leftmotorHandle,0.1,sim.simx_opmode_oneshot)
-            self.errorCode = sim.simxSetJointTargetVelocity(self.clientID,self.rightmotorHandle,-0.1,sim.simx_opmode_oneshot)
-        elif orientation == 'i':
-            self.errorCode = sim.simxSetJointTargetVelocity(self.clientID,self.leftmotorHandle,-0.1,sim.simx_opmode_oneshot)
-            self.errorCode = sim.simxSetJointTargetVelocity(self.clientID,self.rightmotorHandle,0.1,sim.simx_opmode_oneshot)
-        err,angle=sim.simxGetObjectOrientation(self.clientID,self.robotHandle,-1,sim.simx_opmode_buffer)
-        g=self.convert_pos_angle(angle[2]*180/np.pi)
-
-        while abs(abs(init_g)-abs(g)) <= 88 or abs(abs(init_g)-abs(g)) >= 268:
-            err,angle=sim.simxGetObjectOrientation(self.clientID,self.robotHandle,-1,sim.simx_opmode_buffer)
-            g=self.convert_pos_angle(angle[2]*180/np.pi)
-            
-
-        self.errorCode = sim.simxSetJointTargetVelocity(self.clientID,self.rightmotorHandle,0,sim.simx_opmode_oneshot)
-        self.errorCode = sim.simxSetJointTargetVelocity(self.clientID,self.leftmotorHandle,0,sim.simx_opmode_oneshot)
-
-        #print("initial gamma ",init_g)
+        #print("initial gamma ",current_g)
         #print("final gamma ",g)
         
         #### prueba de rotacion inmediata con funcion de vrep
-    
-    def rotate_orb(self, orientation):
-        self.errorCode,self.robotHandle=sim.simxGetObjectHandle(self.clientID,'Pioneer_p3dx',sim.simx_opmode_oneshot_wait)
-        err,angle=sim.simxGetObjectOrientation(self.clientID,self.robotHandle,-1,sim.simx_opmode_buffer)
-        init_g=self.convert_pos_angle(angle[2]*180/np.pi)
-        euler_angle = [0,0,0]
-        euler_angle[0] = angle[0]
-        euler_angle[1] = angle[1]
-        if orientation == 'd':
-            euler_angle[2] = (self.convert_pos_angle(init_g -5)*np.pi/180)
-            self.errorCode = sim.simxSetObjectOrientation(self.clientID, self.robotHandle, -1,euler_angle,sim.simx_opmode_oneshot)
-
-        elif orientation == 'i':
-            euler_angle[2] = (self.convert_pos_angle(init_g + 5)*np.pi/180)
-            self.errorCode = sim.simxSetObjectOrientation(self.clientID, self.robotHandle, -1,euler_angle,sim.simx_opmode_oneshot)
             
+
+
+    def convert_neg_angle(self,angle):
+        if angle > 180:
+            return angle -360
+        else:
+            return angle
     def convert_pos_angle(self,angle):
         if angle < 0:
-            return angle +360
+            return angle + 360
+        elif angle > 360:
+            return angle - 360
         else:
             return angle
 
-    def move_f_b(self,time_ms, orientation):
-        if orientation=='f':
-            self.errorCode = sim.simxSetJointTargetVelocity(self.clientID,self.leftmotorHandle,2.3,sim.simx_opmode_oneshot)
-            self.errorCode = sim.simxSetJointTargetVelocity(self.clientID,self.rightmotorHandle,2.3,sim.simx_opmode_oneshot)
-        elif orientation == 'b':
-            self.errorCode = sim.simxSetJointTargetVelocity(self.clientID,self.leftmotorHandle,-2.3,sim.simx_opmode_oneshot)
-            self.errorCode = sim.simxSetJointTargetVelocity(self.clientID,self.rightmotorHandle,-2.3,sim.simx_opmode_oneshot)
-        time.sleep(time_ms/1000)
-        self.errorCode = sim.simxSetJointTargetVelocity(self.clientID,self.rightmotorHandle,0,sim.simx_opmode_oneshot)
-        self.errorCode = sim.simxSetJointTargetVelocity(self.clientID,self.leftmotorHandle,0,sim.simx_opmode_oneshot)
+    def move_f_b(self, orientation, XYT):
+        current = (XYT[0], XYT[1])
+        move_direction = self.move_directions[XYT[2]]
+        target = (move_direction[0] * MOVE_DISTANCE, move_direction[1]* MOVE_DISTANCE)
+        target = (target[0] + current[0], target[1] + current[1])
+        while not(0.03 > np.abs(target[move_direction[2]] - current[move_direction[2]]) > 0):
+            self.returnCode,self.position=sim.simxGetObjectPosition(self.clientID,self.robotHandle,sim.sim_handle_parent,sim.simx_opmode_buffer)
+            current = (np.abs(self.position[0]), np.abs(self.position[1]))
+            velocity = (np.abs(target[move_direction[2]] - current[move_direction[2]])/MOVE_DISTANCE) * 4
+            self.errorCode = sim.simxSetJointTargetVelocity(
+                self.clientID, self.leftmotorHandle, velocity, sim.simx_opmode_oneshot)
+            self.errorCode = sim.simxSetJointTargetVelocity(
+                self.clientID, self.rightmotorHandle, velocity, sim.simx_opmode_oneshot)
+        self.errorCode = sim.simxSetJointTargetVelocity(
+            self.clientID, self.leftmotorHandle, 0, sim.simx_opmode_oneshot)
+        self.errorCode = sim.simxSetJointTargetVelocity(
+            self.clientID, self.rightmotorHandle, 0, sim.simx_opmode_oneshot)        
 
     def position_score(self):
         self.returnCode,self.position=sim.simxGetObjectPosition(self.clientID,self.robotHandle,sim.sim_handle_parent,sim.simx_opmode_buffer)
@@ -421,13 +449,13 @@ class Environment():
         elif self.position[0]>-3 and self.position[1]>-3 and self.position[0]<-1.5 and self.position[1]<-1.5:
             self.TD=0.3
         
-    def move_robot(self, move, time_ms):
+    def move_robot(self, move, XYT):
         if move == 'w':
-            self.move_f_b(time_ms,'f')
+            self.move_f_b('f',XYT)
         elif move == 'a':
             self.rotate('i')
         elif move == 's':
-            self.move_f_b(time_ms,'b')
+            self.move_f_b('b',XYT)
         elif  move == 'd':
             self.rotate('d')
         else:
