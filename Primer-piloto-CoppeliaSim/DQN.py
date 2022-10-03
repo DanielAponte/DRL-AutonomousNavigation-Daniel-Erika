@@ -26,10 +26,10 @@ import json
 import os
 
 AGENT_INIT = "LOAD"   # OPTIONS: CREATE, LOAD
-MODEL_NAME = "model2022-09-28.model"
+MODEL_NAME = "model2022-09-27.model"
 MODEL_NAME_SAVE = "ModelDQN_Entrenamiento"         # Necessary when AGENT_INIT = "LOAD"
-TARGET_MODEL_NAME = "target_model2022-09-28.model"  # Necessary when AGENT_INIT = "LOAD"
-REPLAY_MEMORY_NAME = "replay_memory2022-09-28.json" # Necessary when AGENT_INIT = "LOAD"
+TARGET_MODEL_NAME = "target_model2022-09-27.model"  # Necessary when AGENT_INIT = "LOAD"
+REPLAY_MEMORY_NAME = "replay_memory2022-09-27.json" # Necessary when AGENT_INIT = "LOAD"
 
 REPLAY_MEMORY_SIZE = 50_000
 DISCOUNT = 0.99
@@ -273,7 +273,7 @@ class DQNAgent:
         #     env.reset_mood = int(reset_mood_bool)             
         return epsilon, tensorboard
     
-    def get_decay_epsilon(self, epsilon, episode):        
+    def get_decay_epsilon(self, epsilon, episode):
         # Decay epsilon
         # if epsilon > MIN_EPSILON:
         #     epsilon *= EPSILON_DECAY
