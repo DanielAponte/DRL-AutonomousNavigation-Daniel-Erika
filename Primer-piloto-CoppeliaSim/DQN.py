@@ -46,6 +46,7 @@ TIMEOUT_COUNT = 70
 
 # Exploration settings
 epsilon = 0.5  # not a constant, going to be decayed
+epsilon_tmp = 0.5
 EPSILON_DECAY = 0.999
 MIN_EPSILON = 0
 MAX_EPSILON = 0.5
@@ -263,11 +264,12 @@ class DQNAgent:
         tensorboard = True
         if episode % VALIDATION_LEARNING_POLICY == 0 or episode == 1:
             epsilon = 0
-            tensorboard = True
+            # tensorboard = True
         else:
-            epsilon = 0.5
-            # epsilon = self.get_decay_epsilon(epsilon, episode)
-            tensorboard = False
+            # epsilon = 0.5
+            epsilon = self.get_decay_epsilon(epsilon, episode)
+            epsilon_tmp = epsilon
+            # tensorboard = False
         # if episode % CHANGE_RESET_EVERY:
         #     reset_mood_bool = not bool(env.reset_mood)
         #     env.reset_mood = int(reset_mood_bool)             
@@ -278,8 +280,8 @@ class DQNAgent:
         # if epsilon > MIN_EPSILON:
         #     epsilon *= EPSILON_DECAY
         #     epsilon = max(MIN_EPSILON, epsilon)
-        if epsilon > MIN_EPSILON:
-            epsilon = ((195-episode)/195)*MAX_EPSILON        
+        if epsilon_tmp > MIN_EPSILON:
+            epsilon = ((195-episode)/195)*MAX_EPSILON
         return epsilon
 
 agent = DQNAgent()   
