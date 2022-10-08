@@ -20,14 +20,34 @@ import os
 import logging
 from datetime import date
 from datetime import datetime
- 
+import environment_params as env
 
+SIMULATION_TYPE = "Train"
+MAP = "6x6"
 MOVE_TIME = 625
 WIDTH = 64
 HEIGHT = 64
-MOVE_DISTANCE = 1.4
+MOVE_DISTANCE = 1.5
+
 class Environment():
     def __init__(self):
+        ### Variables definition
+        self.params_env = env.ParametersEnvironments(SIMULATION_TYPE + "_" + MAP)
+        self.move_directions = {
+            0: (1, 0, 0),
+            90: (0, 1, 1),
+            180: (-1, 0, 0),
+            270: (0, -1, 1)
+        }
+        self.max_attemps = 5
+        self.TD = 0
+
+        forward = 'w'
+        left = 'a'
+        right = 'd'
+        #backward = 's'
+        self.actions = [left, right, forward]
+
         sim.simxFinish(-1) # just in case, close all opened connections   
         self.clientID=sim.simxStart('127.0.0.1',19999,True,True,5000,1)
 
@@ -37,90 +57,12 @@ class Environment():
             print ('Connection not successful')
             sys.exit('Could not connect')
 
-        self.EpTime= 0
-        self.t1=time.time()
-        self.TD=0
-        self.maxintentos = 5  
-        self.move_directions = {
-            0: (-1,0,0),
-            90: (0,-1,1),
-            180: (1,0,0),
-            270: (0,1,1)
-        }
+        currDir = os.path.dirname(os.path.abspath("__file__"))
+        [currDir, er] = currDir.split('Primer-piloto-CoppeliaSim')
+        ModelPath = currDir + "Mapas Vrep"
+        self.ModelPath = ModelPath.replace("\\", "/")
 
-        self.list_allowed_forward_actions = [
-            (6.7, 6.7, 90),
-            (6.7, 5.2, 0),
-            (5.2, 5.2, 270),
-            (5.2, 6.7, 0),
-            (3.8, 6.7, 0),
-            (2.4, 6.7, 90),
-            (2.4, 5.2, 90),
-            (2.4, 3.8, 180),
-            (3.8, 3.8, 90),
-            (3.8, 2.4, 0),
-            (5.2, 5.2, 90),
-            (5.2, 3.8, 180),
-            (6.7, 3.8, 90),
-            (6.7, 2.4, 0),
-            (5.2, 2.4, 0),
-            (2.4, 2.4, 0),
-            (3.8, 2.4, 180),
-            (5.2, 2.4, 180),
-            (6.7, 2.4, 270),
-            (6.7, 3.8, 0),
-            (5.2, 3.8, 270),
-            (5.2, 5.2, 180),
-            (6.7, 5.2, 270),
-            (3.8, 2.4, 270),
-            (3.8, 3.8, 0),
-            (3.8, 3.8, 270),
-            (2.4, 3.8, 270),
-            (2.4, 5.2, 270),
-            (2.4, 6.7, 180),
-            (3.8, 6.7, 180),
-            (5.2, 6.7, 90),
-            (3.8, 5.2, 90)
-        ]
-
-        self.dict_posible_outcomes = {
-            (6.7, 6.7, 0) : 'a;',
-            (6.7, 6.7, 90) : 'w;',
-            (6.7, 5.2, 90) : 'd;',
-            (6.7, 5.2, 0) : 'w;',
-            (5.2, 5.2, 0) : 'a;d',
-            (5.2, 5.2, 270) : 'w;',
-            (5.2, 6.7, 270) : 'a;',
-            (5.2, 6.7, 0) : 'w;',
-            (3.8, 6.7, 0) : 'w;',
-            (2.4, 6.7, 0) : 'a;',
-            (2.4, 6.7, 90) : 'w;',
-            (2.4, 5.2, 90) : 'w;',
-            (2.4, 3.8, 90) : 'a;',
-            (2.4, 3.8, 180) : 'w;',
-            (3.8, 3.8, 180) : 'd;',
-            (3.8, 3.8, 90) : 'w;',
-            (3.8, 2.4, 90) : 'd;',
-            (3.8, 2.4, 0) : 'w;',
-            (5.2, 5.2, 90) : 'w;',
-            (5.2, 3.8, 90) : 'a;',
-            (5.2, 3.8, 180) : 'w;',
-            (6.7, 3.8, 180): 'd;',
-            (6.7, 3.8, 90) : 'w;',
-            (6.7, 2.4, 90): 'd;',
-            (6.7, 2.4, 0) : 'w;',
-            (5.2, 2.4, 0) : 'w;',
-            (2.4, 2.4, 0) : 'w;'
-        }
-
-        currDir=os.path.dirname(os.path.abspath("__file__"))
-        [currDir,er]=currDir.split('Primer-piloto-CoppeliaSim')
-        ModelPath=currDir+"Mapas Vrep"
-        self.ModelPath=ModelPath.replace("\\","/")       
-        
-        self.returnCode,baseHandle=sim.simxLoadModel(self.clientID,self.ModelPath+"/Robot-4.ttm",1,sim.simx_opmode_blocking )
-        pingTime = sim.simxGetPingTime(self.clientID)
-        print('Ping time: ', pingTime)
+        self.returnCode,baseHandle=sim.simxLoadModel(self.clientID,self.ModelPath+"/Robot-5.ttm",1,sim.simx_opmode_blocking )
         #retrieve pioneer handle
         self.errorCode,self.robotHandle=sim.simxGetObjectHandle(self.clientID,'Pioneer_p3dx',sim.simx_opmode_oneshot_wait)
         self.returnCode,self.position=sim.simxGetObjectPosition(self.clientID,self.robotHandle,sim.sim_handle_parent,sim.simx_opmode_streaming)
@@ -133,14 +75,6 @@ class Environment():
         self.errorCode,self.cameraHandle=sim.simxGetObjectHandle(self.clientID,'Pioneer_camera',sim.simx_opmode_oneshot_wait)
         self.returnCode,self.resolution, self.image=sim.simxGetVisionSensorImage( self.clientID,self.cameraHandle,1,sim.simx_opmode_streaming)
 
-        forward = 'w'
-        left = 'a'
-        right = 'd'
-        #backward = 's'
-        self.actions = [left, right, forward]
-        self.numsteps = 0
-        
-        
         self.errorCode = sim.simxSetJointTargetVelocity(self.clientID,self.rightmotorHandle,0,sim.simx_opmode_oneshot)
         self.errorCode = sim.simxSetJointTargetVelocity(self.clientID,self.leftmotorHandle,0,sim.simx_opmode_oneshot)
         
@@ -156,6 +90,25 @@ class Environment():
                                         # se abre y añaden nuevas lineas.
         )
             
+    def aprox_pos_angle_v2(self, angle):
+        def aprox_pos(position):
+            for p in self.params_env.positions_list:
+                if(p+1) > position > (p-1):
+                    return p
+        x = aprox_pos(self.position[0])
+        y = aprox_pos(self.position[1])
+
+        cur_angle = self.convert_pos_angle(angle[2]*180/np.pi)
+        if   45 < cur_angle < 135:
+            theta= 90
+        elif   135 <= cur_angle < 225:
+            theta= 180
+        elif   225 <= cur_angle < 315:
+            theta= 270
+        elif   315 <= cur_angle or  cur_angle <= 45:
+            theta= 0  
+        return [x, y, theta]
+
     def aprox_pos_angle(self,position, angle):
         if  5.95 < abs(position[0]) :
             x= 6.7
@@ -187,34 +140,43 @@ class Environment():
         return [x,y,theta]
 
     def make_action(self, action):
-        is_lost = True
-        is_valid_action = True
+        is_lost = True      #Variable utilizada para definir recompensa
+        is_valid_action = True      #Variable utilizada en sistema de protección
+        is_correct_action = False
+
         self.returnCode,self.position=sim.simxGetObjectPosition(self.clientID,self.robotHandle,sim.sim_handle_parent,sim.simx_opmode_buffer)
         self.errorCode,angle=sim.simxGetObjectOrientation(self.clientID,self.robotHandle,-1,sim.simx_opmode_streaming)
          
-        (x,y,theta)=self.aprox_pos_angle(self.position, angle)
+        self.position = (self.position[0] + 6.7, self.position[1] + 6.7)
+        (x,y,theta)=self.aprox_pos_angle_v2(angle)
 
-        is_valid_action = (x,y,theta) in self.list_allowed_forward_actions if self.actions[action] == 'w' else True
+        is_valid_action = (x,y,theta) in self.params_env.list_allowed_forward_actions if self.actions[action] == 'w' else True
 
-        try: 
-            allowed_action = self.dict_posible_outcomes[(x,y,theta)].split(';')
-            is_lost = False     
-        except:             
-            allowed_action = [self.actions[2]] if is_valid_action and self.actions[action] == 'w' else [self.actions[0]]
-        
-        if  is_lost and self.actions[action] in allowed_action:
-            Reward_VI = 0.3
-        elif self.actions[action] in allowed_action:
-            Reward_VI = 0.9
-        else:
-            Reward_VI = -0.8
+        if SIMULATION_TYPE == "Train": 
+            try:
+                allowed_action = self.params_env.dict_posible_outcomes[(x, y, theta)].split(';')
+                is_lost = False
+            except:
+                allowed_action = [
+                    self.actions[2]] if is_valid_action and self.actions[action] == 'w' else [self.actions[0]]
 
-        self.move_robot(self.actions[action], (x,y,theta)) if is_valid_action else None
+            if is_lost and self.actions[action] in allowed_action:
+                is_correct_action = True
+                Reward_VI = 0.3
+            elif self.actions[action] in allowed_action:
+                is_correct_action = True
+                Reward_VI = 0.9
+            else:
+                Reward_VI = -0.8        
+            self.position_score_v2()
+        else: 
+            Reward_VI = 0
 
-        self.position_score()
+        self.move_robot(self.actions[action], (x, y, theta)) if is_valid_action else None
+
         img = self.get_screen_buffer()
         LR = -0.2
-        return Reward_VI+self.TD+LR, img    
+        return Reward_VI + self.TD + LR, img, is_correct_action
         
     def get_screen_buffer(self):
         try:
@@ -230,16 +192,10 @@ class Environment():
             logging.info('Error get screen buffer, in_data: ' +  str(in_data) + ' image: ' + str(image))
         return in_data   
 
-    def step(self,action):   
-
-        reward, img = self.make_action(action)
+    def step(self, action):
+        reward, img, is_correct_action = self.make_action(action)
         is_done = self.is_episode_finished()
-        if is_done:
-            t2=time.time()
-            self.EpTime=t2-self.t1
-        # img=np.transpose(img)
-
-        return img,reward,is_done
+        return img, reward, is_done, is_correct_action
 
     def numactions(self):
         return len(self.actions)
@@ -247,9 +203,10 @@ class Environment():
     def reset(self):
         self.returnCode=sim.simxRemoveModel(self.clientID,self.robotHandle,sim.simx_opmode_blocking)
         successLoad = True
-        for i in range(1,self.maxintentos): 
+        for i in range(1,self.max_attemps): 
             try:
-                self.returnCode,baseHandle=sim.simxLoadModel(self.clientID,self.ModelPath+"/Robot-4.ttm",1,sim.simx_opmode_blocking )
+                agent_model = self.params_env.get_agent_model()
+                self.returnCode, baseHandle = sim.simxLoadModel(self.clientID, self.ModelPath + agent_model, 1, sim.simx_opmode_blocking)
                 successLoad = True
                 logging.info('Se configuró correctamente el modelo')
                 break
@@ -279,17 +236,11 @@ class Environment():
         return img
 
     def is_episode_finished(self):
-        self.returnCode,self.position=sim.simxGetObjectPosition(self.clientID,self.robotHandle,sim.sim_handle_parent,sim.simx_opmode_buffer)
-        
-        if(2.8 > abs(self.position[0])>1.6 and 2.9 > abs(self.position[1])> 1.6):
-            self.returnCode=sim.simxRemoveModel(self.clientID,self.robotHandle,sim.simx_opmode_oneshot_wait)
-            self.returnCode,baseHandle=sim.simxLoadModel(self.clientID,self.ModelPath+"/Robot-2.ttm",1,sim.simx_opmode_blocking )
-            self.errorCode,self.robotHandle=sim.simxGetObjectHandle(self.clientID,'Pioneer_p3dx',sim.simx_opmode_oneshot_wait)
-            print ('\nIs Done!')            
-            logging.info('Is Done!')
-            return True
-        else:
-            return False
+        for goal in self.params_env.goal_object_position_list:
+            if (goal[0]+1) > self.position[0] > (goal[0]-1) and (goal[1]+1) > self.position[1] > (goal[1]-1):
+                logging.info('Is Done!')
+                return True
+        return False
 
     def rotate(self, direction):
         error, current_orientation = sim.simxGetObjectOrientation(self.clientID, self.robotHandle, -1, sim.simx_opmode_buffer)
@@ -362,7 +313,7 @@ class Environment():
         target = (target[0] + current[0], target[1] + current[1])
         while not (0.03 > np.abs(target[move_direction[2]] - current[move_direction[2]]) > 0):
             self.returnCode, self.position = sim.simxGetObjectPosition(self.clientID, self.robotHandle, sim.sim_handle_parent, sim.simx_opmode_buffer)
-            current = (np.abs(self.position[0]), np.abs(self.position[1]))
+            current = (self.position[0] + 6.7, self.position[1] + 6.7)
             velocity = (np.abs(target[move_direction[2]] - current[move_direction[2]])/MOVE_DISTANCE) * 3
             self.errorCode = sim.simxSetJointTargetVelocity(self.clientID, self.leftmotorHandle, velocity, sim.simx_opmode_oneshot)
             self.errorCode = sim.simxSetJointTargetVelocity(self.clientID, self.rightmotorHandle, velocity, sim.simx_opmode_oneshot)
@@ -403,6 +354,13 @@ class Environment():
             self.TD=0.21
         elif self.position[0]>-3 and self.position[1]>-3 and self.position[0]<-1.5 and self.position[1]<-1.5:
             self.TD=0.3
+    
+    def position_score_v2(self):
+        for position in self.params_env.close2objective_list:
+            if (position[0]+1) > self.position[0] and (position[1]+1) > self.position[1] and (position[0]-1) < self.position[0] and (position[1]-1) < self.position[1]:
+                self.TD = position[2]
+                break
+            
         
     def move_robot(self, move, XYT):
         if move == 'w':
@@ -417,13 +375,14 @@ class Environment():
             None
 
 # env = Environment()
+# env.reset()
 # while(True):
 #     tecla = input()
 #     if tecla== 'w':
-#         env.make_action(2)
+#         env.step(2)
 #     elif tecla== 'a':
-#         env.make_action(0)
+#         env.step(0)
 #     elif tecla== 'd':
-#         env.make_action(1)
+#         env.step(1)
 #     else: 
 #         env.reset()

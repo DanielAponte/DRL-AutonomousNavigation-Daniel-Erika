@@ -28,7 +28,7 @@ import os
 AGENT_INIT = "LOAD"   # OPTIONS: CREATE, LOAD
 MODEL_NAME = "img_classifier_model2022-09-22.model"
 MODEL_NAME_SAVE = "ModelDQN_Calentamiento"         # Necessary when AGENT_INIT = "LOAD"
-TARGET_MODEL_NAME = "target_model2022-09-27.model"  # Necessary when AGENT_INIT = "LOAD"
+TARGET_MODEL_NAME = ""  # Necessary when AGENT_INIT = "LOAD"
 REPLAY_MEMORY_NAME = "replay_memory_pre_train2022-09-26.json" # Necessary when AGENT_INIT = "LOAD"
 
 REPLAY_MEMORY_SIZE = 50_000
@@ -39,13 +39,14 @@ UPDATE_TARGET_EVERY = 5
 TIMEOUT_MAX = 100
 AGGREGATE_STATS_EVERY = 1
 VALIDATION_LEARNING_POLICY = 50
-CHANGE_RESET_EVERY = 10
+CHANGE_RESET_EVERY = 50
 
 #Number of steps for timeout
 TIMEOUT_COUNT = 70
 
 # Exploration settings
 epsilon = 0.5  # not a constant, going to be decayed
+epsilon_tmp = 0.5
 EPSILON_DECAY = 0.999
 MIN_EPSILON = 0
 MAX_EPSILON = 0.5
@@ -196,7 +197,7 @@ class DQNAgent:
     
         # Trains main network every step during episode
     
-    def train(self, terminal_state, step, tensorboard):
+    def train(self, terminal_state, step):
 
         # Start training only if certain number of samples is already saved
         if len(self.replay_memory) < MIN_REPLAY_MEMORY_SIZE:
@@ -259,29 +260,31 @@ class DQNAgent:
         logging.info('Model and replay memory saved' + str(date.today()))
 
     def define_learning_policy(self, episode, epsilon):
-        epsilon = self.get_decay_epsilon(epsilon, episode)
-        # if episode % VALIDATION_LEARNING_POLICY == 0 or episode == 1:
-        #     epsilon = 0
-        #     tensorboard = True
-        # else:
-        #     epsilon = 0.65
-        #     tensorboard = False
+        # epsilon = self.get_decay_epsilon(epsilon, episode)
+        if episode % VALIDATION_LEARNING_POLICY == 0 or episode == 1:
+            epsilon = 0
+        else:
+            epsilon = self.get_decay_epsilon(epsilon, episode)
+            epsilon_tmp = epsilon
         if episode % CHANGE_RESET_EVERY:
             reset_mood_bool = not bool(env.reset_mood)
             env.reset_mood = int(reset_mood_bool)             
-        return epsilon, tensorboard
+        return epsilon
     
     def get_decay_epsilon(self, epsilon, episode):        
         # Decay epsilon
         # if epsilon > MIN_EPSILON:
         #     epsilon *= EPSILON_DECAY
         #     epsilon = max(MIN_EPSILON, epsilon)
-        if epsilon > MIN_EPSILON:
+        if epsilon_tmp > MIN_EPSILON:
             epsilon = ((180-episode)/180)*MAX_EPSILON        
         return epsilon
 
 agent = DQNAgent()   
-ep_reward = []
+reward_hist = []
+epsilon_hist = []
+total_acts_hist = []
+total_error_acts_hist = []
 for episode in range(1, EPISODES + 1):
 
     # Restarting episode - reset episode reward and step number
@@ -290,7 +293,7 @@ for episode in range(1, EPISODES + 1):
     actions_analysis = (0,0) #(Random, Q-table)
     episode_reward = 0
     step = 1
-    tensorboard = False
+    error_acts = 0   
 
     # Reset environment and get initial state
     current_state = env.reset()
@@ -299,13 +302,15 @@ for episode in range(1, EPISODES + 1):
     done = False
     finished = False
     start_t =  time.time()
-    epsilon, tensorboard = agent.define_learning_policy(episode, epsilon)
+    epsilon = agent.define_learning_policy(episode, epsilon)
     while not (done or finished):
         current_t = time.time()
             
         # This part stays mostly the same, the change is to query a model for Q values
+        is_predict_action = False
         if np.random.random() > epsilon:
             # Get action from Q table
+            is_predict_action = True
             action = np.argmax(agent.get_qs(current_state))
             actions_analysis = (actions_analysis[0], actions_analysis[1] + 1)
         else:
@@ -313,7 +318,11 @@ for episode in range(1, EPISODES + 1):
             action = np.random.randint(0, env.numactions())
             actions_analysis = (actions_analysis[0] + 1, actions_analysis[1])
 
-        new_state, reward, done = env.step(action)
+        new_state, reward, done, is_correct_action = env.step(action)
+
+        if not(is_predict_action and is_correct_action):
+            error_acts += 1
+
         if (current_t - start_t ) > TIMEOUT_MAX :
             finished = True
             reward = -1
@@ -329,21 +338,21 @@ for episode in range(1, EPISODES + 1):
 
         # Every step we update replay memory and train main network
         agent.update_replay_memory((current_state, action, reward, new_state, done))
-        agent.train(done, step, tensorboard)
+        agent.train(done, step)
 
         # im = Image.fromarray(current_state)
         # im.save("../Capturas_e_Imagenes/ep"+str(episode)+"img"+str(step)+".jpeg")
 
         current_state = new_state
         step += 1
-        ep_reward.append(episode_reward)
-        if tensorboard or episode == 1:
-            average_reward = sum(ep_reward[-AGGREGATE_STATS_EVERY:])/len(ep_reward[-AGGREGATE_STATS_EVERY:])
-            min_reward = min(ep_reward[-AGGREGATE_STATS_EVERY:])
-            max_reward = max(ep_reward[-AGGREGATE_STATS_EVERY:])
-            agent.tensorboard.update_stats(reward_avg=average_reward, reward_min=min_reward, reward_max=max_reward, epsilon=epsilon)
+
     
     total_actions = actions_analysis[0] + actions_analysis[1]
+    reward_hist.append(episode_reward)
+    epsilon_hist.append(epsilon)
+    total_acts_hist.append(total_actions)
+    total_error_acts_hist.append(error_acts)
+    
     print('\nTime dif: ', current_t - start_t )
     print('\nEpsilon: ', epsilon, ' :: Episode_reward ', episode_reward)
     print('\nTotal acts: ', total_actions, ' Random: ', actions_analysis[0],
@@ -362,5 +371,13 @@ for episode in range(1, EPISODES + 1):
     #         break
 
 agent.save_model()
-        
+print('\n Reward_hist: ', reward_hist)
+print('\n Epsilon_hist: ', epsilon_hist)
+print('\n Total_acts_hist: ', total_acts_hist)
+print('\n Total_error_acts_hist: ', total_error_acts_hist)
+
+logging.info('Reward_hist' + str(reward_hist) )
+logging.info('Epsilon_hist' + str(epsilon_hist) )
+logging.info('Total_acts_hist' + str(total_acts_hist) )
+logging.info('Total_error_acts_hist' + str(total_error_acts_hist) )
         

@@ -200,26 +200,28 @@ class Environment():
             self.agent.changePosition()
 
     def make_action(self, action):
+        is_correct_action = False
         (x,y,theta) = self.routes[self.agent.route][self.agent.position]
         allowed_action = self.dict_posible_outcomes[(x,y,theta)].split(';')
             
         if self.actions[action] in allowed_action:
             Reward_VI=0.9
+            is_correct_action = True
             self.move_agent(self.actions[action])
         else:
             Reward_VI=-0.8
         self.position_Score()
         img = self.get_screen_buffer()
         LR = -0.2
-        return Reward_VI+self.TD+LR, img    ## EL MÁXIMO REWARD ES 1, EL MÍNIMO -1
+        return Reward_VI+self.TD+LR, img, is_correct_action    ## EL MÁXIMO REWARD ES 1, EL MÍNIMO -1
         
     def get_screen_buffer(self):
         return np.array(Image.open(self.ModelPath + self.dict_img[self.routes[self.agent.route][self.agent.position]] + '/' + str(np.random.randint(1, BATCH_SIZE)) + '.jpeg').convert('RGB'))
 
-    def step(self,action):           
-        reward, img = self.make_action(action)
+    def step(self, action):
+        reward, img, is_correct_action = self.make_action(action)
         is_done = self.is_episode_finished()
-        return img,reward,is_done
+        return img, reward, is_done, is_correct_action
 
     def numactions(self):
         return len(self.actions)

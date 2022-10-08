@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import xlsxwriter
+import numpy as np         #array library
 
 class fileMngmnt():
     def exportData(self, fileName):
@@ -27,6 +28,35 @@ class fileMngmnt():
         processData = [rewardData, timeData, actsData, qTableData]
 
         return processData
+
+    def exportDataFromLog(self, fileName):
+        rewardData = []
+        actsData = [] 
+        errorActs = []
+        epsilonData = []
+
+        with open(fileName) as temp_f:
+            datafile = temp_f.readlines()
+
+        for line in datafile:
+            if 'Reward_hist' in line:
+                rewardData = line.split('Reward_hist[')[1].replace('\n', "").replace(']', "").split(", ")
+            elif 'Epsilon_hist' in line:
+                epsilonData = line.split('Epsilon_hist[')[1].replace('\n', "").replace(']', "").split(", ")
+            elif 'Total_acts_hist' in line:
+                actsData = line.split('Total_acts_hist[')[1].replace('\n', "").replace(']', "").split(", ")
+            elif 'Total_error_acts_hist' in line:
+                errorActs = line.split('Total_error_acts_hist[')[1].replace('\n', "").replace(']', "").split(", ")
+
+        processData = [rewardData, epsilonData, actsData, errorActs]
+        for data in processData:
+            index = 0
+            for num in data:
+                data[index] = float(num)
+                index += 1
+
+        return processData
+
 
     def writeXlsxFile(self, data, fileName):
         workbook = xlsxwriter.Workbook(fileName + '.xlsx')
@@ -85,8 +115,8 @@ class fileMngmnt():
         plt.show()
 
 fileM = fileMngmnt()
-data = fileM.exportData('logs_info2407.log')
-fileM.writeXlsxFile(data, 'data')
+data = fileM.exportDataFromLog('logs_info2022-10-05.log')
+fileM.writeXlsxFile(data, 'data_train')
 
 # rewardData = fileM.getRewardData('logs_info2407.log')
 # timeData = fileM.getTimeData('logs_info2407.log')

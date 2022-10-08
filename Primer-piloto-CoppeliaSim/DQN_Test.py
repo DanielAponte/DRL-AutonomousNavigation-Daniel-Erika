@@ -24,10 +24,10 @@ import tensorflow as tf
 import json
 import os
 
-MODEL_NAME = "img_classifier_model2022-09-22.model"
+MODEL_NAME = "model2022-10-03.model"
 MODEL_NAME_SAVE = "ModelDQN_Precalentar"         
-TARGET_MODEL_NAME = ""  
-REPLAY_MEMORY_NAME = "replay_memory_pre_train2022-09-26.json" 
+TARGET_MODEL_NAME = "target_model2022-10-03.model"  
+REPLAY_MEMORY_NAME = "replay_memory2022-10-03.json" 
 
 TIMEOUT_MAX = 100
 AGGREGATE_STATS_EVERY = 1
@@ -36,7 +36,7 @@ AGGREGATE_STATS_EVERY = 1
 TIMEOUT_COUNT = 70
 
 # Environment settings
-EPISODES = 200
+EPISODES = 12
 
 env =  agenteVrep.Environment()
 
@@ -85,7 +85,6 @@ class NpEncoder(json.JSONEncoder):
             return obj.tolist()
         return json.JSONEncoder.default(self, obj)
 
-
 class DQNAgent:
     def __init__(self):
         self.model, self.target_model, self.replay_memory = self.load_agent()
@@ -100,7 +99,7 @@ class DQNAgent:
         logging.basicConfig(
             format = '%(asctime)-5s %(name)-15s %(levelname)-8s %(message)s',
             level  = logging.INFO,      # Nivel de los eventos que se registran en el logger
-            filename = "logs_info_test" + str(date.today()) + ".log", # Fichero en el que se escriben los logs
+            filename = "logs_info" + str(date.today()) + ".log", # Fichero en el que se escriben los logs
             filemode = "a"              # a ("append"), en cada escritura, si el archivo de logs ya existe,
                                         # se abre y añaden nuevas lineas.
         )
@@ -109,11 +108,11 @@ class DQNAgent:
         model = self.load_model(MODEL_NAME)
 
         # Sección de código para lectura de modelo pre-calentado
-        target_model = model
+        # target_model = model
         # replay_memory = deque(maxlen=REPLAY_MEMORY_SIZE)
 
         # Seccion de código para lectura de modelo entrenado
-        # target_model = self.load_model(TARGET_MODEL_NAME)
+        target_model = self.load_model(TARGET_MODEL_NAME)
 
         file_json = open(REPLAY_MEMORY_NAME)
         replay_memory = deque(json.load(file_json))
@@ -155,7 +154,7 @@ for episode in range(1, EPISODES + 1):
             reward = -1
             logging.info('Timeout!')
 
-        if((actions_analysis[0] + actions_analysis[1]) > 50):
+        if(step > 50):
             finished = True
             reward = -1
             logging.info('MaxAttemps!')
@@ -170,6 +169,6 @@ for episode in range(1, EPISODES + 1):
     print('\nTime dif: ', current_t - start_t )
     print('\nEpisode_reward: ', episode_reward)
     print('\nTotal acts: ', step)
-    logging.info('Time dif: ' + str(current_t - start_t) )
+    logging.info('Time dif: ' + str(current_t - start_t))
     logging.info('Episode_reward ' + str(episode_reward))
     logging.info('Total acts: ' + str(step))

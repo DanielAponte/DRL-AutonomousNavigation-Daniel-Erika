@@ -39,7 +39,8 @@ class ImageClassifier():
 
         self.number_steps = train_data_df.shape[0]//BATCH_SIZE
 
-        self.model = self.create_model()
+        # self.model = self.create_model()
+        self.model = self.load_model("img_classifier_model2022-09-22.model")
         self.tensorboardCallback = TensorBoard(log_dir = "tb_logs", histogram_freq = 1)
 
     def create_model(self):
@@ -188,6 +189,9 @@ class ImageClassifier():
     def train(self):
         history = self.model.fit(self.train_data_batch, epochs = EPOCHS, steps_per_epoch = self.number_steps,
             callbacks = [self.tensorboardCallback], verbose=2, validation_data = (self.validation_data, self.validation_labels))
+    
+    def load_model(self, model):
+        return tf.keras.models.load_model(model)
 
     def save_model(self):
         self.model.save('img_classifier_model' + str(date.today()) + '.model')
