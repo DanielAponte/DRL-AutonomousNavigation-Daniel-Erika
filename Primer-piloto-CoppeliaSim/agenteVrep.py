@@ -22,7 +22,7 @@ from datetime import date
 from datetime import datetime
 import environment_params as env
 
-SIMULATION_TYPE = "Train"
+SIMULATION_TYPE = "Test"
 MAP = "6x6"
 MOVE_TIME = 625
 WIDTH = 64
