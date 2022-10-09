@@ -23,7 +23,7 @@ from datetime import datetime
 import environment_params as env
 
 SIMULATION_TYPE = "Test"
-MAP = "6x6"
+MAP = "9x9"
 MOVE_TIME = 625
 WIDTH = 64
 HEIGHT = 64

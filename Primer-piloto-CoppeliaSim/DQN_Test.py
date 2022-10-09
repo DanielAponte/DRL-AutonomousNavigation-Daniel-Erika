@@ -24,10 +24,10 @@ import tensorflow as tf
 import json
 import os
 
-MODEL_NAME = "model2022-10-08.model"
+MODEL_NAME = "model2022-10-06.model"
 MODEL_NAME_SAVE = "ModelDQN_Test"         
-TARGET_MODEL_NAME = "target_model2022-10-08.model"  
-REPLAY_MEMORY_NAME = "replay_memory2022-10-08.json" 
+TARGET_MODEL_NAME = "target_model2022-10-06.model"  
+REPLAY_MEMORY_NAME = "replay_memory2022-10-06.json" 
 
 TIMEOUT_MAX = 100
 AGGREGATE_STATS_EVERY = 1
@@ -36,7 +36,7 @@ AGGREGATE_STATS_EVERY = 1
 TIMEOUT_COUNT = 70
 
 # Environment settings
-EPISODES = 12
+EPISODES = 7
 
 env =  agenteVrep.Environment()
 
