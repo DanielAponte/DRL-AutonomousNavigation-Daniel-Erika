@@ -1,0 +1,288 @@
+2022-08-31 20:34:02,893 root            INFO     Init episode: 1
+2022-08-31 20:34:03,053 root            INFO     Se configuró correctamente el modelo
+2022-08-31 20:34:45,996 root            INFO     Is Done!
+2022-08-31 20:34:45,998 root            INFO     Time dif: 40.1723997592926
+2022-08-31 20:34:45,998 root            INFO     Epsilon: 0.891 :: Episode_reward 27.84999999999999
+2022-08-31 20:34:45,998 root            INFO     Total acts: 44 Random: 38 %% 0.8636363636363636 Q-Table: 6 %% 0.13636363636363635
+2022-08-31 20:34:45,998 root            INFO     Init episode: 2
+2022-08-31 20:34:46,138 root            INFO     Se configuró correctamente el modelo
+2022-08-31 20:35:41,719 root            INFO     Is Done!
+2022-08-31 20:35:41,722 root            INFO     Time dif: 52.78701329231262
+2022-08-31 20:35:41,723 root            INFO     Epsilon: 0.88209 :: Episode_reward 31.799999999999986
+2022-08-31 20:35:41,723 root            INFO     Total acts: 60 Random: 53 %% 0.8833333333333333 Q-Table: 7 %% 0.11666666666666667
+2022-08-31 20:35:41,723 root            INFO     Init episode: 3
+2022-08-31 20:35:41,909 root            INFO     Se configuró correctamente el modelo
+2022-08-31 20:36:25,807 root            INFO     Is Done!
+2022-08-31 20:36:25,811 root            INFO     Time dif: 41.1589617729187
+2022-08-31 20:36:25,811 root            INFO     Epsilon: 0.8732691 :: Episode_reward 21.099999999999994
+2022-08-31 20:36:25,811 root            INFO     Total acts: 47 Random: 40 %% 0.851063829787234 Q-Table: 7 %% 0.14893617021276595
+2022-08-31 20:36:25,811 root            INFO     Init episode: 4
+2022-08-31 20:36:25,978 root            INFO     Se configuró correctamente el modelo
+2022-08-31 20:37:09,618 root            INFO     Is Done!
+2022-08-31 20:37:09,620 root            INFO     Time dif: 40.81735014915466
+2022-08-31 20:37:09,620 root            INFO     Epsilon: 0.8645364090000001 :: Episode_reward 19.750000000000007
+2022-08-31 20:37:09,620 root            INFO     Total acts: 47 Random: 43 %% 0.9148936170212766 Q-Table: 4 %% 0.0851063829787234
+2022-08-31 20:37:09,620 root            INFO     Init episode: 5
+2022-08-31 20:37:09,777 root            INFO     Se configuró correctamente el modelo
+2022-08-31 20:38:07,383 root            INFO     Is Done!
+2022-08-31 20:38:07,385 root            INFO     Time dif: 54.79594826698303
+2022-08-31 20:38:07,385 root            INFO     Epsilon: 0.85589104491 :: Episode_reward 22.999999999999993
+2022-08-31 20:38:07,386 root            INFO     Total acts: 62 Random: 49 %% 0.7903225806451613 Q-Table: 13 %% 0.20967741935483872
+2022-08-31 20:38:07,386 root            INFO     Init episode: 6
+2022-08-31 20:38:07,553 root            INFO     Se configuró correctamente el modelo
+2022-08-31 20:38:47,900 root            INFO     Is Done!
+2022-08-31 20:38:47,902 root            INFO     Time dif: 37.55204153060913
+2022-08-31 20:38:47,902 root            INFO     Epsilon: 0.8473321344609 :: Episode_reward 56.55
+2022-08-31 20:38:47,902 root            INFO     Total acts: 34 Random: 29 %% 0.8529411764705882 Q-Table: 5 %% 0.14705882352941177
+2022-08-31 20:38:47,902 root            INFO     Init episode: 7
+2022-08-31 20:38:48,055 root            INFO     Se configuró correctamente el modelo
+2022-08-31 20:39:31,686 root            INFO     Is Done!
+2022-08-31 20:39:31,689 root            INFO     Time dif: 40.866568088531494
+2022-08-31 20:39:31,689 root            INFO     Epsilon: 0.8388588131162911 :: Episode_reward 20.749999999999993
+2022-08-31 20:39:31,689 root            INFO     Total acts: 46 Random: 34 %% 0.7391304347826086 Q-Table: 12 %% 0.2608695652173913
+2022-08-31 20:39:31,690 root            INFO     Init episode: 8
+2022-08-31 20:39:31,905 root            INFO     Se configuró correctamente el modelo
+2022-08-31 20:40:27,508 root            INFO     Is Done!
+2022-08-31 20:40:27,511 root            INFO     Time dif: 52.82868838310242
+2022-08-31 20:40:27,511 root            INFO     Epsilon: 0.8304702249851281 :: Episode_reward 50.89999999999999
+2022-08-31 20:40:27,512 root            INFO     Total acts: 52 Random: 46 %% 0.8846153846153846 Q-Table: 6 %% 0.11538461538461539
+2022-08-31 20:40:27,512 root            INFO     Init episode: 9
+2022-08-31 20:40:27,680 root            INFO     Se configuró correctamente el modelo
+2022-08-31 20:41:25,726 root            INFO     Is Done!
+2022-08-31 20:41:25,729 root            INFO     Time dif: 55.240113496780396
+2022-08-31 20:41:25,729 root            INFO     Epsilon: 0.8221655227352769 :: Episode_reward 9.850000000000001
+2022-08-31 20:41:25,730 root            INFO     Total acts: 67 Random: 57 %% 0.8507462686567164 Q-Table: 10 %% 0.14925373134328357
+2022-08-31 20:41:25,730 root            INFO     Init episode: 10
+2022-08-31 20:41:25,850 root            INFO     Se configuró correctamente el modelo
+2022-08-31 20:42:17,155 root            INFO     Is Done!
+2022-08-31 20:42:17,157 root            INFO     Time dif: 48.48187017440796
+2022-08-31 20:42:17,157 root            INFO     Epsilon: 0.8139438675079241 :: Episode_reward 84.54999999999997
+2022-08-31 20:42:17,157 root            INFO     Total acts: 40 Random: 31 %% 0.775 Q-Table: 9 %% 0.225
+2022-08-31 20:42:17,157 root            INFO     Init episode: 11
+2022-08-31 20:42:17,341 root            INFO     Se configuró correctamente el modelo
+2022-08-31 20:43:07,880 root            INFO     Is Done!
+2022-08-31 20:43:07,882 root            INFO     Time dif: 47.696510553359985
+2022-08-31 20:43:07,882 root            INFO     Epsilon: 0.8058044288328449 :: Episode_reward 98.15000000000002
+2022-08-31 20:43:07,882 root            INFO     Total acts: 36 Random: 31 %% 0.8611111111111112 Q-Table: 5 %% 0.1388888888888889
+2022-08-31 20:43:07,882 root            INFO     Init episode: 12
+2022-08-31 20:43:08,035 root            INFO     Se configuró correctamente el modelo
+2022-08-31 20:43:49,918 root            INFO     Is Done!
+2022-08-31 20:43:49,920 root            INFO     Time dif: 39.087730884552
+2022-08-31 20:43:49,920 root            INFO     Epsilon: 0.7977463845445164 :: Episode_reward 44.099999999999994
+2022-08-31 20:43:49,920 root            INFO     Total acts: 38 Random: 34 %% 0.8947368421052632 Q-Table: 4 %% 0.10526315789473684
+2022-08-31 20:43:49,920 root            INFO     Init episode: 13
+2022-08-31 20:43:50,104 root            INFO     Se configuró correctamente el modelo
+2022-08-31 20:44:45,285 root            INFO     Is Done!
+2022-08-31 20:44:45,286 root            INFO     Time dif: 52.43463492393494
+2022-08-31 20:44:45,287 root            INFO     Epsilon: 0.7897689206990712 :: Episode_reward 50.650000000000006
+2022-08-31 20:44:45,287 root            INFO     Total acts: 52 Random: 41 %% 0.7884615384615384 Q-Table: 11 %% 0.21153846153846154
+2022-08-31 20:44:45,287 root            INFO     Init episode: 14
+2022-08-31 20:44:45,457 root            INFO     Se configuró correctamente el modelo
+2022-08-31 20:45:40,012 root            INFO     Is Done!
+2022-08-31 20:45:40,014 root            INFO     Time dif: 51.77747583389282
+2022-08-31 20:45:40,014 root            INFO     Epsilon: 0.7818712314920805 :: Episode_reward 53.04999999999997
+2022-08-31 20:45:40,014 root            INFO     Total acts: 51 Random: 43 %% 0.8431372549019608 Q-Table: 8 %% 0.1568627450980392
+2022-08-31 20:45:40,014 root            INFO     Init episode: 15
+2022-08-31 20:45:40,214 root            INFO     Se configuró correctamente el modelo
+2022-08-31 20:46:24,545 root            INFO     Is Done!
+2022-08-31 20:46:24,548 root            INFO     Time dif: 41.535048484802246
+2022-08-31 20:46:24,548 root            INFO     Epsilon: 0.7740525191771597 :: Episode_reward 15.399999999999995
+2022-08-31 20:46:24,548 root            INFO     Total acts: 48 Random: 33 %% 0.6875 Q-Table: 15 %% 0.3125
+2022-08-31 20:46:24,548 root            INFO     Init episode: 16
+2022-08-31 20:46:24,703 root            INFO     Se configuró correctamente el modelo
+2022-08-31 20:47:18,775 root            INFO     Is Done!
+2022-08-31 20:47:18,777 root            INFO     Time dif: 51.29956555366516
+2022-08-31 20:47:18,777 root            INFO     Epsilon: 0.7663119939853881 :: Episode_reward 64.04999999999997
+2022-08-31 20:47:18,777 root            INFO     Total acts: 48 Random: 38 %% 0.7916666666666666 Q-Table: 10 %% 0.20833333333333334
+2022-08-31 20:47:18,777 root            INFO     Init episode: 17
+2022-08-31 20:47:18,947 root            INFO     Se configuró correctamente el modelo
+2022-08-31 20:48:03,121 root            INFO     Is Done!
+2022-08-31 20:48:03,123 root            INFO     Time dif: 41.38561487197876
+2022-08-31 20:48:03,123 root            INFO     Epsilon: 0.7586488740455342 :: Episode_reward 20.899999999999977
+2022-08-31 20:48:03,123 root            INFO     Total acts: 47 Random: 39 %% 0.8297872340425532 Q-Table: 8 %% 0.1702127659574468
+2022-08-31 20:48:03,123 root            INFO     Init episode: 18
+2022-08-31 20:48:03,292 root            INFO     Se configuró correctamente el modelo
+2022-08-31 20:48:53,048 root            INFO     Is Done!
+2022-08-31 20:48:53,050 root            INFO     Time dif: 46.96055269241333
+2022-08-31 20:48:53,050 root            INFO     Epsilon: 0.7510623853050789 :: Episode_reward 10.09999999999999
+2022-08-31 20:48:53,050 root            INFO     Total acts: 58 Random: 44 %% 0.7586206896551724 Q-Table: 14 %% 0.2413793103448276
+2022-08-31 20:48:53,050 root            INFO     Init episode: 19
+2022-08-31 20:48:53,206 root            INFO     Se configuró correctamente el modelo
+2022-08-31 20:49:38,975 root            INFO     Is Done!
+2022-08-31 20:49:38,978 root            INFO     Time dif: 42.95440196990967
+2022-08-31 20:49:38,978 root            INFO     Epsilon: 0.7435517614520281 :: Episode_reward -6.499999999999993
+2022-08-31 20:49:38,979 root            INFO     Total acts: 55 Random: 38 %% 0.6909090909090909 Q-Table: 17 %% 0.3090909090909091
+2022-08-31 20:49:38,979 root            INFO     Init episode: 20
+2022-08-31 20:49:39,147 root            INFO     Se configuró correctamente el modelo
+2022-08-31 20:50:39,066 root            INFO     Is Done!
+2022-08-31 20:50:40,049 root            INFO     Time dif: 57.12643790245056
+2022-08-31 20:50:40,049 root            INFO     Epsilon: 0.7361162438375077 :: Episode_reward 4.099999999999996
+2022-08-31 20:50:40,049 root            INFO     Total acts: 69 Random: 55 %% 0.7971014492753623 Q-Table: 14 %% 0.2028985507246377
+2022-08-31 20:50:40,050 root            INFO     Init episode: 21
+2022-08-31 20:50:40,216 root            INFO     Se configuró correctamente el modelo
+2022-08-31 20:53:44,062 root            INFO     Time dif: 180.67818760871887
+2022-08-31 20:53:44,062 root            INFO     Epsilon: 0.7287550813991327 :: Episode_reward 171.10000000000025
+2022-08-31 20:53:44,062 root            INFO     Total acts: 100 Random: 70 %% 0.7 Q-Table: 30 %% 0.3
+2022-08-31 20:53:44,062 root            INFO     Init episode: 22
+2022-08-31 20:53:44,257 root            INFO     Se configuró correctamente el modelo
+2022-08-31 20:55:11,733 root            INFO     Is Done!
+2022-08-31 20:55:12,701 root            INFO     Time dif: 84.56617259979248
+2022-08-31 20:55:12,701 root            INFO     Epsilon: 0.7214675305851413 :: Episode_reward 39.39999999999999
+2022-08-31 20:55:12,701 root            INFO     Total acts: 44 Random: 31 %% 0.7045454545454546 Q-Table: 13 %% 0.29545454545454547
+2022-08-31 20:55:12,701 root            INFO     Init episode: 23
+2022-08-31 20:55:12,873 root            INFO     Se configuró correctamente el modelo
+2022-08-31 20:56:54,559 root            INFO     Is Done!
+2022-08-31 20:56:55,515 root            INFO     Time dif: 98.84071946144104
+2022-08-31 20:56:55,515 root            INFO     Epsilon: 0.7142528552792899 :: Episode_reward 64.69999999999997
+2022-08-31 20:56:55,515 root            INFO     Total acts: 48 Random: 40 %% 0.8333333333333334 Q-Table: 8 %% 0.16666666666666666
+2022-08-31 20:56:55,515 root            INFO     Init episode: 24
+2022-08-31 20:56:55,703 root            INFO     Se configuró correctamente el modelo
+2022-08-31 20:58:16,367 root            INFO     Unknown location error
+2022-08-31 20:58:17,462 root            INFO     Time dif: 79.42994523048401
+2022-08-31 20:58:17,462 root            INFO     Epsilon: 0.707110326726497 :: Episode_reward -79894.45
+2022-08-31 20:58:17,462 root            INFO     Total acts: 34 Random: 24 %% 0.7058823529411765 Q-Table: 10 %% 0.29411764705882354
+2022-08-31 20:58:17,462 root            INFO     Init episode: 25
+2022-08-31 20:58:17,598 root            INFO     Se configuró correctamente el modelo
+2022-08-31 21:01:22,157 root            INFO     Time dif: 181.4293987751007
+2022-08-31 21:01:22,157 root            INFO     Epsilon: 0.700039223459232 :: Episode_reward 230.55000000000027
+2022-08-31 21:01:22,157 root            INFO     Total acts: 108 Random: 76 %% 0.7037037037037037 Q-Table: 32 %% 0.2962962962962963
+2022-08-31 21:01:22,158 root            INFO     Init episode: 26
+2022-08-31 21:01:22,290 root            INFO     Se configuró correctamente el modelo
+2022-08-31 21:04:26,306 root            INFO     Time dif: 180.7947130203247
+2022-08-31 21:04:26,306 root            INFO     Epsilon: 0.6930388312246396 :: Episode_reward 214.6000000000002
+2022-08-31 21:04:26,306 root            INFO     Total acts: 106 Random: 73 %% 0.6886792452830188 Q-Table: 33 %% 0.3113207547169811
+2022-08-31 21:04:26,307 root            INFO     Init episode: 27
+2022-08-31 21:04:26,444 root            INFO     Se configuró correctamente el modelo
+2022-08-31 21:04:51,959 root            INFO     Unknown location error
+2022-08-31 21:04:52,936 root            INFO     Time dif: 24.291641235351562
+2022-08-31 21:04:52,936 root            INFO     Epsilon: 0.6861084429123933 :: Episode_reward -79967.0
+2022-08-31 21:04:52,936 root            INFO     Total acts: 12 Random: 8 %% 0.6666666666666666 Q-Table: 4 %% 0.3333333333333333
+2022-08-31 21:04:52,936 root            INFO     Init episode: 28
+2022-08-31 21:04:53,057 root            INFO     Se configuró correctamente el modelo
+2022-08-31 21:07:57,539 root            INFO     Time dif: 181.2840337753296
+2022-08-31 21:07:57,539 root            INFO     Epsilon: 0.6792473584832693 :: Episode_reward 257.1500000000003
+2022-08-31 21:07:57,539 root            INFO     Total acts: 106 Random: 73 %% 0.6886792452830188 Q-Table: 33 %% 0.3113207547169811
+2022-08-31 21:07:57,539 root            INFO     Init episode: 29
+2022-08-31 21:07:57,656 root            INFO     Se configuró correctamente el modelo
+2022-08-31 21:09:33,379 root            INFO     Unknown location error
+2022-08-31 21:09:34,372 root            INFO     Time dif: 94.49903726577759
+2022-08-31 21:09:34,372 root            INFO     Epsilon: 0.6724548848984366 :: Episode_reward -79995.65
+2022-08-31 21:09:34,372 root            INFO     Total acts: 56 Random: 34 %% 0.6071428571428571 Q-Table: 22 %% 0.39285714285714285
+2022-08-31 21:09:34,372 root            INFO     Init episode: 30
+2022-08-31 21:09:34,519 root            INFO     Se configuró correctamente el modelo
+2022-08-31 21:11:01,150 root            INFO     Unknown location error
+2022-08-31 21:11:02,099 root            INFO     Time dif: 85.39567828178406
+2022-08-31 21:11:02,099 root            INFO     Epsilon: 0.6657303360494523 :: Episode_reward -79973.6
+2022-08-31 21:11:02,099 root            INFO     Total acts: 49 Random: 32 %% 0.6530612244897959 Q-Table: 17 %% 0.3469387755102041
+2022-08-31 21:11:02,099 root            INFO     Init episode: 31
+2022-08-31 21:11:02,243 root            INFO     Se configuró correctamente el modelo
+2022-08-31 21:12:08,541 root            INFO     Unknown location error
+2022-08-31 21:12:09,527 root            INFO     Time dif: 65.07548475265503
+2022-08-31 21:12:09,527 root            INFO     Epsilon: 0.6590730326889578 :: Episode_reward -79959.6
+2022-08-31 21:12:09,527 root            INFO     Total acts: 36 Random: 24 %% 0.6666666666666666 Q-Table: 12 %% 0.3333333333333333
+2022-08-31 21:12:09,527 root            INFO     Init episode: 32
+2022-08-31 21:12:09,660 root            INFO     Se configuró correctamente el modelo
+2022-08-31 21:13:16,508 root            INFO     Unknown location error
+2022-08-31 21:13:17,498 root            INFO     Time dif: 65.64148020744324
+2022-08-31 21:13:17,498 root            INFO     Epsilon: 0.6524823023620682 :: Episode_reward -79972.65
+2022-08-31 21:13:17,498 root            INFO     Total acts: 37 Random: 26 %% 0.7027027027027027 Q-Table: 11 %% 0.2972972972972973
+2022-08-31 21:13:17,498 root            INFO     Init episode: 33
+2022-08-31 21:13:17,593 root            INFO     Se configuró correctamente el modelo
+2022-08-31 21:14:02,395 root            INFO     Unknown location error
+2022-08-31 21:14:03,361 root            INFO     Time dif: 43.593493700027466
+2022-08-31 21:14:03,361 root            INFO     Epsilon: 0.6459574793384475 :: Episode_reward -79984.1
+2022-08-31 21:14:03,361 root            INFO     Total acts: 25 Random: 20 %% 0.8 Q-Table: 5 %% 0.2
+2022-08-31 21:14:03,361 root            INFO     Init episode: 34
+2022-08-31 21:14:03,505 root            INFO     Se configuró correctamente el modelo
+2022-08-31 21:17:07,906 root            INFO     Time dif: 182.20630621910095
+2022-08-31 21:17:07,907 root            INFO     Epsilon: 0.6394979045450631 :: Episode_reward 145.15
+2022-08-31 21:17:07,907 root            INFO     Total acts: 111 Random: 83 %% 0.7477477477477478 Q-Table: 28 %% 0.25225225225225223
+2022-08-31 21:17:07,907 root            INFO     Init episode: 35
+2022-08-31 21:17:08,049 root            INFO     Se configuró correctamente el modelo
+2022-08-31 21:18:28,082 root            INFO     Unknown location error
+2022-08-31 21:18:29,177 root            INFO     Time dif: 78.66247653961182
+2022-08-31 21:18:29,178 root            INFO     Epsilon: 0.6331029254996124 :: Episode_reward -79957.7
+2022-08-31 21:18:29,178 root            INFO     Total acts: 43 Random: 33 %% 0.7674418604651163 Q-Table: 10 %% 0.23255813953488372
+2022-08-31 21:18:29,178 root            INFO     Init episode: 36
+2022-08-31 21:18:29,279 root            INFO     Se configuró correctamente el modelo
+2022-08-31 21:19:09,342 root            INFO     Unknown location error
+2022-08-31 21:19:10,302 root            INFO     Time dif: 38.79238724708557
+2022-08-31 21:19:10,302 root            INFO     Epsilon: 0.6267718962446163 :: Episode_reward -79968.85
+2022-08-31 21:19:10,302 root            INFO     Total acts: 20 Random: 11 %% 0.55 Q-Table: 9 %% 0.45
+2022-08-31 21:19:10,302 root            INFO     Init episode: 37
+2022-08-31 21:19:10,445 root            INFO     Se configuró correctamente el modelo
+2022-08-31 21:20:50,425 root            INFO     Unknown location error
+2022-08-31 21:20:51,377 root            INFO     Time dif: 98.7560133934021
+2022-08-31 21:20:51,377 root            INFO     Epsilon: 0.6205041772821701 :: Episode_reward -79977.15
+2022-08-31 21:20:51,377 root            INFO     Total acts: 59 Random: 33 %% 0.559322033898305 Q-Table: 26 %% 0.4406779661016949
+2022-08-31 21:20:51,377 root            INFO     Init episode: 38
+2022-08-31 21:20:51,503 root            INFO     Se configuró correctamente el modelo
+2022-08-31 21:22:59,436 root            INFO     Is Done!
+2022-08-31 21:23:00,405 root            INFO     Time dif: 125.10653114318848
+2022-08-31 21:23:00,405 root            INFO     Epsilon: 0.6142991355093484 :: Episode_reward 18.60000000000003
+2022-08-31 21:23:00,405 root            INFO     Total acts: 69 Random: 42 %% 0.6086956521739131 Q-Table: 27 %% 0.391304347826087
+2022-08-31 21:23:00,406 root            INFO     Init episode: 39
+2022-08-31 21:23:00,579 root            INFO     Se configuró correctamente el modelo
+2022-08-31 21:24:16,479 root            INFO     Is Done!
+2022-08-31 21:24:17,434 root            INFO     Time dif: 73.08669352531433
+2022-08-31 21:24:17,435 root            INFO     Epsilon: 0.608156144154255 :: Episode_reward 64.30000000000001
+2022-08-31 21:24:17,435 root            INFO     Total acts: 35 Random: 29 %% 0.8285714285714286 Q-Table: 6 %% 0.17142857142857143
+2022-08-31 21:24:17,435 root            INFO     Init episode: 40
+2022-08-31 21:24:17,596 root            INFO     Se configuró correctamente el modelo
+2022-08-31 21:26:17,977 root            INFO     Is Done!
+2022-08-31 21:26:18,943 root            INFO     Time dif: 117.55989670753479
+2022-08-31 21:26:18,943 root            INFO     Epsilon: 0.6020745827127124 :: Episode_reward -37.59999999999998
+2022-08-31 21:26:18,943 root            INFO     Total acts: 70 Random: 40 %% 0.5714285714285714 Q-Table: 30 %% 0.42857142857142855
+2022-08-31 21:26:18,943 root            INFO     Init episode: 41
+2022-08-31 21:26:19,133 root            INFO     Se configuró correctamente el modelo
+2022-08-31 21:27:58,609 root            INFO     Is Done!
+2022-08-31 21:27:59,572 root            INFO     Time dif: 96.63871455192566
+2022-08-31 21:27:59,573 root            INFO     Epsilon: 0.5960538368855853 :: Episode_reward 12.54999999999999
+2022-08-31 21:27:59,573 root            INFO     Total acts: 53 Random: 29 %% 0.5471698113207547 Q-Table: 24 %% 0.4528301886792453
+2022-08-31 21:27:59,573 root            INFO     Init episode: 42
+2022-08-31 21:27:59,733 root            INFO     Se configuró correctamente el modelo
+2022-08-31 21:29:25,698 root            INFO     Unknown location error
+2022-08-31 21:29:26,677 root            INFO     Time dif: 84.6713478565216
+2022-08-31 21:29:26,677 root            INFO     Epsilon: 0.5900932985167294 :: Episode_reward -79996.95
+2022-08-31 21:29:26,677 root            INFO     Total acts: 45 Random: 29 %% 0.6444444444444445 Q-Table: 16 %% 0.35555555555555557
+2022-08-31 21:29:26,677 root            INFO     Init episode: 43
+2022-08-31 21:29:26,845 root            INFO     Se configuró correctamente el modelo
+2022-08-31 21:32:30,624 root            INFO     Time dif: 180.52311992645264
+2022-08-31 21:32:30,624 root            INFO     Epsilon: 0.5841923655315622 :: Episode_reward 177.45000000000022
+2022-08-31 21:32:30,624 root            INFO     Total acts: 96 Random: 65 %% 0.6770833333333334 Q-Table: 31 %% 0.3229166666666667
+2022-08-31 21:32:30,625 root            INFO     Init episode: 44
+2022-08-31 21:32:30,793 root            INFO     Se configuró correctamente el modelo
+2022-08-31 21:33:58,551 root            INFO     Unknown location error
+2022-08-31 21:33:59,518 root            INFO     Time dif: 86.52407193183899
+2022-08-31 21:33:59,518 root            INFO     Epsilon: 0.5783504418762465 :: Episode_reward -79904.3
+2022-08-31 21:33:59,518 root            INFO     Total acts: 37 Random: 22 %% 0.5945945945945946 Q-Table: 15 %% 0.40540540540540543
+2022-08-31 21:33:59,518 root            INFO     Init episode: 45
+2022-08-31 21:33:59,679 root            INFO     Se configuró correctamente el modelo
+2022-08-31 21:35:17,150 root            INFO     Is Done!
+2022-08-31 21:35:18,146 root            INFO     Time dif: 74.6845395565033
+2022-08-31 21:35:18,146 root            INFO     Epsilon: 0.572566937457484 :: Episode_reward 49.749999999999986
+2022-08-31 21:35:18,146 root            INFO     Total acts: 36 Random: 16 %% 0.4444444444444444 Q-Table: 20 %% 0.5555555555555556
+2022-08-31 21:35:18,147 root            INFO     Init episode: 46
+2022-08-31 21:35:18,326 root            INFO     Se configuró correctamente el modelo
+2022-08-31 21:36:24,603 root            INFO     Is Done!
+2022-08-31 21:36:25,544 root            INFO     Time dif: 63.445839643478394
+2022-08-31 21:36:25,544 root            INFO     Epsilon: 0.5668412680829091 :: Episode_reward 77.20000000000003
+2022-08-31 21:36:25,544 root            INFO     Total acts: 27 Random: 13 %% 0.48148148148148145 Q-Table: 14 %% 0.5185185185185185
+2022-08-31 21:36:25,544 root            INFO     Init episode: 47
+2022-08-31 21:36:25,726 root            INFO     Se configuró correctamente el modelo
+2022-08-31 21:37:40,883 root            INFO     Is Done!
+2022-08-31 21:37:41,842 root            INFO     Time dif: 72.25996136665344
+2022-08-31 21:37:41,842 root            INFO     Epsilon: 0.5611728554020801 :: Episode_reward 55.29999999999998
+2022-08-31 21:37:41,842 root            INFO     Total acts: 34 Random: 14 %% 0.4117647058823529 Q-Table: 20 %% 0.5882352941176471
+2022-08-31 21:37:41,843 root            INFO     Init episode: 48
+2022-08-31 21:37:42,006 root            INFO     Se configuró correctamente el modelo
+2022-08-31 21:39:26,227 root            INFO     Is Done!
+2022-08-31 21:39:27,218 root            INFO     Time dif: 101.37775349617004
+2022-08-31 21:39:27,218 root            INFO     Epsilon: 0.5555611268480593 :: Episode_reward 58.499999999999986
+2022-08-31 21:39:27,218 root            INFO     Total acts: 49 Random: 29 %% 0.5918367346938775 Q-Table: 20 %% 0.40816326530612246
+2022-08-31 21:39:27,218 root            INFO     Init episode: 49
+2022-08-31 21:39:27,397 root            INFO     Se configuró correctamente el modelo
+2022-08-31 21:40:24,633 root            INFO     Error get screen buffer, in_data: [] image: []
+2022-08-31 21:40:26,797 root            INFO     Error get screen buffer, in_data: [] image: []
+2022-08-31 21:40:27,963 root            INFO     Error get screen buffer, in_data: [] image: []
+2022-08-31 21:40:29,142 root            INFO     Error get screen buffer, in_data: [] image: []
